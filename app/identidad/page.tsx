@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { HeaderBocaStyle } from "@/components/header-boca-style"
+import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 import { Timeline } from "@/components/timeline"
 
@@ -69,7 +69,7 @@ const escudosHistoricos = [
 export default function IdentidadPage() {
   return (
     <div className="min-h-screen flex flex-col">
-      <HeaderBocaStyle />
+      <Header />
 
       {/* Header específico para Identidad */}
       <PageHeader

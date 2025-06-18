@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Users } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ImageGallery } from "@/components/image-gallery"
-import { HeaderBocaStyle } from "@/components/header-boca-style"
+import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 
 // Datos de ejemplo para las instalaciones
@@ -15,11 +15,9 @@ const infraestructuraData = [
       "Nuestro gimnasio principal cuenta con una cancha reglamentaria de básquet y capacidad para eventos deportivos de gran escala. Equipado con gradas para espectadores, marcador electrónico y sistema de sonido profesional.",
     aforo: 500,
     imagenes: [
-      { src: "/placeholder.svg?height=400&width=600", alt: "Gimnasio 1 - Vista general" },
-      { src: "/placeholder.svg?height=400&width=600", alt: "Gimnasio 1 - Cancha" },
-      { src: "/placeholder.svg?height=400&width=600", alt: "Gimnasio 1 - Gradas" },
+      { src: "/images/gimnasio-1.png", alt: "Gimnasio 1 - Vista general" },
+      { src: "/images/gimnasio-1-tribunas.png", alt: "Gimnasio 1 - Gradas" },
       { src: "/placeholder.svg?height=400&width=600", alt: "Gimnasio 1 - Vestuarios" },
-      { src: "/placeholder.svg?height=400&width=600", alt: "Gimnasio 1 - Equipamiento" },
     ],
   },
   {
@@ -38,10 +36,10 @@ const infraestructuraData = [
     id: "gimnasio-3",
     nombre: "Gimnasio 3",
     descripcion:
-      "Nuestro gimnasio más reciente, construido sobre la antigua cancha de baloncesto y pista de baile. Con más de 1000 metros cuadrados, es ideal para competiciones y eventos de gran formato.",
-    aforo: 350,
+      "Nuestra cancha principal, estadio con capacidad para 1000 espectadores. La casa de nuestros guerreros.",
+    aforo: 1000,
     imagenes: [
-      { src: "/placeholder.svg?height=400&width=600", alt: "Gimnasio 3 - Vista general" },
+      { src: "/images/gimnasio-3.png", alt: "Gimnasio 3 - Vista general" },
       { src: "/placeholder.svg?height=400&width=600", alt: "Gimnasio 3 - Cancha" },
       { src: "/placeholder.svg?height=400&width=600", alt: "Gimnasio 3 - Área técnica" },
       { src: "/placeholder.svg?height=400&width=600", alt: "Gimnasio 3 - Iluminación" },
@@ -101,7 +99,7 @@ const infraestructuraData = [
 export default function InfraestructuraPage() {
   return (
     <div className="min-h-screen bg-background">
-      <HeaderBocaStyle />
+      <Header />
 
       {/* Nuevo header con componente reutilizable */}
       <PageHeader

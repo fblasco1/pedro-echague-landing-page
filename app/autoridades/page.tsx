@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { HeaderBocaStyle } from "@/components/header-boca-style"
+import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 
 // Datos de la comisión directiva
@@ -64,7 +64,7 @@ const revisoresCuenta = [
 export default function AutoridadesPage() {
   return (
     <div className="min-h-screen bg-background">
-      <HeaderBocaStyle />
+      <Header />
 
       {/* Nuevo header con componente reutilizable */}
       <PageHeader

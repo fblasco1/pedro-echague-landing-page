@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Calendar, Users } from "lucide-react"
-import { HeaderBocaStyle } from "@/components/header-boca-style"
+import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -15,7 +15,7 @@ const activitiesData = {
       "Formación y competición en básquet para todas las edades. Contamos con tres tiras masculinas (Amarilla, Azul, Flex) y una tira femenina, además de nuestra escuelita para los más pequeños.",
     longDescription:
       "El básquet en Pedro Echagüe tiene una larga tradición que se remonta a los inicios del club. Actualmente, contamos con equipos en todas las categorías, desde escuelita hasta primera división, tanto en masculino como en femenino. Nuestros equipos participan en los torneos de la Federación de Básquet de la Ciudad de Buenos Aires (FEBAMBA) y han logrado importantes títulos a lo largo de la historia.",
-    imageSrc: "/images/activities/basquet.png",
+    imageSrc: "/images/activities/basquet-portada.png",
     categories: ["Deportes de equipo", "Competitivo", "Infantil", "Juvenil", "Adultos"],
     schedule: [
       {
@@ -130,7 +130,128 @@ const activitiesData = {
     ],
     tipo: "federada",
   },
-  // Otras actividades...
+  voley: {
+    id: "voley",
+    title: "Voley",
+    description:
+      "Formación y competición en básquet para todas las edades. Contamos con tres tiras masculinas (Amarilla, Azul, Flex) y una tira femenina, además de nuestra escuelita para los más pequeños.",
+    longDescription:
+      "El básquet en Pedro Echagüe tiene una larga tradición que se remonta a los inicios del club. Actualmente, contamos con equipos en todas las categorías, desde escuelita hasta primera división, tanto en masculino como en femenino. Nuestros equipos participan en los torneos de la Federación de Básquet de la Ciudad de Buenos Aires (FEBAMBA) y han logrado importantes títulos a lo largo de la historia.",
+    imageSrc: "/images/activities/voley-portada.png",
+    categories: ["Deportes de equipo", "Competitivo", "Infantil", "Juvenil", "Adultos"],
+    schedule: [
+      {
+        category: "Escuelita (5-8 años)",
+        tira: "Mixta",
+        days: "Lunes y Miércoles 18:00 - 19:00",
+        fee: "$16500",
+      },
+      {
+        category: "Pre-Mini (9-10 años)",
+        tira: "Amarilla",
+        days: "Martes y Jueves 18:00 - 19:30",
+        fee: "$17500",
+      },
+      {
+        category: "Pre-Mini (9-10 años)",
+        tira: "Azul",
+        days: "Lunes y Miércoles 18:00 - 19:30",
+        fee: "$17500",
+      },
+      {
+        category: "Mini (11-12 años)",
+        tira: "Amarilla",
+        days: "Lunes y Miércoles 19:00 - 20:30",
+        fee: "$17500",
+      },
+      {
+        category: "Mini (11-12 años)",
+        tira: "Azul",
+        days: "Martes y Jueves 19:00 - 20:30",
+        fee: "$17500",
+      },
+      {
+        category: "U13 (13 años)",
+        tira: "Amarilla",
+        days: "Martes y Jueves 19:30 - 21:00",
+        fee: "$17500",
+      },
+      {
+        category: "U15 (14-15 años)",
+        tira: "Amarilla",
+        days: "Lunes y Miércoles 20:30 - 22:00",
+        fee: "$17500",
+      },
+      {
+        category: "U17 (16-17 años)",
+        tira: "Amarilla",
+        days: "Martes y Jueves 21:00 - 22:30",
+        fee: "$17500",
+      },
+      {
+        category: "Primera Masculino",
+        tira: "A",
+        days: "Miércoles 21:00 - 22:30, Viernes 20:30 - 22:00",
+        fee: "Consultar",
+      },
+      {
+        category: "Primera Femenino",
+        tira: "Única",
+        days: "Martes 20:00 - 21:30, Jueves 19:00 - 20:30",
+        fee: "$16500",
+      },
+    ],
+    coaches: [
+      {
+        firstName: "Juan",
+        lastName: "PÉREZ",
+        roles: [
+          { position: "Entrenador", teams: "U15, U17 Amarilla" },
+          { position: "Asistente", teams: "Primera 'A'" },
+        ],
+        image: "/placeholder.svg?height=400&width=300",
+      },
+      {
+        firstName: "María",
+        lastName: "GONZÁLEZ",
+        roles: [{ position: "Entrenadora", teams: "U13, Mini Femenino" }],
+        image: "/placeholder.svg?height=400&width=300",
+      },
+      {
+        firstName: "Carlos",
+        lastName: "RODRÍGUEZ",
+        roles: [
+          { position: "Asistente", teams: "U15, U17 Amarilla" },
+          { position: "Entrenador", teams: "Escuelita" },
+        ],
+        image: "/placeholder.svg?height=400&width=300",
+      },
+      {
+        firstName: "Laura",
+        lastName: "FERNÁNDEZ",
+        roles: [{ position: "Preparadora Física", teams: "Todas las categorías" }],
+        image: "/placeholder.svg?height=400&width=300",
+      },
+    ],
+    events: [
+      {
+        title: "Torneo Metropolitano - Pedro Echagüe vs. Ferro",
+        date: "Sábado 30 de marzo, 20:00hs",
+        location: "Gimnasio 1",
+      },
+      {
+        title: "Entrenamiento abierto - Tira Amarilla",
+        date: "Miércoles 27 de marzo, 18:00hs",
+        location: "Gimnasio 2",
+      },
+    ],
+    gallery: [
+      "/placeholder.svg?height=400&width=600",
+      "/placeholder.svg?height=400&width=600",
+      "/placeholder.svg?height=400&width=600",
+    ],
+    tipo: "federada",
+  },
 }
 
 export default function ActivityPage({ params }: { params: { slug: string } }) {
@@ -139,7 +260,7 @@ export default function ActivityPage({ params }: { params: { slug: string } }) {
   if (!activity) {
     return (
       <div className="min-h-screen flex flex-col">
-        <HeaderBocaStyle />
+        <Header />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-club-blue mb-4">Actividad no encontrada</h1>
@@ -155,7 +276,7 @@ export default function ActivityPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <HeaderBocaStyle />
+      <Header />
 
       {/* Header específico para la actividad */}
       <PageHeader

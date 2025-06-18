@@ -6,7 +6,7 @@ import { Search } from "lucide-react"
 import { ActivityCard } from "@/components/activity-card"
 import { ActivityFilter } from "@/components/activity-filter"
 import { Input } from "@/components/ui/input"
-import { HeaderBocaStyle } from "@/components/header-boca-style"
+import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 import { useSearchParams } from "next/navigation"
 
@@ -305,7 +305,7 @@ export default function ActividadesPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <HeaderBocaStyle />
+      <Header />
 
       {/* Nuevo header con componente reutilizable */}
       <PageHeader

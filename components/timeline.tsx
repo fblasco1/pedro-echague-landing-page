@@ -29,13 +29,18 @@ const timelineData = {
         label: "1934",
         events: [
           {
-            text: "Un 17 de octubre, un grupo de 25 jóvenes se juntó después de ganar un torneo de fútbol y decidió darle vida al club que hoy conocemos. Al principio, iban a seguir con el nombre de Club Nacional Argentino.",
+            text: "Un 17 de octubre, un grupo de 25 jóvenes se juntó después de ganar un torneo de fútbol y decidió darle vida al club que hoy conocemos. Al principio, el nombre de la institución seria Club Nacional Argentino.",
             image: "/images/fundacion-1934.png",
           },
         ],
       },
       { id: "1935", label: "1935", events: [] },
-      { id: "1936", label: "1936", events: [] },
+      { id: "1936", label: "1936", events: [
+        {
+            text: "La primer sede social tuvo lugar en Lobos 3383 (Gregorio de LaFerrere). \n El crecimiento llevo a mudarse a la actual sede y para financiarla nacieron los famosos bailes de carnaval que permitieron seguir construyendo el club.",
+            image: "/images/sede-social-bailes.png",
+        },
+      ] },
       { id: "1937", label: "1937", events: [] },
       { id: "1938", label: "1938", events: [] },
       { id: "1939", label: "1939", events: [] },
@@ -50,7 +55,7 @@ const timelineData = {
             image: null,
           },
           {
-            text: "Gracias a gestiones ante el Ministerio de Justicia e Instrucción Pública, se sumaron más de 100 libros y nació la biblioteca, que durante a��os fue un espacio de aprendizaje para los chicos del barrio.",
+            text: "Gracias a gestiones ante el Ministerio de Justicia e Instrucción Pública, se sumaron más de 100 libros y nació la biblioteca, que durante años fue un espacio de aprendizaje para los chicos del barrio.",
             image: "/images/biblioteca-1940.png",
           },
         ],
@@ -106,7 +111,7 @@ const timelineData = {
         events: [
           {
             text: "Reapertura del club tras la reconstrucción. Con los fondos recaudados solo se logró la loza de la planta baja, entrepiso y sótano, pero los socios, a puro esfuerzo y creatividad, levantaron las paredes y le devolvieron vida al edificio.",
-            image: null,
+            image: "/images/reapertura-1962.png",
           },
         ],
       },
@@ -199,7 +204,12 @@ const timelineData = {
     "2000": [
       { id: "2000", label: "2000", events: [] },
       { id: "2001", label: "2001", events: [] },
-      { id: "2002", label: "2002", events: [] },
+      { id: "2002", label: "2002", events: [
+        {
+            text: "Campeones Liga Nacional Juvenil 2002",
+            image: "/images/campeones-2002.png",
+          },
+      ] },
       { id: "2003", label: "2003", events: [] },
       {
         id: "2004",
@@ -219,7 +229,7 @@ const timelineData = {
         events: [
           {
             text: "El equipo de básquet disputó una final por el ascenso a la Liga Nacional de Básquet (LNB).",
-            image: null,
+            image: "/images/tna-2007.png",
           },
         ],
       },
@@ -243,7 +253,7 @@ const timelineData = {
           ? [
               {
                 text: "Surgió la camada de 'Los Guerreros' que trajeron títulos nacionales y metropolitanos a nivel formativo y en primera con planteles casi en su totalidad surgidos del semillero de la institución.",
-                image: null,
+                image: "/images/guerreros.png",
               },
             ]
           : [],
@@ -340,7 +350,7 @@ export function Timeline() {
 
             <div className="flex justify-between items-center relative">
               <button onClick={handlePrevYear} className="bg-transparent text-white z-10">
-                <ChevronLeft size={20} sm:size={24} />
+                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
 
               <div className="flex-1 flex justify-between items-center relative">
@@ -368,7 +378,7 @@ export function Timeline() {
               </div>
 
               <button onClick={handleNextYear} className="bg-transparent text-white z-10">
-                <ChevronRight size={20} sm:size={24} />
+                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
           </div>
@@ -377,13 +387,13 @@ export function Timeline() {
           <div className="mt-8 sm:mt-12 md:mt-16 px-4 sm:px-8 flex flex-col items-center">
             <div className="flex items-center">
               <button onClick={handlePrevYear} className="text-white">
-                <ChevronLeft size={20} sm:size={24} />
+                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
               <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-club-yellow mx-4 sm:mx-8">
                 {selectedYear}
               </h3>
               <button onClick={handleNextYear} className="text-white">
-                <ChevronRight size={20} sm:size={24} />
+                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
 
@@ -403,10 +413,11 @@ export function Timeline() {
                             src={event.image || "/placeholder.svg"}
                             alt={`Evento histórico de ${selectedYear}`}
                             fill
-                            className="object-cover"
+                            className="object-contain"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
                           <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/70 flex items-center">
-                            <Camera size={12} sm:size={16} className="text-white mr-1 sm:mr-2" />
+                            <Camera className="text-white mr-1 sm:mr-2 w-3 h-3 sm:w-4 sm:h-4" />
                             <span className="text-xs text-white">
                               Archivo histórico Club Pedro Echague - {selectedYear}
                             </span>

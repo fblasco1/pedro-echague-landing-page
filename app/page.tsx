@@ -1,5 +1,5 @@
-import { HeaderBocaStyle } from "@/components/header-boca-style"
-import { HeroBocaStyle } from "@/components/hero-boca-style"
+import { Header } from "@/components/header"
+import { Hero } from "@/components/hero"
 import Image from "next/image"
 import Link from "next/link"
 import { Calendar, MapPin, Heart, Users, Handshake, Home, Award, Flag, BookOpen } from "lucide-react"
@@ -76,10 +76,10 @@ export default function ClubLandingPage() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Header con estilo Boca */}
-      <HeaderBocaStyle />
+      <Header />
 
       {/* Hero con estilo Boca */}
-      <HeroBocaStyle />
+      <Hero />
 
       <main className="flex-1">
         {/* Quienes Somos Section - White Background */}
@@ -163,7 +163,7 @@ export default function ClubLandingPage() {
             </div>
 
             <div className="mt-6 sm:mt-8 md:mt-12 max-w-4xl mx-auto">
-              <YouTubeEmbed videoId="2ciND7KcYZk" title="Club Pedro Echagüe - 2024 Instalaciones" />
+              <YouTubeEmbed videoId="ggKOr5BFHOs" title="Club Pedro Echagüe - Instalaciones" />
             </div>
 
             <div className="mt-6 sm:mt-8 md:mt-12 grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">

@@ -7,7 +7,7 @@ import { Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { MenuDesplegable } from "./menu-desplegable"
 
-export function HeaderBocaStyle() {
+export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
   const [showHeader, setShowHeader] = useState(true)
@@ -40,7 +40,7 @@ export function HeaderBocaStyle() {
 
   return (
     <>
-      {/* Header principal con estilo Boca */}
+      {/* Header principal */}
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-40 transition-all duration-300",

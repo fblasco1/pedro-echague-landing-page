@@ -1,6 +1,6 @@
 import Image from "next/image"
 
-export function HeroBocaStyle() {
+export function Hero() {
   return (
     <div className="relative">
       {/* Hero Image */}
