@@ -104,7 +104,7 @@ export default function InfraestructuraPage() {
       {/* Nuevo header con componente reutilizable */}
       <PageHeader
         title="INFRAESTRUCTURA"
-        backgroundImage="/placeholder.svg?height=800&width=1600"
+        backgroundImage=""
         hashtag="NUESTRASINSTALACIONES"
         backLink="/"
       />

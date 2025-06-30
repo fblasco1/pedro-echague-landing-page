@@ -69,7 +69,7 @@ export default function AutoridadesPage() {
       {/* Nuevo header con componente reutilizable */}
       <PageHeader
         title="AUTORIDADES"
-        backgroundImage="/placeholder.svg?height=800&width=1600"
+        backgroundImage=""
         hashtag="COMISIONDIRECTIVA"
         backLink="/"
       />

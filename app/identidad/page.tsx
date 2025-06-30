@@ -3,49 +3,11 @@ import Link from "next/link"
 import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 import { Timeline } from "@/components/timeline"
-
-// Datos de los logos de actividades federadas
-const logosActividades = [
-  {
-    nombre: "Básquet",
-    imagen: "/placeholder.svg?height=200&width=200",
-    descripcion: "Logo oficial del equipo de básquet del Club Pedro Echagüe",
-  },
-  {
-    nombre: "Patín Artístico",
-    imagen: "/placeholder.svg?height=200&width=200",
-    descripcion: "Logo oficial del equipo de patín artístico del Club Pedro Echagüe",
-  },
-  {
-    nombre: "Baby Fútbol",
-    imagen: "/placeholder.svg?height=200&width=200",
-    descripcion: "Logo oficial del equipo de baby fútbol del Club Pedro Echagüe",
-  },
-  {
-    nombre: "Vóley",
-    imagen: "/placeholder.svg?height=200&width=200",
-    descripcion: "Logo oficial del equipo de vóley del Club Pedro Echagüe",
-  },
-  {
-    nombre: "Fitness",
-    imagen: "/placeholder.svg?height=200&width=200",
-    descripcion: "Logo oficial del área de fitness del Club Pedro Echagüe",
-  },
-  {
-    nombre: "Taekwondo",
-    imagen: "/placeholder.svg?height=200&width=200",
-    descripcion: "Logo oficial del equipo de taekwondo del Club Pedro Echagüe",
-  },
-  {
-    nombre: "Gimnasia Artística",
-    imagen: "/placeholder.svg?height=200&width=200",
-    descripcion: "Logo oficial del equipo de gimnasia artística del Club Pedro Echagüe",
-  },
-]
+import { getAllActividades } from "@/lib/sanity/actividades"
 
 // Datos de los escudos históricos
 const escudosHistoricos = [
-{
+  {
     id: 1,
     periodo: "Hasta 2014",
     imagen: "/images/logo-historico-2.png",
@@ -62,11 +24,17 @@ const escudosHistoricos = [
     periodo: "2014-Act.",
     imagen: "/images/logo-historico-1.png",
     descripcion: "Escudo que se sigue utilizando en la actualidad en indumentaria y merchandising.",
-    
   },
 ]
 
-export default function IdentidadPage() {
+export default async function IdentidadPage() {
+  // Traer actividades desde Sanity
+  const actividades = await getAllActividades()
+  // Filtrar solo federadas y con logo
+  const actividadesFederadas = actividades.filter(
+    (a) => a.tipo === "federada" && a.logo?.asset?.url
+  )
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -74,7 +42,7 @@ export default function IdentidadPage() {
       {/* Header específico para Identidad */}
       <PageHeader
         title="IDENTIDAD"
-        backgroundImage="/placeholder.svg?height=800&width=1600"
+        backgroundImage=""
         hashtag="ELCLUBDEFLORES"
         backLink="/"
       />
@@ -82,11 +50,14 @@ export default function IdentidadPage() {
       <main className="container py-12 px-4 md:px-6">
         {/* Historia del club */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">Nuestra Historia</h2>
+          <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">
+            Nuestra Historia
+          </h2>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="prose prose-blue">
               <p className="text-club-dark/80 font-roboto">
-                El Club Pedro Echagüe fue fundado el 17 de octubre de 1934 por un grupo de 25 jóvenes que, tras ganar un
+                El Club Pedro Echagüe fue fundado el 17 de octubre de 1934 por un
+                grupo de 25 jóvenes que, tras ganar un
                 torneo de fútbol, decidieron crear un espacio para la práctica deportiva y cultural en el barrio de
                 Flores.
               </p>
@@ -113,7 +84,9 @@ export default function IdentidadPage() {
 
           {/* Timeline de la historia */}
           <div className="mt-12">
-            <h3 className="text-xl font-bold text-club-blue mb-6 font-raleway">Línea de tiempo histórica</h3>
+            <h3 className="text-xl font-bold text-club-blue mb-6 font-raleway">
+              Línea de tiempo histórica
+            </h3>
             <div className="bg-club-blue rounded-lg overflow-hidden">
               <Timeline />
             </div>
@@ -122,10 +95,17 @@ export default function IdentidadPage() {
 
         {/* Escudo y colores */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">Escudo y Colores</h2>
+          <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">
+            Escudo y Colores
+          </h2>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="relative aspect-square rounded-lg overflow-hidden order-2 md:order-1">
-              <Image src="/logo.svg" alt="Escudo del Club Pedro Echagüe" fill className="object-contain p-8" />
+              <Image
+                src="/logo.svg"
+                alt="Escudo del Club Pedro Echagüe"
+                fill
+                className="object-contain p-8"
+              />
             </div>
             <div className="prose prose-blue order-1 md:order-2">
               <p className="text-club-dark/80 font-roboto">
@@ -139,11 +119,15 @@ export default function IdentidadPage() {
               <div className="flex gap-4 mt-6">
                 <div className="flex flex-col items-center">
                   <div className="w-16 h-16 bg-club-blue rounded-full"></div>
-                  <span className="text-sm mt-2 text-club-dark/80 font-roboto">Azul</span>
+                  <span className="text-sm mt-2 text-club-dark/80 font-roboto">
+                    Azul
+                  </span>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-16 h-16 bg-club-yellow rounded-full"></div>
-                  <span className="text-sm mt-2 text-club-dark/80 font-roboto">Amarillo</span>
+                  <span className="text-sm mt-2 text-club-dark/80 font-roboto">
+                    Amarillo
+                  </span>
                 </div>
               </div>
             </div>
@@ -151,7 +135,9 @@ export default function IdentidadPage() {
 
           {/* Escudos históricos */}
           <div className="mt-12">
-            <h3 className="text-xl font-bold text-club-blue mb-6 font-raleway">Evolución del Escudo</h3>
+            <h3 className="text-xl font-bold text-club-blue mb-6 font-raleway">
+              Evolución del Escudo
+            </h3>
             <p className="text-club-dark/80 font-roboto mb-8">
               A lo largo de su historia, el escudo del Club Pedro Echagüe ha experimentado diversas transformaciones,
               manteniendo siempre la esencia de sus colores y su identidad. Aquí presentamos la evolución histórica de
@@ -172,8 +158,12 @@ export default function IdentidadPage() {
                       className="object-contain"
                     />
                   </div>
-                  <h4 className="text-lg font-bold text-club-blue mb-2 font-raleway">{escudo.periodo}</h4>
-                  <p className="text-sm text-club-dark/70 font-roboto text-center">{escudo.descripcion}</p>
+                  <h4 className="text-lg font-bold text-club-blue mb-2 font-raleway">
+                    {escudo.periodo}
+                  </h4>
+                  <p className="text-sm text-club-dark/70 font-roboto text-center">
+                    {escudo.descripcion}
+                  </p>
                 </div>
               ))}
             </div>
@@ -182,25 +172,37 @@ export default function IdentidadPage() {
 
         {/* Logos de actividades federadas */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">Logos de Actividades Federadas</h2>
+          <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">
+            Logos de Actividades Federadas
+          </h2>
           <p className="text-club-dark/80 font-roboto mb-8">
             Cada actividad federada del Club Pedro Echagüe cuenta con su propio logo distintivo, manteniendo la
             identidad visual del club pero adaptándose a las características de cada disciplina.
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {logosActividades.map((logo, index) => (
-              <div key={index} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+            {actividadesFederadas.map((actividad) => (
+              <div key={actividad._id} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
                 <div className="relative aspect-square mb-4">
-                  <Image
-                    src={logo.imagen || "/placeholder.svg"}
-                    alt={`Logo de ${logo.nombre}`}
-                    fill
-                    className="object-contain"
-                  />
+                  {actividad.logo?.asset?.url ? (
+                    <Image
+                      src={actividad.logo.asset.url}
+                      alt={`Logo de ${actividad.title}`}
+                      fill
+                      className="object-contain"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
+                      Sin logo
+                    </div>
+                  )}
                 </div>
-                <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">{logo.nombre}</h3>
-                <p className="text-sm text-club-dark/70 font-roboto">{logo.descripcion}</p>
+                <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">
+                  {actividad.title}
+                </h3>
+                <p className="text-sm text-club-dark/70 font-roboto">
+                  {actividad.description}
+                </p>
               </div>
             ))}
           </div>
@@ -208,40 +210,54 @@ export default function IdentidadPage() {
 
         {/* Valores */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">Valores</h2>
+          <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">
+            Valores
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="bg-white border border-club-blue/20 p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">Amistad</h3>
+              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">
+                Amistad
+              </h3>
               <p className="text-club-dark/80 font-roboto">
                 Vínculo que une a quienes transitan el club y le da sentido de comunidad a cada encuentro.
               </p>
             </div>
             <div className="bg-white border border-club-blue/20 p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">Solidaridad</h3>
+              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">
+                Solidaridad
+              </h3>
               <p className="text-club-dark/80 font-roboto">
                 Compromiso activo con los demás y con el crecimiento colectivo.
               </p>
             </div>
             <div className="bg-white border border-club-blue/20 p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">Familia</h3>
+              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">
+                Familia
+              </h3>
               <p className="text-club-dark/80 font-roboto">
                 El club como espacio compartido donde se transmiten y construyen valores a través del tiempo.
               </p>
             </div>
             <div className="bg-white border border-club-blue/20 p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">Compromiso</h3>
+              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">
+                Compromiso
+              </h3>
               <p className="text-club-dark/80 font-roboto">
                 Entrega genuina en cada acción, dentro y fuera de la cancha.
               </p>
             </div>
             <div className="bg-white border border-club-blue/20 p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">Identidad</h3>
+              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">
+                Identidad
+              </h3>
               <p className="text-club-dark/80 font-roboto">
                 Orgullo por la historia y el presente del club, con raíces profundas en el barrio.
               </p>
             </div>
             <div className="bg-white border border-club-blue/20 p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">Trabajo en equipo</h3>
+              <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">
+                Trabajo en equipo
+              </h3>
               <p className="text-club-dark/80 font-roboto">
                 Entendemos que todo logro es el resultado del esfuerzo colectivo.
               </p>
@@ -256,13 +272,22 @@ export default function IdentidadPage() {
             © {new Date().getFullYear()} Club Pedro Echagüe. Todos los derechos reservados.
           </p>
           <div className="flex items-center gap-4">
-            <Link href="#" className="text-sm text-white/70 hover:text-white font-roboto">
+            <Link
+              href="#"
+              className="text-sm text-white/70 hover:text-white font-roboto"
+            >
               Política de Privacidad
             </Link>
-            <Link href="#" className="text-sm text-white/70 hover:text-white font-roboto">
+            <Link
+              href="#"
+              className="text-sm text-white/70 hover:text-white font-roboto"
+            >
               Términos de Servicio
             </Link>
-            <Link href="#" className="text-sm text-white/70 hover:text-white font-roboto">
+            <Link
+              href="#"
+              className="text-sm text-white/70 hover:text-white font-roboto"
+            >
               Contacto
             </Link>
           </div>
