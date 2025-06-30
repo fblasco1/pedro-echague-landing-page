@@ -108,7 +108,10 @@ export default function NoticiasPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-club-blue text-white">
       <h1 className="text-3xl md:text-5xl font-bold mb-6">Noticias</h1>
-      <p className="text-lg md:text-2xl">La sección de noticias se encuentra temporalmente desactivada.</p>
+      <p className="text-lg md:text-2xl mb-8">La sección de noticias se encuentra temporalmente desactivada.</p>
+      <Link href="/" className="inline-block bg-club-yellow text-club-blue font-bold py-3 px-8 rounded-md hover:bg-club-yellow/90 transition-colors font-raleway text-lg">
+        Volver al inicio
+      </Link>
     </div>
   )
 }

@@ -84,7 +84,7 @@ export function MenuDesplegable({ isOpen, onClose }: { isOpen: boolean; onClose:
       title: "Institucional",
       items: [
         { name: "Autoridades", href: "/autoridades" },
-        { name: "Estatuto", href: "/estatuto" },
+        { name: "Estatuto", href: "/estatuto", disabled: true, comingSoon: true },
         { name: "Misión, Visión y Valores", href: "/#quienes-somos" },
       ],
     },
