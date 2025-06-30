@@ -2,7 +2,8 @@
 import Image from "next/image"
 import Link from "next/link"
 import { X, Mail, Phone, MapPin, Clock, Instagram, Facebook, ChevronRight } from "lucide-react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { getAllActividades } from "@/lib/sanity/actividades"
 
 interface MenuCategory {
   title: string
@@ -17,65 +18,27 @@ interface SubMenuItem {
   hasSubmenu?: boolean
 }
 
-const menuCategories: MenuCategory[] = [
-  {
-    title: "El Club",
-    items: [
-      { name: "Identidad", href: "/identidad" },
-      { name: "Noticias", href: "/noticias" },
-      { name: "Infraestructura", href: "/infraestructura" },
-    ],
-  },
-  {
-    title: "Actividades",
-    items: [
-      { name: "Básquet", href: "/actividades/basquet" },
-      { name: "Vóley", href: "/actividades/voley" },
-      { name: "Baby Fútbol", href: "/actividades/baby-futbol" },
-      { name: "Patín Artístico", href: "/actividades/patin" },
-      { name: "Taekwondo", href: "/actividades/taekwondo" },
-      { name: "Recreativas", href: "/actividades?categoria=recreativas", hasSubmenu: true },
-      { name: "Culturales", href: "/actividades?categoria=culturales", hasSubmenu: true },
-    ],
-  },
-  {
-    title: "Socios",
-    items: [
-      { name: "Valores de la Cuota", href: "/socios/cuota" },
-      { name: "Beneficios", href: "/socios/beneficios", disabled: true, comingSoon: true },
-    ],
-  },
-  {
-    title: "Institucional",
-    items: [
-      { name: "Autoridades", href: "/autoridades" },
-      { name: "Estatuto", href: "/estatuto" },
-      { name: "Misión, Visión y Valores", href: "/#quienes-somos" },
-    ],
-  },
-]
-
-const contactInfo = [
-  {
-    icon: <Mail className="h-5 w-5" />,
-    text: "clubpedroechague@fibertel.com",
-    href: "mailto:clubpedroechague@fibertel.com",
-  },
-  { icon: <Phone className="h-5 w-5" />, text: "+54 9 11 3639-1151", href: "https://wa.me/5491136391151" },
-  {
-    icon: <MapPin className="h-5 w-5" />,
-    text: "Portela 836, CABA",
-    href: "https://maps.google.com/?q=Portela+836,+CABA",
-  },
-  { icon: <Clock className="h-5 w-5" />, text: "Lun a Vie 15 a 21hs", href: "#" },
-]
-
-const socialMedia = [
-  { icon: <Instagram className="h-6 w-6" />, href: "https://www.instagram.com/icdpedroechague/" },
-  { icon: <Facebook className="h-6 w-6" />, href: "https://www.facebook.com/clubpedroechague/" },
+const defaultActividades = [
+  { name: "Básquet", slug: "basquet" },
+  { name: "Vóley", slug: "voley" },
+  { name: "Baby Fútbol", slug: "baby-futbol" },
+  { name: "Patín Artístico", slug: "patin" },
+  { name: "Taekwondo", slug: "taekwondo" },
 ]
 
 export function MenuDesplegable({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const [actividadSlugs, setActividadSlugs] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    getAllActividades().then(actividades => {
+      const map: Record<string, string> = {}
+      actividades.forEach(act => {
+        map[act.title.toLowerCase()] = act.slug.current
+      })
+      setActividadSlugs(map)
+    })
+  }, [])
+
   // Prevent body scrolling when menu is open
   useEffect(() => {
     if (isOpen) {
@@ -89,6 +52,63 @@ export function MenuDesplegable({ isOpen, onClose }: { isOpen: boolean; onClose:
   }, [isOpen])
 
   if (!isOpen) return null
+
+  const menuCategories: MenuCategory[] = [
+    {
+      title: "El Club",
+      items: [
+        { name: "Identidad", href: "/identidad" },
+        { name: "Noticias", href: "/noticias" },
+        { name: "Infraestructura", href: "/infraestructura" },
+      ],
+    },
+    {
+      title: "Actividades",
+      items: [
+        ...defaultActividades.map(act => ({
+          name: act.name,
+          href: `/actividades/${actividadSlugs[act.name.toLowerCase()] || act.slug}`
+        })),
+        { name: "Recreativas", href: "/actividades?categoria=recreativas", hasSubmenu: true },
+        { name: "Culturales", href: "/actividades?categoria=culturales", hasSubmenu: true },
+      ],
+    },
+    {
+      title: "Socios",
+      items: [
+        { name: "Valores de la Cuota", href: "/socios/cuota" },
+        { name: "Beneficios", href: "/socios/beneficios", disabled: true, comingSoon: true },
+      ],
+    },
+    {
+      title: "Institucional",
+      items: [
+        { name: "Autoridades", href: "/autoridades" },
+        { name: "Estatuto", href: "/estatuto" },
+        { name: "Misión, Visión y Valores", href: "/#quienes-somos" },
+      ],
+    },
+  ]
+
+  const contactInfo = [
+    {
+      icon: <Mail className="h-5 w-5" />,
+      text: "clubpedroechague@fibertel.com",
+      href: "mailto:clubpedroechague@fibertel.com",
+    },
+    { icon: <Phone className="h-5 w-5" />, text: "+54 9 11 3639-1151", href: "https://wa.me/5491136391151" },
+    {
+      icon: <MapPin className="h-5 w-5" />,
+      text: "Portela 836, CABA",
+      href: "https://maps.google.com/?q=Portela+836,+CABA",
+    },
+    { icon: <Clock className="h-5 w-5" />, text: "Lun a Vie 15 a 21hs", href: "#" },
+  ]
+
+  const socialMedia = [
+    { icon: <Instagram className="h-6 w-6" />, href: "https://www.instagram.com/icdpedroechague/" },
+    { icon: <Facebook className="h-6 w-6" />, href: "https://www.facebook.com/clubpedroechague/" },
+  ]
 
   return (
     <div className="fixed inset-0 z-50 bg-club-blue flex flex-col">

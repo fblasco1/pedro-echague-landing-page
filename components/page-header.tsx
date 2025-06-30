@@ -31,15 +31,33 @@ export function PageHeader({
 
   return (
     <div className="relative w-full">
-      {/* Imagen de fondo */}
+      {/* Imagen de fondo o SVG de bastones */}
       <div className="relative w-full h-[40vh] md:h-[50vh]">
-        <Image
-          src={backgroundImage || "/placeholder.svg"}
-          alt={title}
-          fill
-          priority
-          className={cn("object-cover transition-opacity duration-1000", isLoaded ? "opacity-100" : "opacity-0")}
-        />
+        {backgroundImage && backgroundImage !== "/placeholder.svg" ? (
+          <Image
+            src={backgroundImage}
+            alt={title}
+            fill
+            priority
+            className={cn("object-cover transition-opacity duration-1000", isLoaded ? "opacity-100" : "opacity-0")}
+          />
+        ) : (
+          // SVG de bastones azul y amarillo
+          <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 1600 800"
+            preserveAspectRatio="none"
+            className="absolute inset-0 w-full h-full"
+            aria-hidden="true"
+          >
+            <rect x="0" y="0" width="320" height="800" fill="#003366" />
+            <rect x="320" y="0" width="320" height="800" fill="#FFD600" />
+            <rect x="640" y="0" width="320" height="800" fill="#003366" />
+            <rect x="960" y="0" width="320" height="800" fill="#FFD600" />
+            <rect x="1280" y="0" width="320" height="800" fill="#003366" />
+          </svg>
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-club-blue/90" />
       </div>
 
