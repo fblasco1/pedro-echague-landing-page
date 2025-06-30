@@ -2,6 +2,8 @@ import type React from "react"
 import "./globals.css"
 import { Raleway, Roboto } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
+import { getAllActividades } from "@/lib/sanity/actividades"
+import { Header } from "@/components/header"
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -22,15 +24,17 @@ export const metadata = {
     generator: 'v0.dev'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const actividades = await getAllActividades()
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${raleway.variable} ${roboto.variable} font-raleway`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          <Header actividades={actividades} />
           {children}
         </ThemeProvider>
       </body>

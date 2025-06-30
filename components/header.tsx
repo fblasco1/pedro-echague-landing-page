@@ -7,7 +7,11 @@ import { Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { MenuDesplegable } from "./menu-desplegable"
 
-export function Header() {
+interface HeaderProps {
+  actividades: { title: string; slug: { current: string } }[]
+}
+
+export function Header({ actividades }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
   const [showHeader, setShowHeader] = useState(true)
@@ -86,7 +90,8 @@ export function Header() {
       </header>
 
       {/* Menú desplegable */}
-      <MenuDesplegable isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      {console.log("ACTIVIDADES EN HEADER:", actividades)}
+      <MenuDesplegable isOpen={menuOpen} onClose={() => setMenuOpen(false)} actividades={actividades} />
     </>
   )
 }

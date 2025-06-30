@@ -65,7 +65,7 @@ export default async function ClubLandingPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Header />
+      <Header actividades={actividades} />
       <Hero />
 
       <main className="flex-1">

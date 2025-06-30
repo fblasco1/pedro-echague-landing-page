@@ -32,7 +32,7 @@ export default async function ActivityPage({ params }: { params: { slug: string 
       <Header />
       <PageHeader
         title={activity.title?.toUpperCase()}
-        backgroundImage={activity.fotoPortada?.asset?.url || activity.imageSrc?.asset?.url || "/placeholder.svg?height=800&width=1600"}
+        backgroundImage={activity.fotoPortada?.asset?.url || activity.imageSrc?.asset?.url || ""}
         hashtag={
           activity.tipo === "federada"
             ? "DEPORTEFEDERADO"

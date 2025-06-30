@@ -32,7 +32,7 @@ export default async function IdentidadPage() {
   const actividades = await getAllActividades()
   // Filtrar solo federadas y con logo
   const actividadesFederadas = actividades.filter(
-    (a) => a.tipo === "federada" && a.logo?.asset?.url
+    (a) => a.logo?.asset?.url
   )
 
   return (
@@ -200,9 +200,7 @@ export default async function IdentidadPage() {
                 <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">
                   {actividad.title}
                 </h3>
-                <p className="text-sm text-club-dark/70 font-roboto">
-                  {actividad.description}
-                </p>
+
               </div>
             ))}
           </div>
