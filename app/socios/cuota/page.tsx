@@ -1,42 +1,10 @@
 import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 import Link from "next/link"
+import { getCategoriasSocios } from "@/lib/sanity/cuota"
 
-// Datos de las categorías de socios
-const categoriasSocios = [
-	{
-		categoria: "Activo/a",
-		valor: 17500,
-		condicion: "Mayor de 18",
-	},
-	{
-		categoria: "Menores",
-		valor: 16500,
-		condicion: "Menor de 18",
-	},
-	{
-		categoria: "2do Hno",
-		valor: 15900,
-		condicion: "Menor de 18",
-	},
-	{
-		categoria: "3er Hno",
-		valor: 14500,
-		condicion: "Menor de 18",
-	},
-	{
-		categoria: "Adherente",
-		valor: 10400,
-		condicion: "Sin condición",
-	},
-	{
-		categoria: "Jubilado",
-		valor: 1000,
-		condicion: "Condición Jubilado",
-	},
-]
-
-export default function ValoresCuotaPage() {
+export default async function ValoresCuotaPage() {
+	const categoriasSocios = await getCategoriasSocios()
 	return (
 		<div className="min-h-screen flex flex-col">
 			<Header />
@@ -73,7 +41,7 @@ export default function ValoresCuotaPage() {
 								</tr>
 							</thead>
 							<tbody>
-								{categoriasSocios.map((categoria, index) => (
+								{categoriasSocios.map((categoria: any, index: number) => (
 									<tr
 										key={index}
 										className={`border-b border-white/10 ${

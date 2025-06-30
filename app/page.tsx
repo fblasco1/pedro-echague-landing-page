@@ -7,31 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Timeline } from "@/components/timeline"
 import { YouTubeEmbed } from "@/components/youtube-embed"
 import { MapModal } from "@/components/map-modal"
-
-// Datos de actividades destacadas
-const featuredActivities = [
-  {
-    title: "Básquet",
-    description:
-      "Formación y competición en básquet para todas las edades. Contamos con tres tiras masculinas y una tira femenina.",
-    imageSrc: "/images/activities/basquet.png",
-    link: "/actividades/basquet",
-  },
-  {
-    title: "Patín Artístico",
-    description:
-      "Disciplina que combina elementos técnicos y artísticos sobre patines. Formación desde nivel inicial hasta competitivo.",
-    imageSrc: "/images/activities/patin.png",
-    link: "/actividades/patin",
-  },
-  {
-    title: "Gimnasio Fitness",
-    description:
-      "Espacio equipado con máquinas de musculación y cardio. Entrenamiento personalizado y seguimiento por profesionales.",
-    imageSrc: "/images/activities/fitness.png",
-    link: "/actividades/fitness",
-  },
-]
+import { FederatedActivitiesGrid } from "@/components/federated-activities-grid"
+import { getAllActividades } from '@/lib/sanity/actividades'
 
 // Datos de valores del club
 const valoresClub = [
@@ -72,13 +49,23 @@ const valoresClub = [
   },
 ]
 
-export default function ClubLandingPage() {
+export default async function ClubLandingPage() {
+  // Obtener todas las actividades federadas principales desde Sanity
+  const actividades = await getAllActividades()
+  // Filtrar solo las actividades federadas principales (puedes ajustar el filtro según tu lógica)
+  const federadasPrincipales = actividades.filter(a => [
+    'Básquet',
+    'Baby Fútbol',
+    'Vóley',
+    'Taekwondo',
+    'Gimnasio Fitness',
+    'Patín Artístico',
+    'Gimnasia Artística',
+  ].includes(a.title))
+
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Header con estilo Boca */}
       <Header />
-
-      {/* Hero con estilo Boca */}
       <Hero />
 
       <main className="flex-1">
@@ -166,57 +153,6 @@ export default function ClubLandingPage() {
               <YouTubeEmbed videoId="ggKOr5BFHOs" title="Club Pedro Echagüe - Instalaciones" />
             </div>
 
-            <div className="mt-6 sm:mt-8 md:mt-12 grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
-              <div className="flex flex-col items-center space-y-2 border rounded-lg p-4 sm:p-6 bg-white shadow-md">
-                <div className="p-3 rounded-full bg-club-blue/10">
-                  <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-club-blue" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-club-blue font-raleway">Gimnasios</h3>
-                <p className="text-center text-club-dark/80 text-sm sm:text-base font-roboto">
-                  Tres gimnasios equipados para diferentes actividades deportivas y eventos.
-                </p>
-                <Image
-                  src="/placeholder.svg?height=200&width=300"
-                  width={300}
-                  height={200}
-                  alt="Gimnasios"
-                  className="mt-4 rounded-lg object-cover w-full"
-                />
-              </div>
-              <div className="flex flex-col items-center space-y-2 border rounded-lg p-4 sm:p-6 bg-white shadow-md">
-                <div className="p-3 rounded-full bg-club-blue/10">
-                  <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-club-blue" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-club-blue font-raleway">Restaurante y Salón</h3>
-                <p className="text-center text-club-dark/80 text-sm sm:text-base font-roboto">
-                  Espacios gastronómicos y de eventos para disfrutar con amigos y familia.
-                </p>
-                <Image
-                  src="/placeholder.svg?height=200&width=300"
-                  width={300}
-                  height={200}
-                  alt="Restaurante y Salón"
-                  className="mt-4 rounded-lg object-cover w-full"
-                />
-              </div>
-              <div className="flex flex-col items-center space-y-2 border rounded-lg p-4 sm:p-6 bg-white shadow-md">
-                <div className="p-3 rounded-full bg-club-blue/10">
-                  <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-club-blue" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-club-blue font-raleway">Fitness y Subsuelo</h3>
-                <p className="text-center text-club-dark/80 text-sm sm:text-base font-roboto">
-                  Áreas especializadas para entrenamiento físico y actividades complementarias.
-                </p>
-                <Image
-                  src="/placeholder.svg?height=200&width=300"
-                  width={300}
-                  height={200}
-                  alt="Fitness y Subsuelo"
-                  className="mt-4 rounded-lg object-cover w-full"
-                />
-              </div>
-            </div>
-
             <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6 sm:mt-8 md:mt-12">
               <MapModal
                 trigger={
@@ -248,47 +184,20 @@ export default function ClubLandingPage() {
                   Actividades
                 </h2>
                 <p className="max-w-[900px] text-white/80 text-base sm:text-lg md:text-xl font-roboto">
-                  Eventos y actividades para socios de todas las edades e intereses.
+                  Conocé nuestras actividades federadas principales.
                 </p>
               </div>
             </div>
 
-            <div className="grid gap-6 sm:gap-8 mt-6 sm:mt-8 md:mt-12 md:grid-cols-2 lg:grid-cols-3">
-              {featuredActivities.map((activity, index) => (
-                <div key={index} className="group relative overflow-hidden rounded-lg border bg-white shadow-md">
-                  <div className="aspect-video overflow-hidden">
-                    <Image
-                      src={activity.imageSrc || "/placeholder.svg"}
-                      width={400}
-                      height={300}
-                      alt={activity.title}
-                      className="object-cover transition-transform group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-4 sm:p-6">
-                    <Calendar className="h-4 w-4 text-club-blue mb-2" />
-                    <h3 className="text-lg sm:text-xl font-bold text-club-blue font-raleway">{activity.title}</h3>
-                    <p className="text-club-dark/80 text-sm sm:text-base font-roboto">{activity.description}</p>
-                    <Button
-                      variant="link"
-                      asChild
-                      className="p-0 mt-3 sm:mt-4 text-club-blue hover:text-club-blue/80 font-roboto text-sm sm:text-base"
-                    >
-                      <Link href={activity.link}>Ver más información</Link>
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-center mt-6 sm:mt-8 md:mt-12">
-              <Button
-                asChild
-                className="bg-club-yellow hover:bg-club-yellow/90 text-club-blue font-roboto border border-club-blue text-sm sm:text-base"
-              >
-                <Link href="/actividades">Ver Todas las Actividades</Link>
-              </Button>
-            </div>
+            {/* Actividades federadas principales */}
+            <FederatedActivitiesGrid
+              activities={federadasPrincipales.map((actividad) => ({
+                id: actividad._id,
+                title: actividad.title,
+                logoUrl: actividad.logo?.asset?.url || '/placeholder.svg',
+                link: `/actividades/${actividad.slug.current}`,
+              }))}
+            />
           </div>
         </section>
 
