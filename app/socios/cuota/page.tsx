@@ -12,7 +12,7 @@ export default async function ValoresCuotaPage() {
 			{/* Nuevo header con componente reutilizable */}
 			<PageHeader
 				title="SOCIOS VALORES"
-				backgroundImage="/placeholder.svg?height=800&width=1600"
+				backgroundImage=""
 				hashtag="ELCLUBDEFLORES"
 				backLink="/"
 			/>
