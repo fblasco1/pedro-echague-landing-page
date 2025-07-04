@@ -5,9 +5,11 @@ import { getCategoriasSocios } from "@/lib/sanity/cuota"
 
 export default async function ValoresCuotaPage() {
 	const categoriasSocios = await getCategoriasSocios()
+  const { getAllActividades } = await import("@/lib/sanity/actividades")
+  const actividades = await getAllActividades()
 	return (
 		<div className="min-h-screen flex flex-col">
-			<Header />
+			<Header actividades={actividades} />
 
 			{/* Nuevo header con componente reutilizable */}
 			<PageHeader

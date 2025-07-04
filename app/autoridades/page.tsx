@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
+import { getAllActividades } from "@/lib/sanity/actividades"
 
 // Datos de la comisión directiva
 const comisionDirectiva = [
@@ -61,10 +62,11 @@ const revisoresCuenta = [
   { nombre: "Marcelo Goñi", cargo: "Revisor de Cuenta" },
 ]
 
-export default function AutoridadesPage() {
+export default async function AutoridadesPage() {
+  const actividades = await getAllActividades()
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header actividades={actividades} />
 
       {/* Nuevo header con componente reutilizable */}
       <PageHeader

@@ -37,7 +37,7 @@ export default async function IdentidadPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      <Header actividades={actividades} />
 
       {/* Header específico para Identidad */}
       <PageHeader

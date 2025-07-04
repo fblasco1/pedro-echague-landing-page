@@ -5,15 +5,16 @@ import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { getActividadBySlug } from '@/lib/sanity/actividades'
+import { getActividadBySlug, getAllActividades } from '@/lib/sanity/actividades'
 
 export default async function ActivityPage({ params }: { params: { slug: string } }) {
   const activity = await getActividadBySlug(params.slug)
+  const actividades = await getAllActividades()
 
   if (!activity) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header />
+        <Header actividades={actividades} />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-club-blue mb-4">Actividad no encontrada</h1>
@@ -29,7 +30,7 @@ export default async function ActivityPage({ params }: { params: { slug: string 
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      <Header actividades={actividades} />
       <PageHeader
         title={activity.title?.toUpperCase()}
         backgroundImage={activity.fotoPortada?.asset?.url || activity.imageSrc?.asset?.url || ""}

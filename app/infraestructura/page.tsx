@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ImageGallery } from "@/components/image-gallery"
 import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
+import { getAllActividades } from "@/lib/sanity/actividades"
 
 // Datos de ejemplo para las instalaciones
 const infraestructuraData = [
@@ -96,10 +97,11 @@ const infraestructuraData = [
   },
 ]
 
-export default function InfraestructuraPage() {
+export default async function InfraestructuraPage() {
+  const actividades = await getAllActividades()
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header actividades={actividades} />
 
       {/* Nuevo header con componente reutilizable */}
       <PageHeader

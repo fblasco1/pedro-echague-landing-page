@@ -52,7 +52,7 @@ export default function ActividadesClient({ actividades }: Props) {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header actividades={actividades} />
 
       <PageHeader
         title="ACTIVIDADES"
