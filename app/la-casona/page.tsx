@@ -1,64 +1,67 @@
 import { PageHeader } from "@/components/page-header"
-import { Card, CardContent } from "@/components/ui/card"
-import { Clock, Phone, Heart, Users, Utensils } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Clock, Phone, MapPin, Heart, Users, ChefHat } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
 export default function LaCasonaPage() {
-  const galleryImages = [
-    { src: "/images/restaurante.png", alt: "Interior de La Casona" },
-    { src: "/images/salon.png", alt: "Salón principal" },
-    { src: "/images/sede-social-bailes.png", alt: "Sede social" },
-    { src: "/images/subsuelo.png", alt: "Subsuelo del club" },
-    { src: "/images/gimnasio-1.png", alt: "Área común" },
-    { src: "/images/gimnasio-2.png", alt: "Espacio de encuentro" },
-  ]
-
   const specialFeatures = [
     {
       icon: <Heart className="h-8 w-8 text-club-yellow" />,
       title: "Comida Casera",
-      description: "En el corazón del club, donde las comidas caseras despiertan los mejores recuerdos familiares",
+      description: "Platos tradicionales preparados con amor y los mejores ingredientes, como en casa.",
     },
     {
       icon: <Users className="h-8 w-8 text-club-yellow" />,
       title: "Punto de Encuentro",
-      description: "El lugar donde el barrio se encuentra y las charlas de siempre se mezclan en cada mesa",
+      description: "El lugar donde se reúne el barrio, donde cada mesa cuenta una historia.",
     },
     {
-      icon: <Utensils className="h-8 w-8 text-club-yellow" />,
-      title: "Vida Social",
-      description: "Más que un restaurante, somos el espacio donde la vida social del club cobra vida",
+      icon: <ChefHat className="h-8 w-8 text-club-yellow" />,
+      title: "Ambiente Familiar",
+      description: "Un espacio cálido y acogedor donde todos se sienten como en familia.",
     },
   ]
 
+  const galleryImages = [
+    { src: "/images/restaurante.png", alt: "Interior del restaurante" },
+    { src: "/images/salon.png", alt: "Salón principal" },
+    { src: "/images/sede-social-bailes.png", alt: "Área social" },
+    { src: "/images/subsuelo.png", alt: "Subsuelo del club" },
+    { src: "/images/gimnasio-1.png", alt: "Vista del gimnasio" },
+    { src: "/images/gimnasio-2.png", alt: "Instalaciones deportivas" },
+  ]
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <PageHeader
         title="LA CASONA"
         subtitle="Restaurante del Club"
+        hashtag="#CORAZONGASTRONOMICO"
         backgroundImage="/images/restaurante.png"
-        hashtag="CORAZONGASTRONOMICO"
-        backLink="/"
       />
 
-      <main className="container py-12 px-4 md:px-6">
+      <div className="container mx-auto px-4 py-16 space-y-16">
         {/* Qué nos hace especiales */}
-        <section className="mb-16">
+        <section>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-club-blue font-raleway mb-4">Qué nos hace especiales</h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              La Casona no es solo un restaurante: es el punto de encuentro del barrio
+            <h2 className="text-3xl font-bold text-club-dark mb-4">¿Qué nos hace especiales?</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              En el corazón del club, La Casona no es solo un restaurante: es el punto de encuentro del barrio, donde
+              las comidas caseras, las charlas de siempre y la vida social se mezclan en cada mesa.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {specialFeatures.map((feature, index) => (
-              <Card key={index} className="text-center shadow-lg hover:shadow-xl transition-shadow border-none">
-                <CardContent className="p-8">
-                  <div className="flex justify-center mb-6">{feature.icon}</div>
-                  <h3 className="text-xl font-bold text-club-blue mb-4 font-raleway">{feature.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="flex justify-center mb-4">{feature.icon}</div>
+                  <CardTitle className="text-club-dark">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-gray-600">{feature.description}</CardDescription>
                 </CardContent>
               </Card>
             ))}
@@ -66,50 +69,65 @@ export default function LaCasonaPage() {
         </section>
 
         {/* Horarios y Contacto */}
-        <section className="mb-16">
+        <section>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-club-blue font-raleway mb-4">Horarios y Contacto</h2>
-            <p className="text-gray-600 text-lg">Te esperamos para compartir los mejores momentos</p>
+            <h2 className="text-3xl font-bold text-club-dark mb-4">Horarios y Contacto</h2>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Horarios */}
-            <Card className="shadow-lg hover:shadow-xl transition-shadow border-none">
-              <CardContent className="p-8 text-center">
-                <div className="bg-club-blue p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
-                  <Clock className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-club-blue mb-4 font-raleway">Horarios</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                    <span className="font-medium text-gray-700">Martes a Sábados</span>
-                    <span className="text-club-blue font-bold text-lg">20:00 - 24:00 hs</span>
+            <Card className="border-club-blue/20">
+              <CardHeader className="bg-club-blue text-white">
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="h-5 w-5" />
+                  Horarios de Atención
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Martes a Sábados</span>
+                    <span className="text-club-blue font-semibold">20:00 - 24:00 hs</span>
                   </div>
-                  <div className="flex justify-between items-center py-2">
-                    <span className="font-medium text-gray-700">Domingos y Lunes</span>
-                    <span className="text-red-500 font-bold">CERRADO</span>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Domingos y Lunes</span>
+                    <span className="text-red-500 font-semibold">Cerrado</span>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Contacto */}
-            <Card className="shadow-lg hover:shadow-xl transition-shadow border-none">
-              <CardContent className="p-8 text-center">
-                <div className="bg-club-yellow p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
-                  <Phone className="h-8 w-8 text-club-blue" />
-                </div>
-                <h3 className="text-2xl font-bold text-club-blue mb-4 font-raleway">Contacto</h3>
+            <Card className="border-club-yellow/20">
+              <CardHeader className="bg-club-yellow text-club-dark">
+                <CardTitle className="flex items-center gap-2">
+                  <Phone className="h-5 w-5" />
+                  Contacto
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6">
                 <div className="space-y-4">
-                  <div className="text-center">
-                    <p className="text-gray-600 mb-2">Reservas (solo viernes y sábados)</p>
-                    <p className="text-gray-600 mb-4">Delivery todos los días</p>
-                    <Link
-                      href="tel:1176401842"
-                      className="inline-block bg-club-blue text-white px-6 py-3 rounded-lg font-bold hover:bg-club-blue/90 transition-colors"
+                  <div>
+                    <p className="font-medium text-club-dark mb-2">Reservas (Viernes y Sábados)</p>
+                    <Button asChild className="w-full bg-club-blue hover:bg-club-blue/90">
+                      <Link href="tel:1176401842">
+                        <Phone className="h-4 w-4 mr-2" />
+                        11 7640-1842
+                      </Link>
+                    </Button>
+                  </div>
+                  <div>
+                    <p className="font-medium text-club-dark mb-2">Delivery</p>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="w-full border-club-yellow text-club-dark hover:bg-club-yellow/10 bg-transparent"
                     >
-                      11 7640-1842
-                    </Link>
+                      <Link href="https://wa.me/5491176401842">
+                        <Phone className="h-4 w-4 mr-2" />
+                        WhatsApp
+                      </Link>
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -118,47 +136,80 @@ export default function LaCasonaPage() {
         </section>
 
         {/* Nuestro Restaurante - Galería */}
-        <section className="mb-16">
+        <section>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-club-blue font-raleway mb-4">Nuestro Restaurante</h2>
-            <p className="text-gray-600 text-lg">Conocé todos los espacios donde vivimos los mejores momentos</p>
+            <h2 className="text-3xl font-bold text-club-dark mb-4">Nuestro Restaurante</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Conocé los espacios donde compartimos los mejores momentos
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {galleryImages.map((image, index) => (
               <div
                 key={index}
-                className="relative aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 group"
+                className="group relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
               >
                 <Image
                   src={image.src || "/placeholder.svg"}
                   alt={image.alt}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-300"
+                  width={400}
+                  height={300}
+                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+                  <p className="text-white font-medium">{image.alt}</p>
+                </div>
               </div>
             ))}
           </div>
         </section>
-      </main>
+      </div>
 
       {/* Footer */}
-      <footer className="w-full border-t py-6 md:py-0 bg-club-dark text-white">
-        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-          <p className="text-center text-sm leading-loose text-white/70 md:text-left font-roboto">
-            © {new Date().getFullYear()} Club Pedro Echagüe. Todos los derechos reservados.
-          </p>
-          <div className="flex items-center gap-4">
-            <Link href="#" className="text-sm text-white/70 hover:text-white font-roboto">
-              Política de Privacidad
-            </Link>
-            <Link href="#" className="text-sm text-white/70 hover:text-white font-roboto">
-              Términos de Servicio
-            </Link>
-            <Link href="#" className="text-sm text-white/70 hover:text-white font-roboto">
-              Contacto
-            </Link>
+      <footer className="bg-club-dark text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <h3 className="text-xl font-bold mb-4">Club Pedro Echagüe</h3>
+              <p className="text-gray-300">
+                Más de 90 años formando campeones y construyendo comunidad en el corazón de Buenos Aires.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-4">Contacto</h3>
+              <div className="space-y-2 text-gray-300">
+                <p className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  Portela 836, CABA
+                </p>
+                <p className="flex items-center gap-2">
+                  <Phone className="h-4 w-4" />
+                  +54 11 3639-1151
+                </p>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-4">Síguenos</h3>
+              <div className="flex space-x-4">
+                <Link
+                  href="https://www.instagram.com/icdpedroechague/"
+                  className="text-gray-300 hover:text-club-yellow transition-colors"
+                >
+                  Instagram
+                </Link>
+                <Link
+                  href="https://www.facebook.com/clubpedroechague/"
+                  className="text-gray-300 hover:text-club-yellow transition-colors"
+                >
+                  Facebook
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; 2024 Club Pedro Echagüe. Todos los derechos reservados.</p>
           </div>
         </div>
       </footer>
