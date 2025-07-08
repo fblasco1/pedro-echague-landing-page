@@ -53,34 +53,25 @@ export default async function IdentidadPage() {
           <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">
             Nuestra Historia
           </h2>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div className="prose prose-blue">
-              <p className="text-club-dark/80 font-roboto">
-                El Club Pedro Echagüe fue fundado el 17 de octubre de 1934 por un
-                grupo de 25 jóvenes que, tras ganar un
-                torneo de fútbol, decidieron crear un espacio para la práctica deportiva y cultural en el barrio de
-                Flores.
-              </p>
-              <p className="text-club-dark/80 font-roboto mt-4">
-                Originalmente llamado Club Nacional Argentino, en 1940 cambió su nombre a "Institución cultural y
-                deportiva Pedro Echagüe" por disposición del gobierno nacional, en honor al reconocido escritor y
-                dramaturgo argentino.
-              </p>
-              <p className="text-club-dark/80 font-roboto mt-4">
-                A lo largo de sus más de 90 años de historia, el club ha sido testigo de importantes transformaciones,
-                superando desafíos como la reconstrucción completa del edificio en la década del '60 y consolidándose
-                como un referente deportivo y cultural en la zona sur de la Ciudad de Buenos Aires.
-              </p>
-            </div>
-            <div className="relative aspect-square rounded-lg overflow-hidden">
-              <Image
-                src="/placeholder.svg?height=600&width=600"
-                alt="Historia del Club Pedro Echagüe"
-                fill
-                className="object-cover"
-              />
-            </div>
+          <div className="prose prose-blue">
+            <p className="text-club-dark/80 font-roboto">
+              El Club Pedro Echagüe fue fundado el 17 de octubre de 1934 por un
+              grupo de 25 jóvenes que, tras ganar un
+              torneo de fútbol, decidieron crear un espacio para la práctica deportiva y cultural en el barrio de
+              Flores.
+            </p>
+            <p className="text-club-dark/80 font-roboto mt-4">
+              Originalmente llamado Club Nacional Argentino, en 1940 cambió su nombre a "Institución cultural y
+              deportiva Pedro Echagüe" por disposición del gobierno nacional, en honor al reconocido escritor y
+              dramaturgo argentino.
+            </p>
+            <p className="text-club-dark/80 font-roboto mt-4">
+              A lo largo de sus más de 90 años de historia, el club ha sido testigo de importantes transformaciones,
+              superando desafíos como la reconstrucción completa del edificio en la década del '60 y consolidándose
+              como un referente deportivo y cultural en la zona sur de la Ciudad de Buenos Aires.
+            </p>
           </div>
+
 
           {/* Timeline de la historia */}
           <div className="mt-12">
