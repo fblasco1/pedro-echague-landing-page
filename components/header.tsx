@@ -1,116 +1,126 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import Link from "next/link"
-import { Menu } from "lucide-react"
-import { cn } from "@/lib/utils"
+import Image from "next/image"
 import { MenuDesplegable } from "./menu-desplegable"
+import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Menu } from "lucide-react"
 
 interface HeaderProps {
-  actividades: { title: string; slug: { current: string } }[]
+  actividades?: any[]
 }
 
-export function Header({ actividades }: HeaderProps) {
-  const [scrolled, setScrolled] = useState(false)
-  const [lastScrollY, setLastScrollY] = useState(0)
-  const [showHeader, setShowHeader] = useState(true)
-  const [menuOpen, setMenuOpen] = useState(false)
+export function Header({ actividades = [] }: HeaderProps) {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
 
-  // Detectar scroll
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      const isScrolled = currentScrollY > 50
-
-      // Determinar si el scroll es hacia arriba o hacia abajo
-      if (currentScrollY < lastScrollY) {
-        // Scroll hacia arriba - mostrar header
-        setShowHeader(true)
-      } else if (currentScrollY > 100 && currentScrollY > lastScrollY) {
-        // Scroll hacia abajo y no estamos en la parte superior - ocultar header
-        setShowHeader(false)
-      }
-
-      setScrolled(isScrolled)
-      setLastScrollY(currentScrollY)
+      setIsScrolled(window.scrollY > 50)
     }
 
     window.addEventListener("scroll", handleScroll)
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [lastScrollY])
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
-    <>
-      {/* Header principal */}
-      <header
-        className={cn(
-          "fixed top-0 left-0 right-0 z-40 transition-all duration-300",
-          !showHeader && scrolled ? "transform -translate-y-full" : "transform translate-y-0",
-        )}
-      >
-        <div className="relative">
-          {/* Barra superior con logo y navegación */}
-          <div className="bg-transparent text-white">
-            <div className="container mx-auto flex h-20 justify-between px-4 pt-4 items-start">
-              {/* Logo */}
-              <div className={cn("transition-opacity duration-300", scrolled ? "opacity-0" : "opacity-100")}>
-                <Link href="/" className="block">
-                  <Image src="/logo.svg" alt="Logo Club Pedro Echagüe" width={60} height={60} className="h-16 w-auto" />
-                </Link>
-              </div>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? "h-16 py-2" : "h-20 pt-4"
+      }`}
+      style={{
+        background: isScrolled
+          ? "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%)"
+          : "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)",
+        backdropFilter: isScrolled ? "blur(10px)" : "none",
+      }}
+    >
+      <div className="container mx-auto px-4 h-full flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex-shrink-0">
+          <Image
+            src="/logo.svg"
+            alt="Club Pedro Echagüe"
+            width={isScrolled ? 40 : 50}
+            height={isScrolled ? 40 : 50}
+            className={`transition-all duration-300 ${isScrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.3)]" : ""}`}
+          />
+        </Link>
 
-              {/* Navegación de escritorio */}
-              <div
-                className={cn(
-                  "hidden md:flex flex-col items-end transition-all duration-300",
-                  scrolled ? "gap-2 pt-3" : "gap-3 pt-2",
-                )}
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex flex-col items-end gap-2 transition-all duration-300">
+          <div
+            className={`flex flex-col items-end gap-1 transition-all duration-300 ${
+              isScrolled ? "pt-0 drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : "pt-2"
+            }`}
+          >
+            <Link
+              href="/socios"
+              className="text-white font-bold text-sm hover:text-club-yellow transition-colors font-raleway"
+            >
+              ASOCIATE AHORA
+            </Link>
+            <Link
+              href="/la-casona"
+              className="text-white font-bold text-sm hover:text-club-yellow transition-colors font-raleway"
+            >
+              LA CASONA
+            </Link>
+            <div className="relative">
+              <button
+                onClick={() => setShowMenu(!showMenu)}
+                className="text-white font-bold text-sm hover:text-club-yellow transition-colors font-raleway"
               >
-                <Link
-                  href="/asociate"
-                  className={cn(
-                    "text-lg font-bold tracking-wider hover:text-club-yellow transition-colors",
-                    scrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : "",
-                  )}
-                >
-                  ASOCIATE AHORA
-                </Link>
-
-                <Link
-                  href="/la-casona"
-                  className={cn(
-                    "text-lg font-bold tracking-wider hover:text-club-yellow transition-colors",
-                    scrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : "",
-                  )}
-                >
-                  LA CASONA
-                </Link>
-
-                <button
-                  onClick={() => setMenuOpen(true)}
-                  className={cn(
-                    "flex items-center gap-1 text-lg font-bold tracking-wider hover:text-club-yellow transition-colors",
-                    scrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : "",
-                  )}
-                >
-                  <span>+ MENÚ</span>
-                </button>
-              </div>
-
-              {/* Botón de menú móvil */}
-              <button className="md:hidden text-white" onClick={() => setMenuOpen(true)} aria-label="Abrir menú">
-                <Menu className="h-8 w-8" />
+                + MENÚ
               </button>
+              {showMenu && (
+                <div className="absolute top-full right-0 mt-2">
+                  <MenuDesplegable actividades={actividades} onClose={() => setShowMenu(false)} />
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      </header>
+        </nav>
 
-      {/* Menú desplegable */}
-      <MenuDesplegable isOpen={menuOpen} onClose={() => setMenuOpen(false)} actividades={actividades} />
-    </>
+        {/* Mobile Navigation */}
+        <Sheet>
+          <SheetTrigger asChild className="lg:hidden">
+            <Button variant="ghost" size="icon" className="text-white">
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-80 bg-club-blue text-white">
+            <nav className="flex flex-col space-y-6 mt-8">
+              <Link href="/" className="text-lg font-semibold hover:text-club-yellow transition-colors">
+                INICIO
+              </Link>
+              <Link href="/identidad" className="text-lg font-semibold hover:text-club-yellow transition-colors">
+                IDENTIDAD
+              </Link>
+              <Link href="/autoridades" className="text-lg font-semibold hover:text-club-yellow transition-colors">
+                AUTORIDADES
+              </Link>
+              <Link href="/infraestructura" className="text-lg font-semibold hover:text-club-yellow transition-colors">
+                INFRAESTRUCTURA
+              </Link>
+              <Link href="/actividades" className="text-lg font-semibold hover:text-club-yellow transition-colors">
+                ACTIVIDADES
+              </Link>
+              <Link href="/noticias" className="text-lg font-semibold hover:text-club-yellow transition-colors">
+                NOTICIAS
+              </Link>
+              <Link href="/la-casona" className="text-lg font-semibold hover:text-club-yellow transition-colors">
+                LA CASONA
+              </Link>
+              <Link href="/socios" className="text-lg font-semibold hover:text-club-yellow transition-colors">
+                SOCIOS
+              </Link>
+            </nav>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </header>
   )
 }
