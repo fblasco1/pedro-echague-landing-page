@@ -49,13 +49,12 @@ export function Header({ actividades }: HeaderProps) {
         className={cn(
           "fixed top-0 left-0 right-0 z-40 transition-all duration-300",
           !showHeader && scrolled ? "transform -translate-y-full" : "transform translate-y-0",
-          scrolled ? "bg-club-blue/90 shadow-md" : "bg-gradient-to-b from-black/50 to-transparent",
         )}
       >
         <div className="relative">
           {/* Barra superior con logo y navegación */}
           <div className="bg-transparent text-white">
-            <div className="container mx-auto flex h-20 items-center justify-between px-4 pt-4">
+            <div className="container mx-auto flex h-20 justify-between px-4 pt-4 items-start">
               {/* Logo */}
               <div className={cn("transition-opacity duration-300", scrolled ? "opacity-0" : "opacity-100")}>
                 <Link href="/" className="block">
@@ -64,17 +63,38 @@ export function Header({ actividades }: HeaderProps) {
               </div>
 
               {/* Navegación de escritorio */}
-              <div className="hidden md:flex flex-col items-end gap-2">
+              <div
+                className={cn(
+                  "hidden md:flex flex-col items-end transition-all duration-300",
+                  scrolled ? "gap-2 pt-3" : "gap-3 pt-2",
+                )}
+              >
                 <Link
                   href="/asociate"
-                  className="text-lg font-bold tracking-wider hover:text-club-yellow transition-colors"
+                  className={cn(
+                    "text-lg font-bold tracking-wider hover:text-club-yellow transition-colors",
+                    scrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : "",
+                  )}
                 >
                   ASOCIATE AHORA
                 </Link>
 
+                <Link
+                  href="/la-casona"
+                  className={cn(
+                    "text-lg font-bold tracking-wider hover:text-club-yellow transition-colors",
+                    scrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : "",
+                  )}
+                >
+                  LA CASONA
+                </Link>
+
                 <button
                   onClick={() => setMenuOpen(true)}
-                  className="flex items-center gap-1 text-lg font-bold tracking-wider hover:text-club-yellow transition-colors"
+                  className={cn(
+                    "flex items-center gap-1 text-lg font-bold tracking-wider hover:text-club-yellow transition-colors",
+                    scrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : "",
+                  )}
                 >
                   <span>+ MENÚ</span>
                 </button>
@@ -90,7 +110,6 @@ export function Header({ actividades }: HeaderProps) {
       </header>
 
       {/* Menú desplegable */}
-      {console.log("ACTIVIDADES EN HEADER:", actividades)}
       <MenuDesplegable isOpen={menuOpen} onClose={() => setMenuOpen(false)} actividades={actividades} />
     </>
   )
