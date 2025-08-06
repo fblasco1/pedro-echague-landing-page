@@ -28,6 +28,112 @@ export default async function ActivityPage({ params }: { params: { slug: string 
     )
   }
 
+  function renderHorariosTable(horarios: any[]) {
+    if (!horarios || horarios.length === 0) return null
+
+    // Detectar si hay tira y género
+    const tieneTira = horarios.some((h) => h.tira)
+    const tieneGenero = horarios.some((h) => h.genero)
+    const tieneSocio = horarios.some((h) => h.arancelSocio || h.arancelNoSocio)
+    const tieneArancelPorClases = horarios.some((h) => h.arancelPorClases)
+
+    if (tieneTira || tieneGenero) {
+      // Deportes con Tiras
+      return (
+        <table className="w-full">
+          <thead className="bg-club-blue text-white">
+            <tr>
+              {tieneGenero && <th className="py-3 px-4 text-left font-raleway">Género</th>}
+              <th className="py-3 px-4 text-left font-raleway">Categoría</th>
+              <th className="py-3 px-4 text-left font-raleway">Tira</th>
+              <th className="py-3 px-4 text-left font-raleway">Horarios</th>
+              <th className="py-3 px-4 text-left font-raleway">Arancel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {horarios.map((item, index) => (
+              <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                {tieneGenero && <td className="py-3 px-4 font-roboto">{item.genero || "-"}</td>}
+                <td className="py-3 px-4 font-roboto font-medium">{item.category}</td>
+                <td className="py-3 px-4 font-roboto">{item.tira || "-"}</td>
+                <td className="py-3 px-4 font-roboto">{item.days}</td>
+                <td className="py-3 px-4 font-roboto font-medium">{item.fee || item.arancel}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )
+    } else if (tieneSocio) {
+      // Gimnasio Fitness y talleres con arancel socio/no socio
+      return (
+        <table className="w-full">
+          <thead className="bg-club-blue text-white">
+            <tr>
+              <th className="py-3 px-4 text-left font-raleway">Categoría</th>
+              <th className="py-3 px-4 text-left font-raleway">Horarios</th>
+              <th className="py-3 px-4 text-left font-raleway">Arancel Socio</th>
+              <th className="py-3 px-4 text-left font-raleway">Arancel No Socio</th>
+            </tr>
+          </thead>
+          <tbody>
+            {horarios.map((item, index) => (
+              <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                <td className="py-3 px-4 font-roboto font-medium">{item.category}</td>
+                <td className="py-3 px-4 font-roboto">{item.days}</td>
+                <td className="py-3 px-4 font-roboto font-medium">{item.arancelSocio || "-"}</td>
+                <td className="py-3 px-4 font-roboto font-medium">{item.arancelNoSocio || "-"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )
+    } else if (tieneArancelPorClases) {
+      // Arancel variable por clases
+      return (
+        <table className="w-full">
+          <thead className="bg-club-blue text-white">
+            <tr>
+              <th className="py-3 px-4 text-left font-raleway">Categoría</th>
+              <th className="py-3 px-4 text-left font-raleway">Horarios</th>
+              <th className="py-3 px-4 text-left font-raleway">Arancel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {horarios.map((item, index) => (
+              <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                <td className="py-3 px-4 font-roboto font-medium">{item.category}</td>
+                <td className="py-3 px-4 font-roboto">{item.days}</td>
+                <td className="py-3 px-4 font-roboto font-medium">{item.arancelPorClases || "-"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )
+    } else {
+      // Actividades simples
+      return (
+        <table className="w-full">
+          <thead className="bg-club-blue text-white">
+            <tr>
+              <th className="py-3 px-4 text-left font-raleway">Categoría</th>
+              <th className="py-3 px-4 text-left font-raleway">Horarios</th>
+              <th className="py-3 px-4 text-left font-raleway">Arancel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {horarios.map((item, index) => (
+              <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                <td className="py-3 px-4 font-roboto font-medium">{item.category}</td>
+                <td className="py-3 px-4 font-roboto">{item.days}</td>
+                <td className="py-3 px-4 font-roboto font-medium">{item.fee || item.arancel}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header actividades={actividades} />
@@ -59,30 +165,11 @@ export default async function ActivityPage({ params }: { params: { slug: string 
           <p className="text-club-dark/80 font-roboto">{activity.longDescription}</p>
         </div>
         {/* Horarios */}
-        {activity.horarios && (
+        {activity.horarios && activity.horarios.length > 0 && (
           <div className="mb-12">
             <h2 className="text-2xl font-bold text-club-blue mb-4 font-raleway">Horarios</h2>
             <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-              <table className="w-full">
-                <thead className="bg-club-blue text-white">
-                  <tr>
-                    <th className="py-3 px-4 text-left font-raleway">Categoría</th>
-                    <th className="py-3 px-4 text-left font-raleway">Tira</th>
-                    <th className="py-3 px-4 text-left font-raleway">Días y Horarios</th>
-                    <th className="py-3 px-4 text-left font-raleway">Arancel</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {activity.horarios.map((item: any, index: number) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
-                      <td className="py-3 px-4 font-roboto font-medium">{item.category}</td>
-                      <td className="py-3 px-4 font-roboto">{item.tira}</td>
-                      <td className="py-3 px-4 font-roboto">{item.days}</td>
-                      <td className="py-3 px-4 font-roboto font-medium">{item.fee}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              {renderHorariosTable(activity.horarios)}
             </div>
           </div>
         )}
@@ -90,13 +177,13 @@ export default async function ActivityPage({ params }: { params: { slug: string 
         {activity.coaches && (
           <div className="mb-12">
             <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">Staff Técnico</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {activity.coaches.map((coach: any, index: number) => (
-                <div key={index} className="flex flex-col">
+                <div key={index} className="flex flex-col h-full">
                   <div
                     className={`transform -rotate-2 ${
                       index % 2 === 0 ? "bg-club-blue text-white" : "bg-club-yellow text-club-blue"
-                    } p-4 shadow-lg z-10 mb-[-30px] relative`}
+                    } p-4 shadow-lg z-10 relative mb-4`}
                   >
                     <h3 className="text-xl font-bold mb-1 font-raleway">
                       {coach.firstName} {coach.lastName}
@@ -112,14 +199,16 @@ export default async function ActivityPage({ params }: { params: { slug: string 
                       </div>
                     ))}
                   </div>
-                  <div className="relative aspect-[3/4] overflow-hidden">
-                    <Image
-                      src={coach.image?.asset?.url || "/placeholder.svg?height=400&width=300"}
-                      alt={`${coach.firstName} ${coach.lastName}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
+                  {coach.image?.asset?.url && (
+                    <div className="relative aspect-[3/4] overflow-hidden">
+                      <Image
+                        src={coach.image.asset.url}
+                        alt={`${coach.firstName} ${coach.lastName}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
