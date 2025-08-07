@@ -1,4 +1,4 @@
-import { client } from '@/sanity/client'
+import { client } from '../../sanity/client'
 
 export interface Instalacion {
   _id: string

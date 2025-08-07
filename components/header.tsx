@@ -4,8 +4,6 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { MenuDesplegable } from "./menu-desplegable"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 
 interface HeaderProps {
@@ -70,45 +68,14 @@ export function Header({ actividades = [] }: HeaderProps) {
             </div>
           </nav>
 
-          {/* Mobile Navigation */}
-          <Sheet>
-            <SheetTrigger asChild className="lg:hidden">
-              <Button variant="ghost" size="icon" className="text-white">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-80 bg-club-blue text-white">
-              <nav className="flex flex-col space-y-6 mt-8">
-                <Link href="/" className="text-lg font-semibold hover:text-club-yellow transition-colors">
-                  INICIO
-                </Link>
-                <Link href="/identidad" className="text-lg font-semibold hover:text-club-yellow transition-colors">
-                  IDENTIDAD
-                </Link>
-                <Link href="/autoridades" className="text-lg font-semibold hover:text-club-yellow transition-colors">
-                  AUTORIDADES
-                </Link>
-                <Link
-                  href="/infraestructura"
-                  className="text-lg font-semibold hover:text-club-yellow transition-colors"
-                >
-                  INFRAESTRUCTURA
-                </Link>
-                <Link href="/actividades" className="text-lg font-semibold hover:text-club-yellow transition-colors">
-                  ACTIVIDADES
-                </Link>
-                <Link href="/noticias" className="text-lg font-semibold hover:text-club-yellow transition-colors">
-                  NOTICIAS
-                </Link>
-                <Link href="/la-casona" className="text-lg font-semibold hover:text-club-yellow transition-colors">
-                  LA CASONA
-                </Link>
-                <Link href="/socios" className="text-lg font-semibold hover:text-club-yellow transition-colors">
-                  SOCIOS
-                </Link>
-              </nav>
-            </SheetContent>
-          </Sheet>
+          {/* Mobile Navigation: solo botón */}
+          <button
+            className="lg:hidden text-white"
+            onClick={() => setShowMenu(true)}
+            aria-label="Abrir menú"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
         </div>
       </header>
 

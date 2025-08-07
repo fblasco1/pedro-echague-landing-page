@@ -37,7 +37,7 @@ const timelineData = {
       { id: "1935", label: "1935", events: [] },
       { id: "1936", label: "1936", events: [
         {
-            text: "La primer sede social tuvo lugar en Lobos 3383 (Gregorio de LaFerrere). \n El crecimiento llevo a mudarse a la actual sede y para financiarla nacieron los famosos bailes de carnaval que permitieron seguir construyendo el club.",
+            text: "La primera sede social tuvo lugar en Lobos 3383 (Gregorio de Laferrere). \n El crecimiento llevo a mudarse a la actual sede y para financiarla nacieron los famosos bailes de carnaval que permitieron seguir construyendo el club.",
             image: "/images/sede-social-bailes.png",
         },
       ] },
@@ -110,7 +110,7 @@ const timelineData = {
         label: "1962",
         events: [
           {
-            text: "Reapertura del club tras la reconstrucción. Con los fondos recaudados solo se logró la loza de la planta baja, entrepiso y sótano, pero los socios, a puro esfuerzo y creatividad, levantaron las paredes y le devolvieron vida al edificio.",
+            text: "Reapertura del club tras la reconstrucción. Con los fondos recaudados solo se logró la losa de la planta baja, entrepiso y sótano, pero los socios, a puro esfuerzo y creatividad, levantaron las paredes y le devolvieron vida al edificio.",
             image: "/images/reapertura-1962.png",
           },
         ],

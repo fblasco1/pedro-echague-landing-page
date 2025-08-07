@@ -46,8 +46,9 @@ export function MenuDesplegable({ isOpen, onClose, actividades = [] }: MenuDespl
       title: "El Club",
       items: [
         { name: "Identidad", href: "/identidad" },
-        { name: "Noticias", href: "/noticias" },
+        { name: "Noticias", href: "/noticias", disabled: true, comingSoon: true},
         { name: "Infraestructura", href: "/infraestructura" },
+        { name: "La Casona", href: "/la-casona" },
       ],
     },
     {
@@ -57,8 +58,7 @@ export function MenuDesplegable({ isOpen, onClose, actividades = [] }: MenuDespl
           name: act.title,
           href: `/actividades/${act.slug.current}`
         })),
-        { name: "Recreativas", href: "/actividades?categoria=recreativas", hasSubmenu: true },
-        { name: "Culturales", href: "/actividades?categoria=culturales", hasSubmenu: true },
+        { name: "Ver más actividades", href: "/actividades", hasSubmenu: true },
       ],
     },
     {
@@ -72,7 +72,7 @@ export function MenuDesplegable({ isOpen, onClose, actividades = [] }: MenuDespl
       title: "Institucional",
       items: [
         { name: "Autoridades", href: "/autoridades" },
-        { name: "Estatuto", href: "/estatuto", disabled: true, comingSoon: true },
+        { name: "Estatuto", href: "/estatuto", disabled: true},
         { name: "Misión, Visión y Valores", href: "/#quienes-somos" },
       ],
     },
@@ -95,11 +95,11 @@ export function MenuDesplegable({ isOpen, onClose, actividades = [] }: MenuDespl
 
   const socialMedia = [
     { icon: <Instagram className="h-6 w-6" />, href: "https://www.instagram.com/icdpedroechague/" },
-    { icon: <Facebook className="h-6 w-6" />, href: "https://www.facebook.com/clubpedroechague/" },
+    { icon: <Facebook className="h-6 w-6" />, href: "https://www.facebook.com/icdpedroechague/" },
   ]
 
   return (
-    <div className="fixed inset-0 z-50 bg-club-blue flex flex-col">
+    <div className="fixed inset-0 z-50 bg-club-blue flex flex-col h-screen">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <button
           onClick={onClose}
@@ -110,7 +110,8 @@ export function MenuDesplegable({ isOpen, onClose, actividades = [] }: MenuDespl
         </button>
       </div>
 
-      <div className="flex-1 border-t border-white/10">
+      {/* Contenido scrolleable solo para las categorías */}
+      <div className="flex-1 border-t border-white/10 overflow-y-auto">
         <div className="container mx-auto px-4 py-6">
           {/* Desktop menu layout - sin scroll */}
           <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
@@ -147,7 +148,7 @@ export function MenuDesplegable({ isOpen, onClose, actividades = [] }: MenuDespl
           </div>
 
           {/* Mobile menu layout - vertical stacking con scroll */}
-          <div className="md:hidden overflow-auto">
+          <div className="md:hidden">
             {menuCategories.map((category) => (
               <div key={category.title} className="mb-8">
                 <h2 className="text-club-yellow text-xl font-bold mb-4">{category.title.toUpperCase()}</h2>
@@ -182,8 +183,8 @@ export function MenuDesplegable({ isOpen, onClose, actividades = [] }: MenuDespl
         </div>
       </div>
 
-      {/* Sección de contacto en una sola fila */}
-      <div className="bg-club-blue/80 border-t border-white/10 py-4">
+      {/* Footer fijo siempre visible */}
+      <div className="bg-club-blue/80 border-t border-white/10 py-4 shrink-0">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 w-full">
