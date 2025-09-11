@@ -86,80 +86,8 @@ async function uploadFileToFolder(folderId: string, file: any): Promise<string> 
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método no permitido" })
-  }
-
-  try {
-    console.log("📩 Recibiendo solicitud de carga...")
-
-    const { fields, files } = await parseForm(req)
-    console.log("📝 Datos del formulario:", fields)
-    console.log("📂 Archivos recibidos:", Object.keys(files))
-
-    const nombreCompleto = `${fields.dni as string}-${fields.apellidos as string} ${fields.nombre as string}`.replace(/\s+/g, "_")
-
-    // 1. Crear carpeta en Drive
-    const folderId = await createDriveFolder(nombreCompleto)
-
-    // 2. Subir archivos
-    const fileLinks: Record<string, string> = {}
-    for (const key of Object.keys(files)) {
-      const file = Array.isArray(files[key]) ? files[key][0] : files[key]
-      if (file) {
-        fileLinks[key] = await uploadFileToFolder(folderId, file)
-      } else {
-        console.warn(`⚠️ No se encontró archivo para la clave "${key}"`)
-      }
-    }
-
-    const folderLink = `https://drive.google.com/drive/folders/${folderId}`
-    console.log("📎 Carpeta final:", folderLink)
-    console.log("🔗 Links de archivos:", fileLinks)
-
-    // 3. Guardar en Google Sheets
-    const values = [
-      new Date().toISOString(),
-      fields.apellidos,
-      fields.nombre,
-      fields.dni,
-      fields.nacionalidad,
-      fields.fechaNacimiento,
-      fields.genero,
-      fields.calle,
-      fields.numero,
-      fields.piso,
-      fields.departamento,
-      fields.localidad,
-      fields.provincia,
-      fields.codigoPostal,
-      fields.telefono,
-      fields.email,
-      fields.ocupacion,
-      fields.colegio,
-      fields.exSocio,
-      fields.ultimoAnioSocio,
-      folderLink,
-      fileLinks.dniFrente,
-      fileLinks.dniDorso,
-      fileLinks.foto4x4,
-      fileLinks.dniPadreFrente,
-      fileLinks.dniPadreDorso
-    ]
-
-    console.log("📊 Guardando datos en Google Sheets...")
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: GOOGLE_SHEET_ID,
-      range: "A1",
-      valueInputOption: "RAW",
-      requestBody: { values: [values] },
-    })
-
-    console.log("✅ Proceso completado con éxito")
-    res.status(200).json({ success: true, folderLink })
-
-  } catch (error: any) {
-    console.error("❌ Error en handler:", error)
-    res.status(500).json({ error: error.message })
-  }
+  // Formulario de asociarse temporalmente deshabilitado
+  return res.status(503).json({ 
+    error: "El formulario de asociarse está temporalmente deshabilitado. Los permisos de Google Workspace están siendo configurados. Por favor, contacta directamente al club para más información." 
+  })
 }

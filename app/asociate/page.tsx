@@ -1,225 +1,165 @@
-"use client"
-import { useState } from "react"
+import Link from "next/link"
 
 export default function AsociatePage() {
-  const [form, setForm] = useState({
-    apellidos: "",
-    nombre: "",
-    dni: "",
-    nacionalidad: "",
-    fechaNacimiento: "",
-    genero: "",
-    calle: "",
-    numero: "",
-    piso: "",
-    departamento: "",
-    localidad: "",
-    provincia: "",
-    codigoPostal: "",
-    telefono: "",
-    email: "",
-    ocupacion: "",
-    colegio: "",
-    exSocio: false,
-    ultimoAnioSocio: "",
-  })
-  const [dniFrente, setDniFrente] = useState<File | null>(null)
-  const [dniDorso, setDniDorso] = useState<File | null>(null)
-  const [foto4x4, setFoto4x4] = useState<File | null>(null)
-  const [dniPadreFrente, setDniPadreFrente] = useState<File | null>(null)
-  const [dniPadreDorso, setDniPadreDorso] = useState<File | null>(null)
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  // Calcular si es menor de edad (menos de 18 años)
-  const esMenorEdad = (() => {
-    if (!form.fechaNacimiento) return false
-    const hoy = new Date()
-    const nacimiento = new Date(form.fechaNacimiento)
-    let edad = hoy.getFullYear() - nacimiento.getFullYear()
-    const m = hoy.getMonth() - nacimiento.getMonth()
-    if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
-      edad--
-    }
-    return edad < 18
-  })()
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    const { name, value, type } = e.target
-    let fieldValue: string | boolean = value
-    if (type === "checkbox" && e.target instanceof HTMLInputElement) {
-      fieldValue = e.target.checked
-    }
-    setForm((prev) => ({
-      ...prev,
-      [name]: fieldValue
-    }))
-  }
-
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>, setter: (f: File | null) => void) {
-    if (e.target.files && e.target.files[0]) {
-      setter(e.target.files[0])
-    }
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setLoading(true)
-    const formData = new FormData()
-    Object.entries(form).forEach(([key, value]) => {
-      formData.append(key, typeof value === "boolean" ? String(value) : value ?? "")
-    })
-    if (dniFrente) formData.append("dniFrente", dniFrente)
-    if (dniDorso) formData.append("dniDorso", dniDorso)
-    if (foto4x4) formData.append("foto4x4", foto4x4)
-    if (dniPadreFrente) formData.append("dniPadreFrente", dniPadreFrente)
-    if (dniPadreDorso) formData.append("dniPadreDorso", dniPadreDorso)
-
-    try {
-      const res = await fetch("/api/asociate-form", {
-        method: "POST",
-        body: formData
-      })
-      if (res.ok) {
-        setSubmitted(true)
-      } else {
-        const data = await res.json()
-        alert("Error al enviar la solicitud: " + (data.error || "Error desconocido"))
-      }
-    } catch (err) {
-      alert("Error de red al enviar la solicitud")
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4">
-      <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-2xl">
-        <h1 className="text-2xl font-bold text-club-blue mb-6 text-center">Asociate al Club</h1>
-        {loading ? (
-          <div className="text-center text-club-blue font-semibold text-lg py-12">Enviando solicitud, por favor espere...</div>
-        ) : submitted ? (
-          <div className="text-center text-green-600 font-semibold">
-            ¡Gracias por tu interés en asociarte! Nos pondremos en contacto pronto.
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-club-blue mb-4 font-raleway">Asociate al Club Pedro Echagüe</h1>
+          <p className="text-xl text-gray-600 font-roboto">
+            Formá parte de nuestra gran familia deportiva y social
+          </p>
+        </div>
+
+        {/* Main Content */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          {/* Left Column - Benefits */}
+          <div className="bg-white rounded-lg shadow-md p-8">
+            <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">¿Por qué asociarte?</h2>
+            <div className="space-y-4">
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-club-blue rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Acceso a todas las actividades</h3>
+                  <p className="text-gray-600 text-sm">Básquet, fútbol, gimnasio, y más disciplinas deportivas</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-club-blue rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Instalaciones de primer nivel</h3>
+                  <p className="text-gray-600 text-sm">Gimnasio, canchas, salón de eventos y más</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-club-blue rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Comunidad y amistad</h3>
+                  <p className="text-gray-600 text-sm">Conocé gente nueva y formá parte de nuestra historia</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-club-blue rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Eventos y actividades sociales</h3>
+                  <p className="text-gray-600 text-sm">Participá de fiestas, torneos y celebraciones</p>
+                </div>
+              </div>
+            </div>
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="apellidos" className="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
-                <input type="text" id="apellidos" name="apellidos" value={form.apellidos} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                <input type="text" id="nombre" name="nombre" value={form.nombre} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="dni" className="block text-sm font-medium text-gray-700 mb-1">DNI</label>
-                <input type="text" id="dni" name="dni" value={form.dni} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="nacionalidad" className="block text-sm font-medium text-gray-700 mb-1">Nacionalidad</label>
-                <input type="text" id="nacionalidad" name="nacionalidad" value={form.nacionalidad} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="fechaNacimiento" className="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
-                <input type="date" id="fechaNacimiento" name="fechaNacimiento" value={form.fechaNacimiento} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="genero" className="block text-sm font-medium text-gray-700 mb-1">Género</label>
-                <select id="genero" name="genero" value={form.genero} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue">
-                  <option value="">Seleccionar</option>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Femenino">Femenino</option>
-                  <option value="X">X</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="calle" className="block text-sm font-medium text-gray-700 mb-1">Calle</label>
-                <input type="text" id="calle" name="calle" value={form.calle} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="numero" className="block text-sm font-medium text-gray-700 mb-1">Número</label>
-                <input type="text" id="numero" name="numero" value={form.numero} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="piso" className="block text-sm font-medium text-gray-700 mb-1">Piso</label>
-                <input type="text" id="piso" name="piso" value={form.piso} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="departamento" className="block text-sm font-medium text-gray-700 mb-1">Departamento</label>
-                <input type="text" id="departamento" name="departamento" value={form.departamento} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="localidad" className="block text-sm font-medium text-gray-700 mb-1">Localidad/Barrio</label>
-                <input type="text" id="localidad" name="localidad" value={form.localidad} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="provincia" className="block text-sm font-medium text-gray-700 mb-1">Provincia</label>
-                <input type="text" id="provincia" name="provincia" value={form.provincia} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="codigoPostal" className="block text-sm font-medium text-gray-700 mb-1">Código Postal</label>
-                <input type="text" id="codigoPostal" name="codigoPostal" value={form.codigoPostal} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 mb-1">Teléfono/Celular</label>
-                <input type="text" id="telefono" name="telefono" value={form.telefono} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input type="email" id="email" name="email" value={form.email} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="ocupacion" className="block text-sm font-medium text-gray-700 mb-1">Ocupación</label>
-                <input type="text" id="ocupacion" name="ocupacion" value={form.ocupacion} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div>
-                <label htmlFor="colegio" className="block text-sm font-medium text-gray-700 mb-1">Colegio/Universidad (si es estudiante)</label>
-                <input type="text" id="colegio" name="colegio" value={form.colegio} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-              </div>
-              <div className="flex items-center gap-2 md:col-span-2">
-                <input type="checkbox" id="exSocio" name="exSocio" checked={form.exSocio} onChange={handleChange} />
-                <label htmlFor="exSocio" className="text-sm font-medium text-gray-700">¿Fue socio alguna vez del club?</label>
-                {form.exSocio && (
-                  <input type="text" id="ultimoAnioSocio" name="ultimoAnioSocio" value={form.ultimoAnioSocio} onChange={handleChange} placeholder="Último año que fue socio" className="ml-4 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-club-blue" />
-                )}
-              </div>
-              {/* El campo menorEdad ahora se calcula automáticamente */}
-              <div className="md:col-span-2">
-                <span className="text-sm font-medium text-gray-700">{esMenorEdad ? "El solicitante es menor de edad" : "El solicitante es mayor de edad"}</span>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Foto DNI Frente (solicitante)</label>
-                <input type="file" accept="image/*" onChange={e => handleFileChange(e, setDniFrente)} required className="w-full" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Foto DNI Dorso (solicitante)</label>
-                <input type="file" accept="image/*" onChange={e => handleFileChange(e, setDniDorso)} required className="w-full" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Foto 4x4 (solicitante)</label>
-                <input type="file" accept="image/*" onChange={e => handleFileChange(e, setFoto4x4)} required className="w-full" />
-              </div>
-              {esMenorEdad && (
-                <>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Foto DNI Frente (padre/madre/tutor)</label>
-                    <input type="file" accept="image/*" onChange={e => handleFileChange(e, setDniPadreFrente)} required={esMenorEdad} className="w-full" />
+
+          {/* Right Column - Contact Info */}
+          <div className="bg-white rounded-lg shadow-md p-8">
+            <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">¿Cómo asociarte?</h2>
+            
+            <div className="space-y-6">
+              <div className="bg-club-blue/10 p-6 rounded-lg">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                    </svg>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Foto DNI Dorso (padre/madre/tutor)</label>
-                    <input type="file" accept="image/*" onChange={e => handleFileChange(e, setDniPadreDorso)} required={esMenorEdad} className="w-full" />
+                    <h3 className="text-lg font-semibold text-club-blue">Contactá a Secretaría</h3>
+                    <p className="text-gray-600">Escribinos por WhatsApp</p>
                   </div>
-                </>
-              )}
+                </div>
+                
+                <p className="text-gray-700 mb-4">
+                  Para asociarte al club, escribí a nuestra secretaría por WhatsApp. Te van a informar sobre:
+                </p>
+                
+                <ul className="text-sm text-gray-600 space-y-1 mb-6">
+                  <li>• Documentación requerida</li>
+                  <li>• Valores de cuota según tu categoría</li>
+                  <li>• Proceso de inscripción</li>
+                  <li>• Horarios de atención</li>
+                </ul>
+                
+                <a
+                  href="https://wa.me/5491136391151"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-full bg-green-500 text-white px-6 py-4 rounded-md hover:bg-green-600 transition-colors font-medium text-lg"
+                >
+                  <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                  </svg>
+                  Escribir a Secretaría
+                </a>
+              </div>
             </div>
-            <button type="submit" className="w-full bg-club-blue text-white py-2 rounded font-bold hover:bg-club-blue/90 transition-colors">Enviar solicitud</button>
-          </form>
-        )}
+          </div>
+        </div>
+
+        {/* Additional Info */}
+        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+          <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway text-center">Información Adicional</h2>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-club-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-club-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-club-blue mb-2">Valores Accesibles</h3>
+              <p className="text-gray-600 text-sm">Cuotas diferenciadas según categoría y edad</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-club-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-club-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-club-blue mb-2">Proceso Simple</h3>
+              <p className="text-gray-600 text-sm">Documentación básica y trámite rápido</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-club-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-club-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-club-blue mb-2">Ubicación Céntrica</h3>
+              <p className="text-gray-600 text-sm">Fácil acceso en el corazón de la ciudad</p>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center">
+          <Link
+            href="/socios/cuota"
+            className="inline-flex items-center justify-center bg-club-yellow text-club-blue px-8 py-4 rounded-md hover:bg-club-yellow/90 transition-colors font-bold text-lg font-raleway"
+          >
+            Ver Valores de Cuota
+          </Link>
+        </div>
       </div>
     </div>
   )
