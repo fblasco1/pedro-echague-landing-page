@@ -260,9 +260,15 @@ export default async function ActivityPage({ params }: { params: { slug: string 
             Sumate a nuestra comunidad y disfrutá de todas las actividades que ofrece el Club Pedro Echagüe.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button className="bg-club-blue text-white hover:bg-club-blue/90">Consultar por esta actividad</Button>
+            <a
+              href="https://wa.me/5491136391151"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="bg-club-blue text-white hover:bg-club-blue/90 w-full sm:w-auto">Consultar por esta actividad</Button>
+            </a>
             <Link href="/asociate">
-              <Button variant="outline" className="border-club-blue text-club-blue hover:bg-club-blue/10">
+              <Button variant="outline" className="border-club-blue text-club-blue hover:bg-club-blue/10 w-full sm:w-auto">
                 Asociate ahora
               </Button>
             </Link>

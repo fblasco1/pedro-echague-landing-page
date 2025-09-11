@@ -42,7 +42,7 @@ export function Header({ actividades = [] }: HeaderProps) {
           <nav className="hidden lg:flex flex-col items-end gap-2 transition-all duration-300">
             <div className="flex flex-col items-end gap-1 pt-2">
               <Link
-                href="/socios"
+                href="/asociate"
                 className={`text-white font-bold text-sm hover:text-club-yellow transition-colors font-raleway ${
                   isScrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : ""
                 }`}
