@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { Metadata } from "next"
-import Script from "next/script"
 
 export const metadata: Metadata = {
   title: "Asociate al Club Pedro Echagüe | Formulario de Inscripción",
@@ -45,38 +44,33 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.icdpedroechague.com.ar/asociate",
   },
+  other: {
+    "application/ld+json": JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Club Pedro Echagüe",
+      "description": "Club deportivo y social con actividades como básquet, fútbol, gimnasio y más",
+      "url": "https://www.icdpedroechague.com.ar",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+54-9-11-3639-1151",
+        "contactType": "customer service",
+        "availableLanguage": "Spanish"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "AR"
+      },
+      "sameAs": [
+        "https://wa.me/5491136391151"
+      ]
+    })
+  },
 }
 
 export default function AsociatePage() {
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Club Pedro Echagüe",
-    "description": "Club deportivo y social con actividades como básquet, fútbol, gimnasio y más",
-    "url": "https://www.icdpedroechague.com.ar",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+54-9-11-3639-1151",
-      "contactType": "customer service",
-      "availableLanguage": "Spanish"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "AR"
-    },
-    "sameAs": [
-      "https://wa.me/5491136391151"
-    ]
-  }
-
   return (
-    <>
-      <Script
-        id="structured-data"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
-      <main className="min-h-screen bg-gray-50 py-12 px-4">
+    <main className="min-h-screen bg-gray-50 py-12 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <header className="text-center mb-12">
@@ -237,6 +231,5 @@ export default function AsociatePage() {
         </section>
         </div>
       </main>
-    </>
   )
 }
