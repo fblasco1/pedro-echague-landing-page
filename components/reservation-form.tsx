@@ -150,7 +150,7 @@ ${formData.comments ? `💬 Comentarios: ${formData.comments}` : ""}
             value={formData.date}
             onChange={(e) => handleInputChange("date", e.target.value)}
             required
-            min={new Date().toISOString().split("T")[0]}
+            min="2024-01-01"
             className="border-gray-300 focus:border-club-blue focus:ring-club-blue"
           />
           <p className="text-xs text-gray-500">Solo viernes y sábados</p>

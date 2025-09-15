@@ -154,7 +154,7 @@ export default async function ValoresCuotaPage() {
 			<footer className="w-full border-t py-6 md:py-0 bg-club-dark text-white">
 				<div className="container mx-auto px-4 flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
 					<p className="text-center text-xs sm:text-sm leading-loose text-white/70 md:text-left font-roboto">
-						© {new Date().getFullYear()} Club Pedro Echagüe. Todos los
+						© 2024 Club Pedro Echagüe. Todos los
 						derechos reservados.
 					</p>
 					<div className="flex items-center gap-4">
