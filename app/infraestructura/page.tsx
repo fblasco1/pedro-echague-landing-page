@@ -7,6 +7,47 @@ import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 import { getAllActividades } from "@/lib/sanity/actividades"
 import { getAllInstalaciones } from "@/lib/sanity/infraestructura"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Infraestructura",
+  description: "Conocé las instalaciones del Club Pedro Echagüe. Gimnasio, canchas deportivas, salón de eventos y más. Instalaciones de primer nivel para todas las actividades.",
+  keywords: [
+    "infraestructura",
+    "instalaciones",
+    "gimnasio",
+    "canchas deportivas",
+    "salón de eventos",
+    "club pedro echagüe",
+    "instalaciones deportivas",
+    "facilidades del club",
+    "equipamiento deportivo",
+    "espacios recreativos"
+  ],
+  openGraph: {
+    title: "Infraestructura | Club Pedro Echagüe",
+    description: "Conocé las instalaciones del Club Pedro Echagüe. Gimnasio, canchas deportivas y más instalaciones de primer nivel.",
+    type: "website",
+    url: "https://www.icdpedroechague.com.ar/infraestructura",
+    images: [
+      {
+        url: "/images/gimnasio-1.png",
+        width: 1200,
+        height: 630,
+        alt: "Infraestructura del Club Pedro Echagüe",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Infraestructura | Club Pedro Echagüe",
+    description: "Conocé las instalaciones del Club Pedro Echagüe. Gimnasio, canchas deportivas y más.",
+    images: ["/images/gimnasio-1.png"],
+  },
+  alternates: {
+    canonical: "https://www.icdpedroechague.com.ar/infraestructura",
+  },
+}
 
 export default async function InfraestructuraPage() {
   const actividades = await getAllActividades()

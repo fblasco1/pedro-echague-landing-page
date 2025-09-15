@@ -6,6 +6,57 @@ import { PageHeader } from "@/components/page-header"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { getActividadBySlug, getAllActividades } from '@/lib/sanity/actividades'
+import { getActivityImageUrl } from "@/lib/utils-activities"
+import { Metadata } from "next"
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const activity = await getActividadBySlug(params.slug)
+  
+  if (!activity) {
+    return {
+      title: "Actividad no encontrada",
+      description: "La actividad solicitada no fue encontrada.",
+    }
+  }
+
+  const imageUrl = getActivityImageUrl(activity)
+  
+  return {
+    title: activity.title,
+    description: activity.description || `Información sobre ${activity.title} en el Club Pedro Echagüe. Horarios, entrenadores y más detalles.`,
+    keywords: [
+      activity.title.toLowerCase(),
+      "club pedro echagüe",
+      "actividades deportivas",
+      "deportes",
+      ...(activity.categories || []).map(cat => cat.toLowerCase()),
+      activity.tipo === "federada" ? "deporte federado" : activity.tipo === "recreativa" ? "actividad recreativa" : "actividad cultural"
+    ],
+    openGraph: {
+      title: `${activity.title} | Club Pedro Echagüe`,
+      description: activity.description || `Información sobre ${activity.title} en el Club Pedro Echagüe.`,
+      type: "website",
+      url: `https://www.icdpedroechague.com.ar/actividades/${params.slug}`,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${activity.title} - Club Pedro Echagüe`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${activity.title} | Club Pedro Echagüe`,
+      description: activity.description || `Información sobre ${activity.title} en el Club Pedro Echagüe.`,
+      images: [imageUrl],
+    },
+    alternates: {
+      canonical: `https://www.icdpedroechague.com.ar/actividades/${params.slug}`,
+    },
+  }
+}
 
 export default async function ActivityPage({ params }: { params: { slug: string } }) {
   const activity = await getActividadBySlug(params.slug)
@@ -139,7 +190,7 @@ export default async function ActivityPage({ params }: { params: { slug: string 
       <Header actividades={actividades} />
       <PageHeader
         title={activity.title?.toUpperCase()}
-        backgroundImage={activity.fotoPortada?.asset?.url || activity.imageSrc?.asset?.url || ""}
+        backgroundImage={getActivityImageUrl(activity)}
         hashtag={
           activity.tipo === "federada"
             ? "DEPORTEFEDERADO"

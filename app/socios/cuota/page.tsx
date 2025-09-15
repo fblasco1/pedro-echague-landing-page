@@ -2,6 +2,47 @@ import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 import Link from "next/link"
 import { getCategoriasSocios } from "@/lib/sanity/cuota"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Valores de Cuota",
+  description: "Conocé los valores de cuota del Club Pedro Echagüe. Cuotas diferenciadas por categoría y edad. Información sobre pagos, beneficios y condiciones de socio.",
+  keywords: [
+    "valores de cuota",
+    "cuota social",
+    "precios",
+    "socios",
+    "club pedro echagüe",
+    "cuota mensual",
+    "categorías de socios",
+    "beneficios de socio",
+    "pago de cuota",
+    "condiciones de socio"
+  ],
+  openGraph: {
+    title: "Valores de Cuota | Club Pedro Echagüe",
+    description: "Conocé los valores de cuota del Club Pedro Echagüe. Cuotas diferenciadas por categoría y edad.",
+    type: "website",
+    url: "https://www.icdpedroechague.com.ar/socios/cuota",
+    images: [
+      {
+        url: "/images/portada.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Valores de Cuota - Club Pedro Echagüe",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Valores de Cuota | Club Pedro Echagüe",
+    description: "Conocé los valores de cuota del Club Pedro Echagüe. Cuotas diferenciadas por categoría.",
+    images: ["/images/portada.jpg"],
+  },
+  alternates: {
+    canonical: "https://www.icdpedroechague.com.ar/socios/cuota",
+  },
+}
 
 export default async function ValoresCuotaPage() {
 	const categoriasSocios = await getCategoriasSocios()

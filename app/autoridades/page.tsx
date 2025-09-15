@@ -2,6 +2,48 @@ import Link from "next/link"
 import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 import { getAllActividades } from "@/lib/sanity/actividades"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Autoridades",
+  description: "Conocé a las autoridades del Club Pedro Echagüe. Comisión directiva, cuerpo técnico y personal que dirige nuestra institución deportiva y cultural.",
+  keywords: [
+    "autoridades",
+    "comisión directiva",
+    "presidente",
+    "vicepresidente",
+    "secretario",
+    "tesorero",
+    "club pedro echagüe",
+    "directivos",
+    "cuerpo técnico",
+    "personal del club",
+    "organización del club"
+  ],
+  openGraph: {
+    title: "Autoridades | Club Pedro Echagüe",
+    description: "Conocé a las autoridades del Club Pedro Echagüe. Comisión directiva y personal que dirige nuestra institución.",
+    type: "website",
+    url: "https://www.icdpedroechague.com.ar/autoridades",
+    images: [
+      {
+        url: "/images/portada.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Autoridades del Club Pedro Echagüe",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Autoridades | Club Pedro Echagüe",
+    description: "Conocé a las autoridades del Club Pedro Echagüe. Comisión directiva y personal.",
+    images: ["/images/portada.jpg"],
+  },
+  alternates: {
+    canonical: "https://www.icdpedroechague.com.ar/autoridades",
+  },
+}
 
 // Datos de la comisión directiva
 const comisionDirectiva = [

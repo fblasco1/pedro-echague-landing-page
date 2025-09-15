@@ -1,21 +1,93 @@
 import Link from "next/link"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Asociate al Club Pedro Echagüe | Formulario de Inscripción",
+  description: "Formá parte del Club Pedro Echagüe. Accedé a todas las actividades deportivas, instalaciones de primer nivel y nuestra gran comunidad. Contactá a secretaría por WhatsApp para más información.",
+  keywords: [
+    "club pedro echagüe",
+    "asociarse",
+    "inscripción",
+    "deportes",
+    "básquet",
+    "fútbol",
+    "gimnasio",
+    "actividades deportivas",
+    "socios",
+    "cuota social",
+    "secretaría",
+    "whatsapp"
+  ],
+  openGraph: {
+    title: "Asociate al Club Pedro Echagüe",
+    description: "Formá parte de nuestra gran familia deportiva y social. Accedé a todas las actividades y instalaciones del club.",
+    type: "website",
+    locale: "es_AR",
+    siteName: "Club Pedro Echagüe",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Asociate al Club Pedro Echagüe",
+    description: "Formá parte de nuestra gran familia deportiva y social.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://www.icdpedroechague.com.ar/asociate",
+  },
+}
 
 export default function AsociatePage() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Club Pedro Echagüe",
+    "description": "Club deportivo y social con actividades como básquet, fútbol, gimnasio y más",
+    "url": "https://www.icdpedroechague.com.ar",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+54-9-11-3639-1151",
+      "contactType": "customer service",
+      "availableLanguage": "Spanish"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "AR"
+    },
+    "sameAs": [
+      "https://wa.me/5491136391151"
+    ]
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-club-blue mb-4 font-raleway">Asociate al Club Pedro Echagüe</h1>
-          <p className="text-xl text-gray-600 font-roboto">
-            Formá parte de nuestra gran familia deportiva y social
-          </p>
-        </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <main className="min-h-screen bg-gray-50 py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <header className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-club-blue mb-4 font-raleway">Asociate al Club Pedro Echagüe</h1>
+            <p className="text-xl text-gray-600 font-roboto">
+              Formá parte de nuestra gran familia deportiva y social
+            </p>
+          </header>
 
         {/* Main Content */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
+        <section className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Left Column - Benefits */}
-          <div className="bg-white rounded-lg shadow-md p-8">
+          <article className="bg-white rounded-lg shadow-md p-8">
             <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">¿Por qué asociarte?</h2>
             <div className="space-y-4">
               <div className="flex items-start">
@@ -69,7 +141,7 @@ export default function AsociatePage() {
           </div>
 
           {/* Right Column - Contact Info */}
-          <div className="bg-white rounded-lg shadow-md p-8">
+          <article className="bg-white rounded-lg shadow-md p-8">
             <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">¿Cómo asociarte?</h2>
             
             <div className="space-y-6">
@@ -114,7 +186,7 @@ export default function AsociatePage() {
         </div>
 
         {/* Additional Info */}
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+        <section className="bg-white rounded-lg shadow-md p-8 mb-8">
           <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway text-center">Información Adicional</h2>
           
           <div className="grid md:grid-cols-3 gap-6">
@@ -152,15 +224,17 @@ export default function AsociatePage() {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center">
+        <section className="text-center">
           <Link
             href="/socios/cuota"
             className="inline-flex items-center justify-center bg-club-yellow text-club-blue px-8 py-4 rounded-md hover:bg-club-yellow/90 transition-colors font-bold text-lg font-raleway"
+            aria-label="Ver valores de cuota del club"
           >
             Ver Valores de Cuota
           </Link>
+        </section>
         </div>
-      </div>
-    </div>
+      </main>
+    </>
   )
 }

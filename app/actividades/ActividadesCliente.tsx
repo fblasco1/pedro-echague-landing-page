@@ -11,6 +11,7 @@ import { ActivityFilter } from "@/components/activity-filter"
 import { Input } from "@/components/ui/input"
 import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
+import { getActivityImageUrl, getActivityLogoUrl } from "@/lib/utils-activities"
 
 interface Props {
   actividades: Actividad[]
@@ -85,11 +86,11 @@ export default function ActividadesClient({ actividades }: Props) {
                 key={activity._id}
                 title={activity.title}
                 description={activity.description}
-                imageSrc={activity.fotoPortada?.asset?.url || activity.imageSrc?.asset?.url || ''}
-                logoSrc={activity.logo?.asset?.url}
+                imageSrc={getActivityImageUrl(activity)}
+                logoSrc={getActivityLogoUrl(activity)}
                 categories={activity.categories}
                 events={activity.events}
-                link={`/actividades/${activity._id}`}
+                link={`/actividades/${activity.slug.current}`}
               />
             ))}
           </div>

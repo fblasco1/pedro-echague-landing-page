@@ -4,6 +4,49 @@ import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 import { Timeline } from "@/components/timeline"
 import { getAllActividades } from "@/lib/sanity/actividades"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Identidad",
+  description: "Conocé la historia y valores del Club Pedro Echagüe. Más de 90 años de tradición deportiva y cultural. Nuestra misión, visión y los valores que nos definen como comunidad.",
+  keywords: [
+    "identidad",
+    "historia",
+    "club pedro echagüe",
+    "valores del club",
+    "misión",
+    "visión",
+    "tradición deportiva",
+    "historia del club",
+    "comunidad",
+    "cultura deportiva",
+    "escudos históricos",
+    "fundación 1934"
+  ],
+  openGraph: {
+    title: "Identidad | Club Pedro Echagüe",
+    description: "Conocé la historia y valores del Club Pedro Echagüe. Más de 90 años de tradición deportiva y cultural.",
+    type: "website",
+    url: "https://www.icdpedroechague.com.ar/identidad",
+    images: [
+      {
+        url: "/images/logo-historico-1.png",
+        width: 1200,
+        height: 630,
+        alt: "Identidad del Club Pedro Echagüe",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Identidad | Club Pedro Echagüe",
+    description: "Conocé la historia y valores del Club Pedro Echagüe. Más de 90 años de tradición.",
+    images: ["/images/logo-historico-1.png"],
+  },
+  alternates: {
+    canonical: "https://www.icdpedroechague.com.ar/identidad",
+  },
+}
 
 // Datos de los escudos históricos
 const escudosHistoricos = [

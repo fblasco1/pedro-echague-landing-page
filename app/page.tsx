@@ -9,6 +9,49 @@ import { YouTubeEmbed } from "@/components/youtube-embed"
 import { MapModal } from "@/components/map-modal"
 import { FederatedActivitiesGrid } from "@/components/federated-activities-grid"
 import { getAllActividades } from '@/lib/sanity/actividades'
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Inicio",
+  description: "Club Pedro Echagüe: Más de 90 años de historia deportiva y cultural. Descubrí nuestras actividades federadas, recreativas y culturales. Formá parte de nuestra gran familia.",
+  keywords: [
+    "club pedro echagüe",
+    "inicio",
+    "deportes",
+    "básquet",
+    "fútbol",
+    "gimnasio",
+    "actividades deportivas",
+    "historia del club",
+    "valores del club",
+    "comunidad deportiva",
+    "actividades recreativas",
+    "actividades culturales"
+  ],
+  openGraph: {
+    title: "Club Pedro Echagüe | Inicio",
+    description: "Más de 90 años de historia deportiva y cultural. Descubrí nuestras actividades y formá parte de nuestra gran familia.",
+    type: "website",
+    url: "https://www.icdpedroechague.com.ar",
+    images: [
+      {
+        url: "/images/portada.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Club Pedro Echagüe - Página de inicio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Club Pedro Echagüe | Inicio",
+    description: "Más de 90 años de historia deportiva y cultural. Formá parte de nuestra gran familia.",
+    images: ["/images/portada.jpg"],
+  },
+  alternates: {
+    canonical: "https://www.icdpedroechague.com.ar",
+  },
+}
 
 // Datos de valores del club
 const valoresClub = [
