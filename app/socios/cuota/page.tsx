@@ -97,8 +97,10 @@ export default async function ValoresCuotaPage() {
 											{categoria.categoria}
 										</td>
 										<td className="py-4 px-4 font-roboto">
-											$
-											{categoria.valor.toLocaleString("es-AR")}
+											{typeof categoria.valor === 'string' 
+												? categoria.valor 
+												: `$${categoria.valor.toLocaleString("es-AR")}`
+											}
 										</td>
 										<td className="py-4 px-4 text-white/80 font-roboto">
 											{categoria.condicion}
