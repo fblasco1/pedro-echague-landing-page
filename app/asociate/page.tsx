@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Metadata } from "next"
+import Script from "next/script"
 
 export const metadata: Metadata = {
   title: "Asociate al Club Pedro Echagüe | Formulario de Inscripción",
@@ -70,7 +71,8 @@ export default function AsociatePage() {
 
   return (
     <>
-      <script
+      <Script
+        id="structured-data"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
