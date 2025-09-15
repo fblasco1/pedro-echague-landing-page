@@ -71,7 +71,7 @@ export const metadata: Metadata = {
 export default function AsociatePage() {
   return (
     <main className="min-h-screen bg-gray-50 py-12 px-4">
-        <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto">
           {/* Header */}
           <header className="text-center mb-12">
             <h1 className="text-4xl font-bold text-club-blue mb-4 font-raleway">Asociate al Club Pedro Echagüe</h1>
@@ -119,7 +119,7 @@ export default function AsociatePage() {
                 <div>
                   <h3 className="font-semibold text-gray-800">Comunidad y amistad</h3>
                   <p className="text-gray-600 text-sm">Conocé gente nueva y formá parte de nuestra historia</p>
-                </div>
+                </div>  
               </div>
               
               <div className="flex items-start">
@@ -134,7 +134,7 @@ export default function AsociatePage() {
                 </div>
               </div>
             </div>
-          </div>
+          </article>
 
           {/* Right Column - Contact Info */}
           <article className="bg-white rounded-lg shadow-md p-8">
@@ -178,8 +178,8 @@ export default function AsociatePage() {
                 </a>
               </div>
             </div>
-          </div>
-        </div>
+          </article>
+        </section>
 
         {/* Additional Info */}
         <section className="bg-white rounded-lg shadow-md p-8 mb-8">
@@ -194,7 +194,7 @@ export default function AsociatePage() {
               </div>
               <h3 className="font-semibold text-club-blue mb-2">Valores Accesibles</h3>
               <p className="text-gray-600 text-sm">Cuotas diferenciadas según categoría y edad</p>
-            </div>
+            </div>  
             
             <div className="text-center">
               <div className="w-16 h-16 bg-club-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -212,12 +212,12 @@ export default function AsociatePage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-              </div>
+              </div>  
               <h3 className="font-semibold text-club-blue mb-2">Ubicación Céntrica</h3>
               <p className="text-gray-600 text-sm">Fácil acceso en el corazón de la ciudad</p>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* CTA Section */}
         <section className="text-center">
@@ -229,7 +229,7 @@ export default function AsociatePage() {
             Ver Valores de Cuota
           </Link>
         </section>
-        </div>
-      </main>
+      </div>
+    </main>
   )
 }
