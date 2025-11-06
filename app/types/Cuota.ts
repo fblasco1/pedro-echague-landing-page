@@ -1,6 +1,7 @@
 export type CuotaCategoria = {
   categoria: string
-  valor: number
+  valor: number | string
   condicion: string
   vigenteDesde?: string
+  _updatedAt?: string
 }

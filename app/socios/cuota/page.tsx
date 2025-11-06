@@ -44,10 +44,23 @@ export const metadata: Metadata = {
   },
 }
 
+// Revalidar cada 60 segundos para que los cambios de Sanity se reflejen
+export const revalidate = 60
+
 export default async function ValoresCuotaPage() {
 	const categoriasSocios = await getCategoriasSocios()
   const { getAllActividades } = await import("@/lib/sanity/actividades")
   const actividades = await getAllActividades()
+  
+  // Obtener la fecha de actualización de la primera categoría (todas deberían tener la misma fecha de actualización)
+  const fechaActualizacion = categoriasSocios[0]?._updatedAt 
+    ? new Date(categoriasSocios[0]._updatedAt).toLocaleDateString('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      })
+    : null
+
 	return (
 		<div className="min-h-screen flex flex-col">
 			<Header actividades={actividades} />
@@ -64,7 +77,7 @@ export default async function ValoresCuotaPage() {
 			<div className="bg-club-blue text-white py-12 md:py-16 flex-grow">
 				<div className="container mx-auto px-4">
 					<h2 className="text-xl md:text-2xl font-bold text-club-yellow mb-8 font-raleway">
-						Valor cuota social a partir del 01/04/2025
+						Valor cuota social a partir del {fechaActualizacion || '01/04/2025'}
 					</h2>
 
 					{/* Tabla de valores */}

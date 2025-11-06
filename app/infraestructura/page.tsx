@@ -49,6 +49,9 @@ export const metadata: Metadata = {
   },
 }
 
+// Revalidar cada 60 segundos para que los cambios de Sanity se reflejen
+export const revalidate = 60
+
 export default async function InfraestructuraPage() {
   const actividades = await getAllActividades()
   const instalaciones = await getAllInstalaciones()

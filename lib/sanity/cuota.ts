@@ -8,7 +8,8 @@ export async function getCategoriasSocios(): Promise<CuotaCategoria[]> {
       categoria,
       valor,
       condicion,
-      vigenteDesde
+      vigenteDesde,
+      _updatedAt
     }`
   )
 }

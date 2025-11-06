@@ -1,30 +1,89 @@
-# Club landing page
+# 🏀 Club Pedro Echagüe - Landing Page
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+Sitio web oficial del Club Pedro Echagüe, una plataforma moderna y completa que presenta la historia, actividades, instalaciones y servicios del club deportivo y cultural.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/fblasco1s-projects/v0-club-landing-page)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/FXvf4RnMH8K)
+## 📋 Descripción
 
-## Overview
+Landing page desarrollada con Next.js 15 que integra Sanity CMS para la gestión de contenido. El sitio incluye información sobre actividades deportivas, valores de cuota, infraestructura, autoridades y un proceso de asociación optimizado.
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+## ✨ Características Principales
 
-## Deployment
+- 🎨 **Diseño Moderno y Responsive**: Interfaz adaptada para todos los dispositivos
+- 📱 **Optimizado para Móviles**: Experiencia de usuario optimizada en dispositivos móviles
+- 🔍 **SEO Completo**: Optimización completa para motores de búsqueda con metadata, Open Graph y datos estructurados
+- 📊 **CMS Integrado**: Gestión de contenido mediante Sanity CMS
+- 🎯 **Actividades Deportivas**: Catálogo completo de actividades federadas, recreativas y culturales
+- 💰 **Valores de Cuota**: Información detallada sobre categorías y precios
+- 🏗️ **Infraestructura**: Galería de instalaciones del club
+- 📜 **Historia e Identidad**: Timeline interactivo y valores del club
+- 📞 **Proceso de Asociación**: Integración con WhatsApp para contacto directo
+- ⚡ **Rendimiento Optimizado**: Carga rápida y optimización de imágenes
 
-Your project is live at:
+## 🛠️ Tecnologías Utilizadas
 
-**[https://vercel.com/fblasco1s-projects/v0-club-landing-page](https://vercel.com/fblasco1s-projects/v0-club-landing-page)**
+### Frontend
+- **Next.js 15.2.4** - Framework React con App Router
+- **React 19** - Biblioteca de UI
+- **TypeScript** - Tipado estático
+- **Tailwind CSS** - Framework de estilos
+- **Radix UI** - Componentes accesibles
+- **Lucide React** - Iconos
 
-## Build your app
+### Backend & CMS
+- **Sanity CMS** - Sistema de gestión de contenido
+- **Next.js API Routes** - Endpoints del servidor
+- **Google APIs** - Integración con Google Drive y Sheets (formulario de asociación)
 
-Continue building your app on:
+### Herramientas
+- **pnpm** - Gestor de paquetes
+- **ESLint** - Linter de código
+- **PostCSS** - Procesador de CSS
 
-**[https://v0.dev/chat/projects/FXvf4RnMH8K](https://v0.dev/chat/projects/FXvf4RnMH8K)**
+## 📦 Requisitos Previos
 
-## How It Works
+- Node.js 18+ 
+- pnpm (recomendado) o npm/yarn
+- Cuenta de Sanity (para CMS)
+- Cuenta de Google Cloud (opcional, para formulario de asociación)
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## 🔍 SEO Implementado
+
+El sitio incluye optimización SEO completa:
+
+- ✅ Metadata dinámica por página
+- ✅ Open Graph tags para redes sociales
+- ✅ Twitter Cards
+- ✅ Datos estructurados (Schema.org)
+- ✅ URLs canónicas
+- ✅ Sitemap y robots.txt
+- ✅ Optimización de imágenes
+
+### URLs Canónicas
+
+Todas las páginas incluyen URLs canónicas configuradas para `https://www.icdpedroechague.com.ar`
+
+## 📱 Páginas Principales
+
+- **Inicio** (`/`) - Página principal con hero, valores y actividades destacadas
+- **Actividades** (`/actividades`) - Catálogo completo de actividades
+- **Actividad Individual** (`/actividades/[slug]`) - Detalle de cada actividad
+- **Asociarse** (`/asociate`) - Proceso de asociación vía WhatsApp
+- **Valores de Cuota** (`/socios/cuota`) - Información de precios y categorías
+- **Infraestructura** (`/infraestructura`) - Galería de instalaciones
+- **Identidad** (`/identidad`) - Historia, misión, visión y valores
+- **Autoridades** (`/autoridades`) - Comisión directiva
+
+
+
+## 📄 Licencia
+
+Este proyecto es privado y propiedad del Club Pedro Echagüe.
+
+## 👥 Contacto
+
+**Club Pedro Echagüe**
+- Website: [www.icdpedroechague.com.ar](https://www.icdpedroechague.com.ar)
+- WhatsApp: +54 9 11 3639-1151
+- Instagram: [@icdpedroechague](https://www.instagram.com/icdpedroechague/)
+
+Desarrollado por Francisco Octavio Blasco.

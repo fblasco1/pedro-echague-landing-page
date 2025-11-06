@@ -88,6 +88,11 @@ export const metadata: Metadata = {
   verification: {
     google: "google-site-verification-code", // Reemplazar con el código real
   },
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
 }
 
 export default async function RootLayout({
