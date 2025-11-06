@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { MenuDesplegable } from "./menu-desplegable"
 import { Menu } from "lucide-react"
 
@@ -13,6 +14,8 @@ interface HeaderProps {
 export function Header({ actividades = [] }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
+  const pathname = usePathname()
+  const isAsociatePage = pathname === "/asociate"
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +25,10 @@ export function Header({ actividades = [] }: HeaderProps) {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  const textColorClass = isAsociatePage ? "text-club-blue" : "text-white"
+  const hoverColorClass = isAsociatePage ? "hover:text-club-blue/80" : "hover:text-club-yellow"
+  const shadowClass = isScrolled && !isAsociatePage ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : ""
 
   return (
     <>
@@ -34,7 +41,7 @@ export function Header({ actividades = [] }: HeaderProps) {
               alt="Club Pedro Echagüe"
               width={50}
               height={50}
-              className={`transition-all duration-300 ${isScrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : ""}`}
+              className={`transition-all duration-300 ${shadowClass}`}
             />
           </Link>
 
@@ -42,26 +49,20 @@ export function Header({ actividades = [] }: HeaderProps) {
           <nav className="hidden lg:flex flex-col items-end gap-2 transition-all duration-300">
             <div className="flex flex-col items-end gap-1 pt-2">
               <Link
-                href="/asociate"
-                className={`text-white font-bold text-sm hover:text-club-yellow transition-colors font-raleway ${
-                  isScrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : ""
-                }`}
+                href={isAsociatePage ? "/" : "/asociate"}
+                className={`${textColorClass} font-bold text-sm ${hoverColorClass} transition-colors font-raleway ${shadowClass}`}
               >
-                ASOCIATE AHORA
+                {isAsociatePage ? "VOLVER AL INICIO" : "ASOCIATE AHORA"}
               </Link>
               <Link
                 href="/la-casona"
-                className={`text-white font-bold text-sm hover:text-club-yellow transition-colors font-raleway ${
-                  isScrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : ""
-                }`}
+                className={`${textColorClass} font-bold text-sm ${hoverColorClass} transition-colors font-raleway ${shadowClass}`}
               >
                 LA CASONA
               </Link>
               <button
                 onClick={() => setShowMenu(true)}
-                className={`text-white font-bold text-sm hover:text-club-yellow transition-colors font-raleway ${
-                  isScrolled ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : ""
-                }`}
+                className={`${textColorClass} font-bold text-sm ${hoverColorClass} transition-colors font-raleway ${shadowClass}`}
               >
                 + MENÚ
               </button>
@@ -70,7 +71,7 @@ export function Header({ actividades = [] }: HeaderProps) {
 
           {/* Mobile Navigation: solo botón */}
           <button
-            className="lg:hidden text-white"
+            className={`lg:hidden ${textColorClass}`}
             onClick={() => setShowMenu(true)}
             aria-label="Abrir menú"
           >

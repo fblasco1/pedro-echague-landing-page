@@ -52,9 +52,9 @@ export default async function ValoresCuotaPage() {
   const { getAllActividades } = await import("@/lib/sanity/actividades")
   const actividades = await getAllActividades()
   
-  // Obtener la fecha de actualización de la primera categoría (todas deberían tener la misma fecha de actualización)
-  const fechaActualizacion = categoriasSocios[0]?._updatedAt 
-    ? new Date(categoriasSocios[0]._updatedAt).toLocaleDateString('es-AR', {
+  // Obtener la fecha vigenteDesde de la primera categoría (todas deberían tener la misma fecha)
+  const fechaVigente = categoriasSocios[0]?.vigenteDesde 
+    ? new Date(categoriasSocios[0].vigenteDesde).toLocaleDateString('es-AR', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric'
@@ -77,7 +77,7 @@ export default async function ValoresCuotaPage() {
 			<div className="bg-club-blue text-white py-12 md:py-16 flex-grow">
 				<div className="container mx-auto px-4">
 					<h2 className="text-xl md:text-2xl font-bold text-club-yellow mb-8 font-raleway">
-						Valor cuota social a partir del {fechaActualizacion || '01/04/2025'}
+						Valor cuota social a partir del {fechaVigente || '01/04/2025'}
 					</h2>
 
 					{/* Tabla de valores */}
@@ -167,7 +167,7 @@ export default async function ValoresCuotaPage() {
 			<footer className="w-full border-t py-6 md:py-0 bg-club-dark text-white">
 				<div className="container mx-auto px-4 flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
 					<p className="text-center text-xs sm:text-sm leading-loose text-white/70 md:text-left font-roboto">
-						© 2024 Club Pedro Echagüe. Todos los
+						© 2025 Club Pedro Echagüe. Todos los
 						derechos reservados.
 					</p>
 					<div className="flex items-center gap-4">
