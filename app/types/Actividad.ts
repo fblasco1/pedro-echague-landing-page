@@ -35,6 +35,7 @@ export interface Actividad {
   tipo: 'federada' | 'recreativa' | 'cultural'
   categories: string[]
   horarios?: ScheduleItem[]
+  arancelPorPeriodicidad?: { periodicidad: string; valor: string }[]
   coaches?: Coach[]
   events?: EventItem[]
   gallery?: { asset: { url: string } }[]

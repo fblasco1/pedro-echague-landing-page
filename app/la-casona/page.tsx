@@ -6,6 +6,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { getCasona } from "@/lib/sanity/casona"
 
+export const revalidate = 60
+
 export default async function LaCasonaPage() {
   const casona = await getCasona()
   const ClockIcon = LucideIcons['Clock'];
@@ -94,6 +96,15 @@ export default async function LaCasonaPage() {
               </div>
             </CardContent>
           </Card>
+        </section>
+        {/* Botón Carta */}
+        <section className="text-center">
+          <Link href="/la-casona/carta">
+            <Button size="lg" className="bg-club-blue text-white hover:bg-club-blue/90 text-lg px-8 py-6 font-raleway">
+              Ver carta
+            </Button>
+          </Link>
+          <p className="text-gray-600 mt-2 font-roboto">Nuestra propuesta gastronómica</p>
         </section>
         {/* Nuestro Restaurante - Galería */}
         <section>

@@ -15,6 +15,7 @@ export const getAllActividades = async (): Promise<Actividad[]> => {
       logo{asset->{url}},
       fotoPortada{asset->{url}},
       horarios,
+      arancelPorPeriodicidad,
       coaches[]{firstName, lastName, roles, image{asset->{url}}},
       events,
       gallery[]{asset->{url}}
@@ -36,6 +37,7 @@ export const getActividadBySlug = async (slug: string): Promise<Actividad | null
       logo{asset->{url}},
       fotoPortada{asset->{url}},
       horarios,
+      arancelPorPeriodicidad,
       coaches[]{firstName, lastName, roles, image{asset->{url}}},
       events,
       gallery[]{asset->{url}}

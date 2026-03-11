@@ -4,7 +4,7 @@ import "./globals.css"
 import { Raleway, Roboto } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { getAllActividades } from "@/lib/sanity/actividades"
-import { Header } from "@/components/header"
+import { ConditionalHeader } from "@/components/conditional-header"
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -162,7 +162,7 @@ export default async function RootLayout({
       </head>
       <body className={`${raleway.variable} ${roboto.variable} font-raleway`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <Header actividades={actividades} />
+          <ConditionalHeader actividades={actividades} />
           {children}
         </ThemeProvider>
       </body>

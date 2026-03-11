@@ -220,7 +220,58 @@ export default async function ActivityPage({ params }: { params: { slug: string 
           <div className="mb-12">
             <h2 className="text-2xl font-bold text-club-blue mb-4 font-raleway">Horarios</h2>
             <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+              {/* Tabla completa: días/horarios y aranceles por fila (ej. Musculación socio/no socio) */}
+              {activity.arancelPorPeriodicidad && activity.arancelPorPeriodicidad.length > 0 && (
+                <h3 className="text-lg font-semibold text-club-dark px-4 pt-4 font-raleway">Días y horarios</h3>
+              )}
               {renderHorariosTable(activity.horarios)}
+              {/* Segunda tabla: arancel por periodicidad (GAP, Crossfit, etc.) cuando convive con la anterior */}
+              {activity.arancelPorPeriodicidad && activity.arancelPorPeriodicidad.length > 0 && (
+                <>
+                  <h3 className="text-lg font-semibold text-club-dark px-4 pt-8 pb-2 font-raleway">Valores del arancel por periodicidad</h3>
+                  <p className="text-sm text-gray-600 px-4 mb-2 font-roboto">Según la cantidad de clases por semana (GAP, Crossfit, Funcional, Yoga, etc.).</p>
+                  <table className="w-full">
+                    <thead className="bg-club-blue text-white">
+                      <tr>
+                        <th className="py-3 px-4 text-left font-raleway">Periodicidad</th>
+                        <th className="py-3 px-4 text-left font-raleway">Valor</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {activity.arancelPorPeriodicidad.map((item: { periodicidad: string; valor: string }, index: number) => (
+                        <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                          <td className="py-3 px-4 font-roboto font-medium">{item.periodicidad}</td>
+                          <td className="py-3 px-4 font-roboto font-medium">{item.valor}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+        {/* Valores del arancel solo por periodicidad (sin tabla de días y horarios) */}
+        {activity.arancelPorPeriodicidad && activity.arancelPorPeriodicidad.length > 0 && (!activity.horarios || activity.horarios.length === 0) && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-club-blue mb-4 font-raleway">Valores del arancel</h2>
+            <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+              <table className="w-full">
+                <thead className="bg-club-blue text-white">
+                  <tr>
+                    <th className="py-3 px-4 text-left font-raleway">Periodicidad</th>
+                    <th className="py-3 px-4 text-left font-raleway">Valor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {activity.arancelPorPeriodicidad.map((item: { periodicidad: string; valor: string }, index: number) => (
+                    <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                      <td className="py-3 px-4 font-roboto font-medium">{item.periodicidad}</td>
+                      <td className="py-3 px-4 font-roboto font-medium">{item.valor}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
