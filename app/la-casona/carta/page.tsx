@@ -36,11 +36,11 @@ function groupPlatosByCategory(platos: PlatoCarta[]) {
   const order = [
     { cat: 'entrada' },
     { cat: 'principales', sub: 'pollo' }, { cat: 'principales', sub: 'carnes' }, { cat: 'principales', sub: 'pescados' }, { cat: 'principales', sub: 'pastas' }, { cat: 'principales' },
+    { cat: 'menu_infantil' },
     { cat: 'salsas' },
     { cat: 'bebidas', sub: 'sin_alcohol' }, { cat: 'bebidas', sub: 'tragos' }, { cat: 'bebidas', sub: 'cervezas' }, { cat: 'bebidas', sub: 'vinos_tintos' }, { cat: 'bebidas', sub: 'vinos_blancos' }, { cat: 'bebidas', sub: 'espumantes' }, { cat: 'bebidas' },
     { cat: 'postres' },
     { cat: 'cafeteria' },
-    { cat: 'menu_infantil' },
   ]
   for (const { cat, sub } of order) {
     const items = platos.filter((p) => p.categoria === cat && (sub ? p.subcategoria === sub : !p.subcategoria))

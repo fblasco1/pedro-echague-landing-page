@@ -137,7 +137,7 @@ export default function AdminCartaPage() {
     return acc
   }, {})
 
-  const categoryOrder = ['entrada', 'principales', 'salsas', 'bebidas', 'postres', 'cafeteria', 'menu_infantil']
+  const categoryOrder = ['entrada', 'principales', 'menu_infantil', 'salsas', 'bebidas', 'postres', 'cafeteria']
   const subOrder: Record<string, string[]> = {
     principales: ['pollo', 'carnes', 'pescados', 'pastas'],
     bebidas: ['sin_alcohol', 'tragos', 'cervezas', 'vinos_tintos', 'vinos_blancos', 'espumantes'],
