@@ -15,7 +15,8 @@ export function Header({ actividades = [] }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const pathname = usePathname()
-  const isAsociatePage = pathname === "/asociate"
+  const isLightNav =
+    pathname === "/asociate" || pathname.startsWith("/asociate/")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,9 +27,9 @@ export function Header({ actividades = [] }: HeaderProps) {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const textColorClass = isAsociatePage ? "text-club-blue" : "text-white"
-  const hoverColorClass = isAsociatePage ? "hover:text-club-blue/80" : "hover:text-club-yellow"
-  const shadowClass = isScrolled && !isAsociatePage ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : ""
+  const textColorClass = isLightNav ? "text-club-blue" : "text-white"
+  const hoverColorClass = isLightNav ? "hover:text-club-blue/80" : "hover:text-club-yellow"
+  const shadowClass = isScrolled && !isLightNav ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : ""
 
   return (
     <>
@@ -49,10 +50,10 @@ export function Header({ actividades = [] }: HeaderProps) {
           <nav className="hidden lg:flex flex-col items-end gap-2 transition-all duration-300">
             <div className="flex flex-col items-end gap-1 pt-2">
               <Link
-                href={isAsociatePage ? "/" : "/asociate"}
+                href={isLightNav ? "/" : "/asociate"}
                 className={`${textColorClass} font-bold text-sm ${hoverColorClass} transition-colors font-raleway ${shadowClass}`}
               >
-                {isAsociatePage ? "VOLVER AL INICIO" : "ASOCIATE AHORA"}
+                {isLightNav ? "VOLVER AL INICIO" : "ASOCIATE AHORA"}
               </Link>
               <Link
                 href="/la-casona"
