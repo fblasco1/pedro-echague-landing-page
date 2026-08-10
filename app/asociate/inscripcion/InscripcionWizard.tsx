@@ -324,7 +324,10 @@ export function InscripcionWizard({ initialCatalogo = null }: Props) {
     let cancelled = false
     ;(async () => {
       try {
-        const res = await fetch("/api/inscripcion/catalogo")
+        const res = await fetch("/api/inscripcion/catalogo", {
+          credentials: "same-origin",
+          cache: "no-store",
+        })
         const data = await res.json()
         if (!cancelled && res.ok) setCatalogo(data)
       } catch {

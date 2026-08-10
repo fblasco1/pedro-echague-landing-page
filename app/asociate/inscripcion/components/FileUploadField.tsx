@@ -30,8 +30,22 @@ export function FileUploadField({
     try {
       const body = new FormData()
       body.append("file", file)
-      const res = await fetch("/api/inscripcion/upload", { method: "POST", body })
-      const data = await res.json()
+      const res = await fetch("/api/inscripcion/upload", {
+        method: "POST",
+        body,
+        credentials: "same-origin",
+      })
+      const raw = await res.text()
+      let data: { error?: string; file_url?: string } = {}
+      try {
+        data = raw ? (JSON.parse(raw) as { error?: string; file_url?: string }) : {}
+      } catch {
+        throw new Error(
+          res.status === 401 || res.status === 302
+            ? "Sesión del preview expirada. Recargá la página."
+            : "Respuesta inválida al subir. Probá de nuevo."
+        )
+      }
       if (!res.ok) {
         throw new Error(data.error || "Error al subir")
       }

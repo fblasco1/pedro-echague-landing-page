@@ -3,10 +3,16 @@
  * Solo se usa desde Route Handlers — nunca en el browser.
  */
 
-const DEFAULT_BASE = "http://dev.localhost:8000"
+/** Local: IPv4 (dev.localhost → ::1 rompe el publish de Docker). Vercel: prod. */
+function defaultFrappeBaseUrl(): string {
+  if (process.env.VERCEL) {
+    return "https://gestion.icdpedroechague.com.ar"
+  }
+  return "http://127.0.0.1:8000"
+}
 
 export function getFrappeBaseUrl(): string {
-  return (process.env.FRAPPE_BASE_URL || DEFAULT_BASE).replace(/\/$/, "")
+  return (process.env.FRAPPE_BASE_URL || defaultFrappeBaseUrl()).replace(/\/$/, "")
 }
 
 export function getPortalKey(): string | undefined {
@@ -100,7 +106,18 @@ export async function callFrappeMethod<T>(
     body: JSON.stringify(params),
   })
 
-  const body = (await res.json().catch(() => ({}))) as FrappeErrorBody & { message?: T }
+  const raw = await res.text()
+  let body: FrappeErrorBody & { message?: T } = {}
+  try {
+    body = raw ? (JSON.parse(raw) as FrappeErrorBody & { message?: T }) : {}
+  } catch {
+    throw new FrappeApiError(
+      res.status || 502,
+      res.redirected || res.status === 302
+        ? "El preview de Vercel exige autenticación SSO; abrí la URL en el navegador o desactivá Deployment Protection."
+        : `Respuesta no JSON del backend (${res.status}). Revisá FRAPPE_BASE_URL.`
+    )
+  }
 
   if (!res.ok) {
     throw new FrappeApiError(res.status, extractFrappeMessage(body))
