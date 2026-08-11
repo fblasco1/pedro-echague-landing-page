@@ -21,6 +21,7 @@ import { FileUploadField } from "./components/FileUploadField"
 import {
   categoriaPorEdad,
   emptyPersona,
+  esMenorPersona,
   toSubmitPayload,
   wizardSchema,
   type PersonaForm,
@@ -34,6 +35,7 @@ type Props = {
 
 const GENEROS = ["Masculino", "Femenino", "Otro", "Prefiero no decir"] as const
 const ROLES_FAMILIA = ["Cónyuge", "Hijo", "Padre", "Madre", "Otro"] as const
+const ROLES_TUTOR = ["Padre", "Madre", "Tutor"] as const
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null
@@ -73,6 +75,16 @@ function PersonaFields({
   const actividades = (watch(`${prefix}.actividades`) as { actividad: string }[]) || []
   const selected = actividades.map((a) => a.actividad)
   const fechaNac = watch(`${prefix}.fecha_nacimiento`) as string
+  const categoria = watch(`${prefix}.categoria_solicitada`) as string
+  const titularValues = watch("titular")
+  const titularAdulto = !esMenorPersona(titularValues || {})
+  const personaEsMenor = esMenorPersona({
+    fecha_nacimiento: fechaNac,
+    categoria_solicitada: categoria,
+  })
+  const showTutorForm =
+    personaEsMenor && (prefix === "titular" || !titularAdulto)
+  const showTutorNote = personaEsMenor && prefix !== "titular" && titularAdulto
 
   useEffect(() => {
     if (!fechaNac) return
@@ -132,6 +144,11 @@ function PersonaFields({
             <Label>Fecha de nacimiento *</Label>
             <Input type="date" {...register(`${prefix}.fecha_nacimiento`)} />
             <FieldError message={getError("fecha_nacimiento")} />
+            {personaEsMenor && (
+              <p className="mt-1 text-xs text-amber-700 font-roboto">
+                Menor de 18 años: se requiere un responsable / tutor.
+              </p>
+            )}
           </div>
           <div>
             <Label>Género *</Label>
@@ -172,6 +189,154 @@ function PersonaFields({
           </div>
         </div>
       </div>
+
+      {showTutorNote && (
+        <div className="rounded-md border border-club-blue/30 bg-club-blue/5 px-4 py-3 text-sm font-roboto text-gray-700">
+          Como responsable se usará al titular del trámite (adulto). No hace falta cargar otro
+          tutor para este familiar.
+        </div>
+      )}
+
+      {showTutorForm && (
+        <div className="space-y-4 rounded-md border border-amber-200 bg-amber-50/50 p-4">
+          <h3 className="font-raleway text-sm font-bold text-club-blue uppercase">
+            Datos del responsable / tutor *
+          </h3>
+          <p className="font-roboto text-sm text-gray-600">
+            Padre, madre o tutor legal mayor de 18 años. Secretaría lo usará para el alta y el
+            contacto.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <Label>Apellido del tutor *</Label>
+              <Input {...register(`${prefix}.apellido_tutor`)} />
+              <FieldError message={getError("apellido_tutor")} />
+            </div>
+            <div>
+              <Label>Nombre del tutor *</Label>
+              <Input {...register(`${prefix}.nombre_tutor`)} />
+              <FieldError message={getError("nombre_tutor")} />
+            </div>
+            <div>
+              <Label>DNI del tutor *</Label>
+              <Input inputMode="numeric" {...register(`${prefix}.dni_tutor`)} />
+              <FieldError message={getError("dni_tutor")} />
+            </div>
+            <div>
+              <Label>Fecha de nacimiento *</Label>
+              <Input type="date" {...register(`${prefix}.fecha_nacimiento_tutor`)} />
+              <FieldError message={getError("fecha_nacimiento_tutor")} />
+            </div>
+            <div>
+              <Label>Vínculo *</Label>
+              <Select
+                value={(watch(`${prefix}.rol_tutor`) as string) || ""}
+                onValueChange={(v) =>
+                  setValue(`${prefix}.rol_tutor`, v as PersonaForm["rol_tutor"], {
+                    shouldValidate: true,
+                  })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Padre / Madre / Tutor" />
+                </SelectTrigger>
+                <SelectContent>
+                  {ROLES_TUTOR.map((r) => (
+                    <SelectItem key={r} value={r}>
+                      {r}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FieldError message={getError("rol_tutor")} />
+            </div>
+            <div>
+              <Label>Género *</Label>
+              <Select
+                value={(watch(`${prefix}.genero_tutor`) as string) || ""}
+                onValueChange={(v) =>
+                  setValue(`${prefix}.genero_tutor`, v as PersonaForm["genero_tutor"], {
+                    shouldValidate: true,
+                  })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Género" />
+                </SelectTrigger>
+                <SelectContent>
+                  {GENEROS.map((g) => (
+                    <SelectItem key={g} value={g}>
+                      {g}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FieldError message={getError("genero_tutor")} />
+            </div>
+            <div>
+              <Label>Email del tutor *</Label>
+              <Input type="email" {...register(`${prefix}.email_tutor`)} />
+              <FieldError message={getError("email_tutor")} />
+            </div>
+            <div>
+              <Label>Teléfono móvil *</Label>
+              <Input {...register(`${prefix}.telefono_movil_tutor`)} />
+              <FieldError message={getError("telefono_movil_tutor")} />
+            </div>
+            <div className="sm:col-span-2">
+              <Label>Calle *</Label>
+              <Input {...register(`${prefix}.calle_tutor`)} />
+              <FieldError message={getError("calle_tutor")} />
+            </div>
+            <div>
+              <Label>Número</Label>
+              <Input {...register(`${prefix}.numero_tutor`)} />
+            </div>
+            <div>
+              <Label>Localidad / Barrio *</Label>
+              <Input {...register(`${prefix}.localidad_barrio_tutor`)} />
+              <FieldError message={getError("localidad_barrio_tutor")} />
+            </div>
+            <div>
+              <Label>Provincia *</Label>
+              <Input {...register(`${prefix}.provincia_tutor`)} />
+              <FieldError message={getError("provincia_tutor")} />
+            </div>
+            <div>
+              <Label>Código postal *</Label>
+              <Input {...register(`${prefix}.codigo_postal_tutor`)} />
+              <FieldError message={getError("codigo_postal_tutor")} />
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4 pt-2">
+            <FileUploadField
+              label="DNI tutor — frente *"
+              value={watch(`${prefix}.dni_frente_tutor`) as string}
+              error={getError("dni_frente_tutor")}
+              onUploaded={(url) =>
+                setValue(`${prefix}.dni_frente_tutor`, url, { shouldValidate: true })
+              }
+            />
+            <FileUploadField
+              label="DNI tutor — dorso *"
+              value={watch(`${prefix}.dni_dorso_tutor`) as string}
+              error={getError("dni_dorso_tutor")}
+              onUploaded={(url) =>
+                setValue(`${prefix}.dni_dorso_tutor`, url, { shouldValidate: true })
+              }
+            />
+            <FileUploadField
+              label="Foto del tutor *"
+              accept="image/jpeg,image/png,image/webp"
+              value={watch(`${prefix}.foto_perfil_tutor`) as string}
+              error={getError("foto_perfil_tutor")}
+              onUploaded={(url) =>
+                setValue(`${prefix}.foto_perfil_tutor`, url, { shouldValidate: true })
+              }
+            />
+          </div>
+        </div>
+      )}
 
       <div>
         <h3 className="font-raleway text-sm font-bold text-club-blue uppercase mb-3">
@@ -353,8 +518,21 @@ export function InscripcionWizard({ initialCatalogo = null }: Props) {
   }
 
   async function goNextFromFamilia() {
-    const ok = await form.trigger("familiares")
-    if (ok) setStep(3)
+    // Validar familiares + reglas de tutor a nivel wizard (sin exigir estatutos aún).
+    const values = form.getValues()
+    const preview = wizardSchema.safeParse({ ...values, acepta_estatutos: true })
+    if (!preview.success) {
+      await form.trigger(["titular", "familiares"])
+      for (const issue of preview.error.issues) {
+        if (issue.path.length >= 1) {
+          form.setError(issue.path.join(".") as Parameters<typeof form.setError>[0], {
+            message: issue.message,
+          })
+        }
+      }
+      return
+    }
+    setStep(3)
   }
 
   async function onSubmit(values: WizardForm) {
