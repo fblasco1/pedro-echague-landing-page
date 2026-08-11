@@ -43,6 +43,8 @@ FRAPPE_BASE_URL=https://….trycloudflare.com
 FRAPPE_SITE_HOST=dev.localhost
 ```
 
+> `FRAPPE_SITE_HOST` es **obligatorio** con el túnel: sin eso Frappe no resuelve el site `dev.localhost`.
+
 6. **Redeploy** del deployment de `feat/wizard-alta-asociacion`.
 7. En Vercel → Deployment Protection: permitir acceso a testers (desactivar SSO estricto del preview o usar password/share).
 8. Pasar a testers la URL del preview + este guion.

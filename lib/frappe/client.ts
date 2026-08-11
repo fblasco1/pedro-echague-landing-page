@@ -60,11 +60,15 @@ export class FrappeApiError extends Error {
 }
 
 function frappeHostHeader(baseUrl: string): string | undefined {
+  // Siempre preferir FRAPPE_SITE_HOST (UAT vía túnel Cloudflare, local IP, etc.).
+  if (process.env.FRAPPE_SITE_HOST?.trim()) {
+    return process.env.FRAPPE_SITE_HOST.trim()
+  }
   try {
     const host = new URL(baseUrl).hostname
     // En local a menudo usamos 127.0.0.1 pero el site de Frappe es dev.localhost.
     if (host === "127.0.0.1" || host === "localhost") {
-      return process.env.FRAPPE_SITE_HOST || "dev.localhost"
+      return "dev.localhost"
     }
     return host
   } catch {
