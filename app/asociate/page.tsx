@@ -146,9 +146,9 @@ export default function AsociatePage() {
                   Solicitud online
                 </h3>
                 <p className="text-gray-700 mb-4 font-roboto text-sm">
-                  Completá el formulario con tus datos y los de tu familia. Secretaría
-                  valida la documentación y te contacta por WhatsApp o de forma presencial
-                  para cerrar el pago y el alta. Todavía no hay cobro online.
+                  Empezá hoy mismo: cargá tus datos y, si querés, los de tu grupo familiar
+                  en pocos minutos. Nosotros revisamos la documentación y te acompañamos
+                  hasta darte la bienvenida como socio del Pedro Echagüe.
                 </p>
                 <Link
                   href="/asociate/inscripcion"
@@ -166,8 +166,8 @@ export default function AsociatePage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-club-blue">¿Preferís WhatsApp?</h3>
-                    <p className="text-gray-600 text-sm">También podés escribir a Secretaría</p>
+                    <h3 className="text-lg font-semibold text-club-blue">¿Tenés alguna duda?</h3>
+                    <p className="text-gray-600 text-sm">Escribinos a Secretaría y lo resolvemos</p>
                   </div>
                 </div>
                 <a
@@ -176,7 +176,7 @@ export default function AsociatePage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center w-full bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600 transition-colors font-medium"
                 >
-                  Escribir a Secretaría
+                  Contactanos
                 </a>
               </div>
             </div>

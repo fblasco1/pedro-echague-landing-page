@@ -413,7 +413,10 @@ function PersonaFields({
         </div>
         <FieldError message={getError("tiene_enfermedad")} />
         <p className="mt-2 text-xs text-gray-500 font-roboto">
-          La ficha médica adjunta es el documento oficial para Secretaría.
+          La ficha médica adjunta es el documento oficial para Secretaría. Si sos deportista
+          federado, debe ser la ficha médica de tu federación (FeBAMBA, FMV, etc.). Si no sos
+          federado y te vas a sumar a nuestras escuelas deportivas, necesitamos un apto físico
+          médico.
         </p>
       </div>
 
@@ -603,8 +606,10 @@ export function InscripcionWizard({ initialCatalogo = null }: Props) {
                 Empecemos con tus datos
               </h2>
               <p className="font-roboto text-sm text-gray-600 mb-6">
-                Después vas a poder sumar a tu grupo familiar. El pago se cierra con
-                Secretaría (WhatsApp o presencial): no se cobra online por ahora.
+                Completá tus datos personales.
+                <br />
+                En el siguiente paso podrás agregar a los socios de tu grupo familiar si así
+                lo deseás.
               </p>
               <PersonaFields prefix="titular" form={form} catalogo={catalogo} />
             </div>

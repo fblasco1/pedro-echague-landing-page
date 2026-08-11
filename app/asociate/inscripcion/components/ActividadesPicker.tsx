@@ -26,9 +26,6 @@ export function ActividadesPicker({
       <p className="font-raleway text-sm font-semibold text-club-blue uppercase tracking-wide">
         Actividades
       </p>
-      <p className="font-roboto text-sm text-gray-600">
-        Elegí qué te gustaría practicar. Secretaría completará tira/equipo después.
-      </p>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
         {actividades.map((act) => {
           const active = !sinActividad && selected.includes(act.value)

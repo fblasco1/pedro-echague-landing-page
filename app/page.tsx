@@ -112,73 +112,32 @@ export default async function ClubLandingPage() {
       <Hero />
 
       <main className="flex-1">
-        {/* Quienes Somos Section - White Background */}
-        <section id="quienes-somos" className="w-full py-8 sm:py-12 md:py-16 lg:py-24 bg-white">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-club-blue font-raleway">
-                  ¿Quiénes somos?
-                </h2>
-              </div>
-            </div>
-
-            <div className="grid gap-6 sm:gap-8 md:gap-12 mt-6 sm:mt-8 md:mt-12 md:grid-cols-2">
-              <div className="bg-club-blue text-white p-6 sm:p-8 rounded-lg">
-                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 font-raleway">Misión</h3>
-                <p className="text-base sm:text-lg font-roboto leading-relaxed">
-                  Nuestra misión es acompañar a los miembros de nuestra comunidad del club en su formación deportiva y
-                  cultural, fomentando valores importantes con un compromiso social. De esta manera, podemos contribuir
-                  al desarrollo de nuestra sociedad juntos.
-                </p>
-              </div>
-
-              <div className="bg-club-yellow text-club-dark p-6 sm:p-8 rounded-lg">
-                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 font-raleway">Visión</h3>
-                <p className="text-base sm:text-lg font-roboto leading-relaxed">
-                  Ser un club referente en la zona de excelencia en la formación deportiva y cultural que estimula
-                  hábitos saludables y la Inclusión social.
-                </p>
-              </div>
-            </div>
-
-            {/* Sección de Valores */}
-            <div className="mt-12 sm:mt-16">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-club-blue mb-6 sm:mb-8 text-center font-raleway">
-                NUESTROS VALORES
-              </h3>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {valoresClub.map((valor, index) => (
-                  <div
-                    key={index}
-                    className="bg-white border border-club-blue/20 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center"
-                  >
-                    <div className="bg-club-yellow/10 p-3 rounded-full mb-4">{valor.icono}</div>
-                    <h4 className="text-lg font-bold text-club-blue mb-2 font-raleway">{valor.nombre}</h4>
-                    <p className="text-club-dark/80 font-roboto">{valor.descripcion}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* History Section - Blue Background */}
-        <section id="history" className="w-full py-8 sm:py-12 md:py-16 lg:py-24 bg-club-blue text-white">
+        {/* Actividades */}
+        <section id="activities" className="w-full py-8 sm:py-12 md:py-16 lg:py-24 bg-club-blue text-white">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-white font-raleway">
-                  HISTORIA
+                  Actividades
                 </h2>
+                <p className="max-w-[900px] text-white/80 text-base sm:text-lg md:text-xl font-roboto">
+                  Conocé nuestras actividades federadas principales.
+                </p>
               </div>
             </div>
-            <Timeline />
+
+            <FederatedActivitiesGrid
+              activities={federadasPrincipales.map((actividad) => ({
+                id: actividad._id,
+                title: actividad.title,
+                logoUrl: actividad.logo?.asset?.url || '/placeholder.svg',
+                link: `/actividades/${actividad.slug.current}`,
+              }))}
+            />
           </div>
         </section>
 
-        {/* Infrastructure Section - White Background */}
+        {/* Infraestructura */}
         <section id="infrastructure" className="w-full py-8 sm:py-12 md:py-16 lg:py-24 bg-white">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4 text-center">
@@ -218,35 +177,77 @@ export default async function ClubLandingPage() {
           </div>
         </section>
 
-        {/* Activities Section - Blue Background */}
-        <section id="activities" className="w-full py-8 sm:py-12 md:py-16 lg:py-24 bg-club-blue text-white">
+        {/* Quiénes somos */}
+        <section id="quienes-somos" className="w-full py-8 sm:py-12 md:py-16 lg:py-24 bg-gray-50">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4 text-center">
+              <div className="space-y-2">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-club-blue font-raleway">
+                  ¿Quiénes somos?
+                </h2>
+              </div>
+            </div>
+
+            <div className="grid gap-6 sm:gap-8 md:gap-12 mt-6 sm:mt-8 md:mt-12 md:grid-cols-2">
+              <div className="bg-club-blue text-white p-6 sm:p-8 rounded-lg">
+                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 font-raleway">Misión</h3>
+                <p className="text-base sm:text-lg font-roboto leading-relaxed">
+                  Nuestra misión es acompañar a los miembros de nuestra comunidad del club en su formación deportiva y
+                  cultural, fomentando valores importantes con un compromiso social. De esta manera, podemos contribuir
+                  al desarrollo de nuestra sociedad juntos.
+                </p>
+              </div>
+
+              <div className="bg-club-yellow text-club-dark p-6 sm:p-8 rounded-lg">
+                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 font-raleway">Visión</h3>
+                <p className="text-base sm:text-lg font-roboto leading-relaxed">
+                  Ser un club referente en la zona de excelencia en la formación deportiva y cultural que estimula
+                  hábitos saludables y la Inclusión social.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Valores */}
+        <section id="valores" className="w-full py-8 sm:py-12 md:py-16 lg:py-24 bg-white">
+          <div className="container px-4 md:px-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-club-blue mb-6 sm:mb-8 md:mb-12 text-center font-raleway">
+              Nuestros valores
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {valoresClub.map((valor, index) => (
+                <div
+                  key={index}
+                  className="bg-white border border-club-blue/20 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center"
+                >
+                  <div className="bg-club-yellow/10 p-3 rounded-full mb-4">{valor.icono}</div>
+                  <h3 className="text-lg font-bold text-club-blue mb-2 font-raleway">{valor.nombre}</h3>
+                  <p className="text-club-dark/80 font-roboto">{valor.descripcion}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Historia */}
+        <section id="history" className="w-full py-8 sm:py-12 md:py-16 lg:py-24 bg-club-blue text-white">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-white font-raleway">
-                  Actividades
+                  HISTORIA
                 </h2>
-                <p className="max-w-[900px] text-white/80 text-base sm:text-lg md:text-xl font-roboto">
-                  Conocé nuestras actividades federadas principales.
-                </p>
               </div>
             </div>
-
-            {/* Actividades federadas principales */}
-            <FederatedActivitiesGrid
-              activities={federadasPrincipales.map((actividad) => ({
-                id: actividad._id,
-                title: actividad.title,
-                logoUrl: actividad.logo?.asset?.url || '/placeholder.svg',
-                link: `/actividades/${actividad.slug.current}`,
-              }))}
-            />
+            <Timeline />
           </div>
         </section>
       </main>
 
       {/* Footer */}
-<footer className="w-full border-t py-6 md:py-0 bg-club-dark text-white mt-12">
+<footer className="w-full border-t py-6 md:py-0 bg-club-dark text-white">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <p className="text-center text-sm leading-loose text-white/70 md:text-left font-roboto">
             © {new Date().getFullYear()} Club Pedro Echagüe. Todos los derechos reservados.
