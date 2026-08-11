@@ -3,10 +3,23 @@
  * Solo se usa desde Route Handlers — nunca en el browser.
  */
 
-/** Local: IPv4 (dev.localhost → ::1 rompe el publish de Docker). Vercel: prod. */
+export class FrappeApiError extends Error {
+  status: number
+
+  constructor(status: number, message: string) {
+    super(message)
+    this.status = status
+    this.name = "FrappeApiError"
+  }
+}
+
+/** Local: IPv4. En Vercel exige FRAPPE_BASE_URL (UAT túnel o staging/prod explícito). */
 function defaultFrappeBaseUrl(): string {
   if (process.env.VERCEL) {
-    return "https://gestion.icdpedroechague.com.ar"
+    throw new FrappeApiError(
+      500,
+      "Falta FRAPPE_BASE_URL en Vercel (Preview/Production). Para UAT usá el túnel cloudflared + FRAPPE_SITE_HOST=dev.localhost."
+    )
   }
   return "http://127.0.0.1:8000"
 }
@@ -47,16 +60,6 @@ function extractFrappeMessage(body: FrappeErrorBody): string {
     return parts[parts.length - 1]?.trim() || "Error en el servidor"
   }
   return "Error en el servidor"
-}
-
-export class FrappeApiError extends Error {
-  status: number
-
-  constructor(status: number, message: string) {
-    super(message)
-    this.status = status
-    this.name = "FrappeApiError"
-  }
 }
 
 function frappeHostHeader(baseUrl: string): string | undefined {
