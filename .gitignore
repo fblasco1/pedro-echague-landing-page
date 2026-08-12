@@ -23,6 +23,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# UAT local (túnel / última sesión)
+.uat/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

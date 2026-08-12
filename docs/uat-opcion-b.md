@@ -2,60 +2,39 @@
 
 Entorno de prueba para testers humanos **sin tocar producción** (`gestion.icdpedroechague.com.ar`).
 
+## Un comando (sesión de mañana)
+
+1. Encender **Docker Desktop**.
+2. En una terminal:
+
+```bash
+cd ~/ERSport/pedro-echague-landing-page
+./scripts/uat/start-staging-uat.sh
+```
+
+El script:
+
+- levanta Docker + `bench serve` en rama `feat/portal-alta-grupo-familiar`
+- abre túnel HTTPS (cloudflared)
+- carga `FRAPPE_BASE_URL` / `FRAPPE_SITE_HOST` en Vercel **Preview**
+- apaga el SSO de Preview
+- hace redeploy
+- imprime el **link para testers**
+
+3. Copiá el link `…/asociate/inscripcion` y mandáselo a testers + este guion.
+4. **Dejá esa terminal abierta** mientras prueben. Al terminar: `./scripts/uat/stop-staging-uat.sh`
+
+Última sesión: `.uat/last-session.txt` (no se commitea).
+
 ## Piezas
 
 | Pieza | Qué |
 |--------|-----|
 | Frontend | Preview Vercel de `feat/wizard-alta-asociacion` |
 | Backend | Frappe local, rama `feat/portal-alta-grupo-familiar`, site `dev.localhost` |
-| Puente | Túnel HTTPS con `cloudflared` (`scripts/uat/start-frappe-tunnel.sh`) |
+| Puente | Túnel HTTPS (`cloudflared`) |
 
-## Setup (desarrollador, una vez por sesión UAT)
-
-1. Encender **Docker Desktop** (integración WSL).
-2. Contenedores + bench:
-
-```bash
-docker start devcontainer-postgresql-1 devcontainer-redis-cache-1 \
-  devcontainer-redis-queue-1 devcontainer-frappe-1
-
-docker exec -u frappe devcontainer-frappe-1 bash -lc \
-  'cd /workspace/development/frappe-bench/apps/club_management && \
-   git checkout feat/portal-alta-grupo-familiar'
-
-docker exec -u frappe -d devcontainer-frappe-1 bash -lc \
-  'cd /workspace/development/frappe-bench && bench serve --port 8000'
-```
-
-3. Túnel (dejar la terminal abierta):
-
-```bash
-cd pedro-echague-landing-page
-chmod +x scripts/uat/start-frappe-tunnel.sh
-./scripts/uat/start-frappe-tunnel.sh
-```
-
-4. Copiar la URL `https://….trycloudflare.com` que imprime cloudflared.
-5. En Vercel → proyecto landing → **Settings → Environment Variables** (entorno **Preview**):
-
-```
-FRAPPE_BASE_URL=https://….trycloudflare.com
-FRAPPE_SITE_HOST=dev.localhost
-```
-
-> `FRAPPE_SITE_HOST` es **obligatorio** con el túnel: sin eso Frappe no resuelve el site `dev.localhost`.
-
-6. **Redeploy** del deployment de `feat/wizard-alta-asociacion`.
-7. En Vercel → Deployment Protection: permitir acceso a testers (desactivar SSO estricto del preview o usar password/share).
-8. Pasar a testers la URL del preview + este guion.
-
-> Si cambia la URL del túnel (reinicio de cloudflared), hay que actualizar `FRAPPE_BASE_URL` y redeploy.
-
-## URLs útiles (completar en cada sesión)
-
-- Preview landing: `______________________________`
-- Túnel Frappe: `______________________________`
-- Desk staging (local vía túnel): `https://….trycloudflare.com/desk` (Host/site `dev.localhost`; puede requerir cookie/login)
+> Cada vez que se reinicia el túnel cambia la URL → el script actualiza Vercel y redeploya. `FRAPPE_SITE_HOST=dev.localhost` es obligatorio.
 
 ## Checklist de casos
 
@@ -80,7 +59,7 @@ Usar DNI/emails inventados (`tester.001@example.com`, etc.). No datos reales de 
 - [ ] Tras validar titular en Desk: cónyuge como **cotitular** (`es_principal=0`)
 
 ### Caso D — Secretaría (Desk)
-- [ ] Login Secretaría en el Frappe de prueba
+- [ ] Login Secretaría en el Frappe de prueba (`http://dev.localhost:8000/desk`)
 - [ ] Ver trámites A/B/C
 - [ ] Validar titular → se crea Socio / Grupo Familiar
 - [ ] Flujo offline claro (contacto WhatsApp / Activar u Omitir pago) — sin cobro online
