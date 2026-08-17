@@ -18,12 +18,17 @@ import {
 import { WizardStepper } from "./components/WizardStepper"
 import { ActividadesPicker } from "./components/ActividadesPicker"
 import { FileUploadField } from "./components/FileUploadField"
+import { DateTextField } from "./components/DateTextField"
+import { NACIONALIDADES, PROVINCIAS_AR } from "./geo-options"
 import {
+  ACTIVIDADES_ADHERENTE,
   categoriaPorEdad,
+  categoriasDisponibles,
   emptyPersona,
   esMenorPersona,
   toSubmitPayload,
   wizardSchema,
+  type CategoriaSolicitada,
   type PersonaForm,
   type WizardForm,
 } from "./schema"
@@ -40,6 +45,12 @@ const ROLES_TUTOR = ["Padre", "Madre", "Tutor"] as const
 function FieldError({ message }: { message?: string }) {
   if (!message) return null
   return <p className="text-xs text-red-600 font-roboto mt-1">{message}</p>
+}
+
+function hintCategoria(fechaNac: string): string {
+  return categoriasDisponibles(fechaNac).includes("Jubilado")
+    ? "Mayor de 18: Activo, Adherente o Jubilado."
+    : "Menor de 18: Menor o Adherente (Gimnasio Fitness, Funcional, Yoga, Crossfit)."
 }
 
 function PersonaFields({
@@ -85,13 +96,38 @@ function PersonaFields({
   const showTutorForm =
     personaEsMenor && (prefix === "titular" || !titularAdulto)
   const showTutorNote = personaEsMenor && prefix !== "titular" && titularAdulto
+  const esAdherente = categoria === "Adherente"
+  const esJubilado = categoria === "Jubilado"
+  const opcionesCategoria = fechaNac
+    ? categoriasDisponibles(fechaNac)
+    : (["Activo", "Adherente", "Jubilado"] as CategoriaSolicitada[])
 
   useEffect(() => {
     if (!fechaNac) return
-    setValue(`${prefix}.categoria_solicitada`, categoriaPorEdad(fechaNac), {
-      shouldValidate: true,
-    })
-  }, [fechaNac, prefix, setValue])
+    const permitidas = categoriasDisponibles(fechaNac)
+    if (!permitidas.includes(categoria as CategoriaSolicitada)) {
+      setValue(`${prefix}.categoria_solicitada`, categoriaPorEdad(fechaNac), {
+        shouldValidate: true,
+      })
+    }
+  }, [fechaNac, categoria, prefix, setValue])
+
+  useEffect(() => {
+    if (!esAdherente) return
+    // Quitar deportes no permitidos al pasar a Adherente
+    const actuales = (watch(`${prefix}.actividades`) as { actividad: string }[]) || []
+    const filtradas = actuales.filter((a) =>
+      ACTIVIDADES_ADHERENTE.some(
+        (p) => p.toLowerCase() === a.actividad.trim().toLowerCase()
+      )
+    )
+    if (filtradas.length !== actuales.length) {
+      setValue(`${prefix}.actividades`, filtradas, { shouldValidate: true })
+    }
+    if (filtradas.length === 0 && !sinActividad) {
+      // no forzar sin_actividad automáticamente: el usuario puede elegir
+    }
+  }, [esAdherente, prefix, setValue, watch, sinActividad])
 
   return (
     <div className="space-y-6">
@@ -142,7 +178,12 @@ function PersonaFields({
           </div>
           <div>
             <Label>Fecha de nacimiento *</Label>
-            <Input type="date" {...register(`${prefix}.fecha_nacimiento`)} />
+            <DateTextField
+              value={(fechaNac as string) || ""}
+              onChange={(iso) =>
+                setValue(`${prefix}.fecha_nacimiento`, iso, { shouldValidate: true })
+              }
+            />
             <FieldError message={getError("fecha_nacimiento")} />
             {personaEsMenor && (
               <p className="mt-1 text-xs text-amber-700 font-roboto">
@@ -184,8 +225,64 @@ function PersonaFields({
             <FieldError message={getError("telefono_movil")} />
           </div>
           <div>
-            <Label>Nacionalidad</Label>
-            <Input {...register(`${prefix}.nacionalidad`)} />
+            <Label>Nacionalidad *</Label>
+            <Select
+              value={(watch(`${prefix}.nacionalidad`) as string) || ""}
+              onValueChange={(v) =>
+                setValue(`${prefix}.nacionalidad`, v, { shouldValidate: true })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Elegí nacionalidad" />
+              </SelectTrigger>
+              <SelectContent>
+                {NACIONALIDADES.map((n) => (
+                  <SelectItem key={n} value={n}>
+                    {n}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <FieldError message={getError("nacionalidad")} />
+          </div>
+          <div className="sm:col-span-2">
+            <Label>Categoría *</Label>
+            <Select
+              value={(categoria as string) || ""}
+              onValueChange={(v) => {
+                const cat = v as CategoriaSolicitada
+                setValue(`${prefix}.categoria_solicitada`, cat, { shouldValidate: true })
+                if (cat === "Adherente") {
+                  const actuales =
+                    (watch(`${prefix}.actividades`) as { actividad: string }[]) || []
+                  const filtradas = actuales.filter((a) =>
+                    ACTIVIDADES_ADHERENTE.some(
+                      (p) => p.toLowerCase() === a.actividad.trim().toLowerCase()
+                    )
+                  )
+                  setValue(`${prefix}.actividades`, filtradas, { shouldValidate: true })
+                } else if (cat !== "Jubilado") {
+                  setValue(`${prefix}.comprobante_jubilado`, "", { shouldValidate: true })
+                }
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Elegí categoría" />
+              </SelectTrigger>
+              <SelectContent>
+                {opcionesCategoria.map((c) => (
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="mt-1 text-xs text-gray-500 font-roboto">
+              {fechaNac
+                ? hintCategoria(fechaNac)
+                : "Completá la fecha de nacimiento para ver las opciones."}
+            </p>
+            <FieldError message={getError("categoria_solicitada")} />
           </div>
         </div>
       </div>
@@ -224,7 +321,12 @@ function PersonaFields({
             </div>
             <div>
               <Label>Fecha de nacimiento *</Label>
-              <Input type="date" {...register(`${prefix}.fecha_nacimiento_tutor`)} />
+              <DateTextField
+                value={(watch(`${prefix}.fecha_nacimiento_tutor`) as string) || ""}
+                onChange={(iso) =>
+                  setValue(`${prefix}.fecha_nacimiento_tutor`, iso, { shouldValidate: true })
+                }
+              />
               <FieldError message={getError("fecha_nacimiento_tutor")} />
             </div>
             <div>
@@ -283,23 +385,74 @@ function PersonaFields({
               <Input {...register(`${prefix}.telefono_movil_tutor`)} />
               <FieldError message={getError("telefono_movil_tutor")} />
             </div>
+            <div>
+              <Label>Nacionalidad del tutor *</Label>
+              <Select
+                value={(watch(`${prefix}.nacionalidad_tutor`) as string) || ""}
+                onValueChange={(v) =>
+                  setValue(`${prefix}.nacionalidad_tutor`, v, { shouldValidate: true })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Elegí nacionalidad" />
+                </SelectTrigger>
+                <SelectContent>
+                  {NACIONALIDADES.map((n) => (
+                    <SelectItem key={n} value={n}>
+                      {n}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FieldError message={getError("nacionalidad_tutor")} />
+            </div>
             <div className="sm:col-span-2">
               <Label>Calle *</Label>
               <Input {...register(`${prefix}.calle_tutor`)} />
               <FieldError message={getError("calle_tutor")} />
             </div>
             <div>
-              <Label>Número</Label>
+              <Label>Número *</Label>
               <Input {...register(`${prefix}.numero_tutor`)} />
+              <FieldError message={getError("numero_tutor")} />
             </div>
             <div>
-              <Label>Localidad / Barrio *</Label>
+              <Label>Piso</Label>
+              <Input {...register(`${prefix}.piso_tutor`)} />
+            </div>
+            <div>
+              <Label>Departamento</Label>
+              <Input {...register(`${prefix}.departamento_tutor`)} />
+            </div>
+            <div>
+              <Label>Ciudad *</Label>
+              <Input {...register(`${prefix}.ciudad_tutor`)} />
+              <FieldError message={getError("ciudad_tutor")} />
+            </div>
+            <div>
+              <Label>Barrio / Localidad *</Label>
               <Input {...register(`${prefix}.localidad_barrio_tutor`)} />
               <FieldError message={getError("localidad_barrio_tutor")} />
             </div>
             <div>
               <Label>Provincia *</Label>
-              <Input {...register(`${prefix}.provincia_tutor`)} />
+              <Select
+                value={(watch(`${prefix}.provincia_tutor`) as string) || ""}
+                onValueChange={(v) =>
+                  setValue(`${prefix}.provincia_tutor`, v, { shouldValidate: true })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Elegí provincia" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PROVINCIAS_AR.map((p) => (
+                    <SelectItem key={p} value={p}>
+                      {p}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FieldError message={getError("provincia_tutor")} />
             </div>
             <div>
@@ -349,17 +502,47 @@ function PersonaFields({
             <FieldError message={getError("calle")} />
           </div>
           <div>
-            <Label>Número</Label>
+            <Label>Número *</Label>
             <Input {...register(`${prefix}.numero`)} />
+            <FieldError message={getError("numero")} />
           </div>
           <div>
-            <Label>Localidad / Barrio *</Label>
+            <Label>Piso</Label>
+            <Input {...register(`${prefix}.piso`)} />
+          </div>
+          <div>
+            <Label>Departamento</Label>
+            <Input {...register(`${prefix}.departamento`)} />
+          </div>
+          <div>
+            <Label>Ciudad *</Label>
+            <Input {...register(`${prefix}.ciudad`)} />
+            <FieldError message={getError("ciudad")} />
+          </div>
+          <div>
+            <Label>Barrio / Localidad *</Label>
             <Input {...register(`${prefix}.localidad_barrio`)} />
             <FieldError message={getError("localidad_barrio")} />
           </div>
           <div>
             <Label>Provincia *</Label>
-            <Input {...register(`${prefix}.provincia`)} />
+            <Select
+              value={(watch(`${prefix}.provincia`) as string) || ""}
+              onValueChange={(v) =>
+                setValue(`${prefix}.provincia`, v, { shouldValidate: true })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Elegí provincia" />
+              </SelectTrigger>
+              <SelectContent>
+                {PROVINCIAS_AR.map((p) => (
+                  <SelectItem key={p} value={p}>
+                    {p}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <FieldError message={getError("provincia")} />
           </div>
           <div>
@@ -374,6 +557,13 @@ function PersonaFields({
         actividades={catalogo?.actividades || []}
         selected={selected}
         sinActividad={!!sinActividad}
+        soloPermitidas={
+          esAdherente
+            ? catalogo?.actividades_adherente?.length
+              ? catalogo.actividades_adherente
+              : [...ACTIVIDADES_ADHERENTE]
+            : null
+        }
         error={getError("actividades")}
         onSinActividad={(v) => {
           setValue(`${prefix}.sin_actividad`, v, { shouldValidate: true })
@@ -458,6 +648,16 @@ function PersonaFields({
               setValue(`${prefix}.ficha_medica`, url, { shouldValidate: true })
             }
           />
+          {esJubilado && (
+            <FileUploadField
+              label="Comprobante de jubilación / recibo de haberes *"
+              value={watch(`${prefix}.comprobante_jubilado`) as string}
+              error={getError("comprobante_jubilado")}
+              onUploaded={(url) =>
+                setValue(`${prefix}.comprobante_jubilado`, url, { shouldValidate: true })
+              }
+            />
+          )}
         </div>
       </div>
     </div>
@@ -717,6 +917,8 @@ export function InscripcionWizard({ initialCatalogo = null }: Props) {
                     {resumen.titular.dni}
                   </p>
                   <p className="font-roboto text-xs text-gray-500">
+                    Categoría: {resumen.titular.categoria_solicitada}
+                    {" · "}
                     {resumen.titular.sin_actividad
                       ? "Sin actividad"
                       : (resumen.titular.actividades || [])

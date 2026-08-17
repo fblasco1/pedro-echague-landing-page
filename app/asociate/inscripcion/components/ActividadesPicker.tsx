@@ -8,26 +8,47 @@ type Props = {
   actividades: Actividad[]
   selected: string[]
   sinActividad: boolean
+  /** Si se setea, solo estas activities (value/label) son clickeables; el resto se oculta. */
+  soloPermitidas?: string[] | null
+  mensajeRestriccion?: string
   onToggle: (value: string) => void
   onSinActividad: (value: boolean) => void
   error?: string
+}
+
+function matchPermitida(act: Actividad, permitidas: string[]): boolean {
+  const set = new Set(permitidas.map((p) => p.trim().toLowerCase()))
+  return set.has(act.value.trim().toLowerCase()) || set.has(act.label.trim().toLowerCase())
 }
 
 export function ActividadesPicker({
   actividades,
   selected,
   sinActividad,
+  soloPermitidas = null,
+  mensajeRestriccion,
   onToggle,
   onSinActividad,
   error,
 }: Props) {
+  const lista =
+    soloPermitidas && soloPermitidas.length > 0
+      ? actividades.filter((a) => matchPermitida(a, soloPermitidas))
+      : actividades
+
   return (
     <div className="space-y-3">
       <p className="font-raleway text-sm font-semibold text-club-blue uppercase tracking-wide">
         Actividades
       </p>
+      {soloPermitidas && soloPermitidas.length > 0 && (
+        <p className="text-sm font-roboto text-amber-800 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
+          {mensajeRestriccion ||
+            "Categoría Adherente: solo Gimnasio Fitness, Funcional, Yoga y Crossfit."}
+        </p>
+      )}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-        {actividades.map((act) => {
+        {lista.map((act) => {
           const active = !sinActividad && selected.includes(act.value)
           return (
             <button

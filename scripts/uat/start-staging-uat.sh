@@ -116,6 +116,12 @@ if ! frappe_catalogo_ok; then
 fi
 echo "    Frappe OK (pong + catálogo)"
 
+# Subida de imágenes desde el wizard (Guest → upload_file)
+docker exec -u frappe "$FRAPPE_CTR" bash -lc \
+  "cd ${BENCH_DIR} && bench --site ${SITE_HOST} execute \"frappe.db.set_single_value('System Settings','allow_guests_to_upload_files',1)\"" \
+  >/dev/null 2>&1 || true
+echo "    Guest upload files: habilitado (System Settings)"
+
 echo "==> 2/6 Túnel cloudflared"
 if [[ -f "$PID_FILE" ]] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
   kill "$(cat "$PID_FILE")" 2>/dev/null || true
@@ -140,7 +146,31 @@ if [[ -z "$TUN" ]]; then
 fi
 echo "    Túnel: $TUN"
 
-if ! curl -sf -m 15 -H "X-Frappe-Site-Name: ${SITE_HOST}" "$TUN/api/method/frappe.ping" | grep -q pong; then
+# WSL a veces no resuelve *.trycloudflare.com vía resolv.conf local; DoH + --resolve.
+tunnel_ping() {
+  local host ip
+  host="$(echo "$TUN" | sed -E 's#https://([^/]+).*#\1#')"
+  ip="$(
+    python3 - <<PY
+import json, urllib.request
+h = "${host}"
+req = urllib.request.Request(
+    f"https://cloudflare-dns.com/dns-query?name={h}&type=A",
+    headers={"Accept": "application/dns-json"},
+)
+print(json.load(urllib.request.urlopen(req, timeout=15))["Answer"][0]["data"])
+PY
+  )"
+  curl -sf -m 20 --resolve "${host}:443:${ip}" \
+    -H "X-Frappe-Site-Name: ${SITE_HOST}" \
+    "$TUN/api/method/frappe.ping" | grep -q pong
+}
+ok_tun=0
+for _ in $(seq 1 8); do
+  if tunnel_ping; then ok_tun=1; break; fi
+  sleep 2
+done
+if [[ "$ok_tun" != "1" ]]; then
   echo "ERROR: el túnel no llega a Frappe ($TUN)"
   exit 1
 fi

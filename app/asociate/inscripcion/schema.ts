@@ -12,6 +12,7 @@ export const adjuntosSchema = z.object({
   dni_dorso: z.string().min(1, "Subí el dorso del DNI"),
   foto_perfil: z.string().min(1, "Subí una foto de perfil"),
   ficha_medica: z.string().min(1, "Subí la ficha médica (PDF o imagen)"),
+  comprobante_jubilado: z.string().optional().default(""),
 })
 
 export const tutorFieldsSchema = z.object({
@@ -50,8 +51,33 @@ export function edadDesdeNacimiento(fecha: string, hoy = new Date()): number {
   return edad
 }
 
+export type CategoriaSolicitada = "Activo" | "Menor" | "Adherente" | "Jubilado"
+
+/** Actividades permitidas para Adherente (deben coincidir con el catálogo Frappe). */
+export const ACTIVIDADES_ADHERENTE = [
+  "Gimnasio Fitness",
+  "Funcional",
+  "Yoga",
+  "Crossfit",
+] as const
+
+export function esActividadAdherente(valueOrLabel: string): boolean {
+  const key = valueOrLabel.trim().toLowerCase()
+  return ACTIVIDADES_ADHERENTE.some((a) => a.toLowerCase() === key)
+}
+
 export function categoriaPorEdad(fechaNacimiento: string): "Activo" | "Menor" {
   return edadDesdeNacimiento(fechaNacimiento) < 18 ? "Menor" : "Activo"
+}
+
+/** Categorías elegibles según edad (Adherente en ambos; Jubilado solo adulto). */
+export function categoriasDisponibles(fechaNacimiento: string): CategoriaSolicitada[] {
+  if (!fechaNacimiento || !/^\d{4}-\d{2}-\d{2}$/.test(fechaNacimiento)) {
+    return ["Activo", "Adherente", "Jubilado"]
+  }
+  return edadDesdeNacimiento(fechaNacimiento) < 18
+    ? ["Menor", "Adherente"]
+    : ["Activo", "Adherente", "Jubilado"]
 }
 
 export function esMenorPersona(p: {
@@ -93,10 +119,15 @@ function requireTutorFields(
   if (!data.telefono_movil_tutor || data.telefono_movil_tutor.length < 8) {
     issue("telefono_movil_tutor", "Teléfono del tutor obligatorio")
   }
+  if (!data.nacionalidad_tutor?.trim()) {
+    issue("nacionalidad_tutor", "Nacionalidad del tutor obligatoria")
+  }
   if (!data.calle_tutor?.trim()) issue("calle_tutor", "Calle del tutor obligatoria")
+  if (!data.numero_tutor?.trim()) issue("numero_tutor", "Número del tutor obligatorio")
+  if (!data.ciudad_tutor?.trim()) issue("ciudad_tutor", "Ciudad del tutor obligatoria")
   if (!data.provincia_tutor?.trim()) issue("provincia_tutor", "Provincia del tutor obligatoria")
   if (!data.localidad_barrio_tutor?.trim()) {
-    issue("localidad_barrio_tutor", "Localidad del tutor obligatoria")
+    issue("localidad_barrio_tutor", "Barrio / localidad del tutor obligatorio")
   }
   if (!data.codigo_postal_tutor?.trim()) issue("codigo_postal_tutor", "CP del tutor obligatorio")
   if (!data.dni_frente_tutor) issue("dni_frente_tutor", "Subí el DNI frente del tutor")
@@ -108,8 +139,11 @@ const personaCoreShape = {
   nombre: z.string().min(1, "Nombre obligatorio"),
   apellido: z.string().min(1, "Apellido obligatorio"),
   dni: z.string().regex(dniRegex, "DNI inválido (7 u 8 dígitos)"),
-  nacionalidad: z.string().min(1).default("Argentina"),
-  fecha_nacimiento: z.string().min(1, "Fecha de nacimiento obligatoria"),
+  nacionalidad: z.string().min(1, "Nacionalidad obligatoria").default("Argentina"),
+  fecha_nacimiento: z
+    .string()
+    .min(1, "Fecha de nacimiento obligatoria")
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Usá el formato DD/MM/AAAA"),
   genero: z.enum(["Masculino", "Femenino", "Otro", "Prefiero no decir"], {
     required_error: "Elegí un género",
   }),
@@ -117,14 +151,16 @@ const personaCoreShape = {
   telefono_movil: z.string().min(8, "Teléfono obligatorio"),
   telefono_fijo: z.string().optional(),
   calle: z.string().min(1, "Calle obligatoria"),
-  numero: z.string().optional(),
+  numero: z.string().min(1, "Número obligatorio"),
   piso: z.string().optional(),
   departamento: z.string().optional(),
   provincia: z.string().min(1, "Provincia obligatoria"),
-  ciudad: z.string().optional(),
-  localidad_barrio: z.string().min(1, "Localidad obligatoria"),
+  ciudad: z.string().min(1, "Ciudad obligatoria"),
+  localidad_barrio: z.string().min(1, "Barrio / localidad obligatorio"),
   codigo_postal: z.string().min(1, "Código postal obligatorio"),
-  categoria_solicitada: z.enum(["Activo", "Menor", "Cadete", "Jubilado"]),
+  categoria_solicitada: z.enum(["Activo", "Menor", "Adherente", "Jubilado"], {
+    required_error: "Elegí una categoría",
+  }),
   rol_en_grupo: z
     .enum(["Titular", "Cónyuge", "Hijo", "Padre", "Madre", "Otro"])
     .optional(),
@@ -139,6 +175,44 @@ const personaCoreShape = {
 
 /** Persona sin exigir tutor en el schema base (se exige a nivel wizard). */
 export const personaBaseSchema = z.object(personaCoreShape).superRefine((data, ctx) => {
+  const permitidas = categoriasDisponibles(data.fecha_nacimiento)
+  if (!permitidas.includes(data.categoria_solicitada)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Esa categoría no está disponible para esta edad",
+      path: ["categoria_solicitada"],
+    })
+  }
+
+  if (data.categoria_solicitada === "Adherente") {
+    const permitidas = data.actividades.filter(
+      (a) => esActividadAdherente(a.actividad)
+    )
+    if (!data.sin_actividad && permitidas.length === 0 && data.actividades.length > 0) {
+      // Eligió solo deportes no permitidos
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Adherente solo puede elegir Gimnasio Fitness, Funcional, Yoga o Crossfit",
+        path: ["actividades"],
+      })
+    } else if (!data.sin_actividad && permitidas.length === 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Elegí una actividad permitida o marcá «Socio sin actividad»",
+        path: ["actividades"],
+      })
+    }
+    return
+  }
+
+  if (data.categoria_solicitada === "Jubilado" && !data.comprobante_jubilado?.trim()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Subí el comprobante de jubilación o recibo de haberes",
+      path: ["comprobante_jubilado"],
+    })
+  }
+
   if (!data.sin_actividad && data.actividades.length === 0) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -195,13 +269,29 @@ export function toSubmitPayload(values: WizardForm) {
       ...rest,
       ...(rol ? { rol_en_grupo: rol } : {}),
       ...(rol_en_grupo && !rol ? { rol_en_grupo } : {}),
-      sin_actividad: sin_actividad ? 1 : 0,
-      actividades: sin_actividad
-        ? []
-        : actividades.map((a) => ({
-            actividad: a.actividad,
-            ...(a.grupo_actividad ? { grupo_actividad: a.grupo_actividad } : {}),
-          })),
+      sin_actividad:
+        sin_actividad ||
+        (rest.categoria_solicitada === "Adherente" &&
+          !actividades.some((a) => esActividadAdherente(a.actividad)))
+          ? 1
+          : 0,
+      actividades:
+        sin_actividad
+          ? []
+          : actividades
+              .filter((a) =>
+                rest.categoria_solicitada === "Adherente"
+                  ? esActividadAdherente(a.actividad)
+                  : true
+              )
+              .map((a) => ({
+                actividad: a.actividad,
+                ...(a.grupo_actividad ? { grupo_actividad: a.grupo_actividad } : {}),
+              })),
+    }
+
+    if (rest.categoria_solicitada !== "Jubilado") {
+      delete out.comprobante_jubilado
     }
 
     if (omitTutor || !esMenorPersona(p)) {
@@ -279,5 +369,6 @@ export const emptyPersona = (): PersonaForm => ({
   dni_dorso: "",
   foto_perfil: "",
   ficha_medica: "",
+  comprobante_jubilado: "",
   ...emptyTutorFields(),
 })

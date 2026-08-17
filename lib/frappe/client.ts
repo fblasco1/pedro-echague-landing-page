@@ -165,6 +165,7 @@ export type CatalogoAlta = {
   categorias: string[]
   roles_grupo: string[]
   adjuntos: string[]
+  actividades_adherente?: string[]
   places?: Record<string, unknown>
 }
 
