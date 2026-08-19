@@ -25,7 +25,7 @@ export default function InscripcionPage() {
           </h1>
           <p className="font-roboto text-gray-600 max-w-xl mx-auto">
             Este es el paso 1: datos y documentación. Al enviar, quedás pre-asociado.
-            Secretaría te contacta para el pago (fuera de la web) y el alta definitiva.
+            Secretaría te contacta para completar el alta.
           </p>
           <p className="mt-3">
             <Link

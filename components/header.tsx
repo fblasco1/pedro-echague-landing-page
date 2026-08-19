@@ -15,6 +15,7 @@ export function Header({ actividades = [] }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const pathname = usePathname()
+  const enAsociate = pathname.startsWith("/asociate")
   const isLightNav = pathname.startsWith("/asociate/inscripcion")
 
   useEffect(() => {
@@ -49,10 +50,10 @@ export function Header({ actividades = [] }: HeaderProps) {
           <nav className="hidden lg:flex flex-col items-end gap-2 transition-all duration-300">
             <div className="flex flex-col items-end gap-1 pt-2">
               <Link
-                href={isLightNav ? "/" : "/asociate"}
+                href={enAsociate ? "/" : "/asociate"}
                 className={`${textColorClass} font-bold text-sm ${hoverColorClass} transition-colors font-raleway ${shadowClass}`}
               >
-                {isLightNav ? "VOLVER AL INICIO" : "ASOCIATE AHORA"}
+                {enAsociate ? "VOLVER AL INICIO" : "ASOCIATE AHORA"}
               </Link>
               <Link
                 href="/la-casona"

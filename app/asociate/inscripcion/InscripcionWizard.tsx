@@ -776,8 +776,7 @@ export function InscripcionWizard({ initialCatalogo = null }: Props) {
           <p className="font-roboto text-gray-600">
             Recibimos el trámite de {done.personas} persona
             {done.personas === 1 ? "" : "s"}. Todavía no sos socio activo: falta la
-            revisión de Secretaría, el pago de la cuota (no se cobra en esta web) y el
-            alta definitiva.
+            revisión de Secretaría y el alta definitiva.
           </p>
         </div>
         <ol className="font-roboto text-sm text-gray-700 space-y-3 text-left max-w-md mx-auto">
@@ -791,11 +790,11 @@ export function InscripcionWizard({ initialCatalogo = null }: Props) {
           </li>
           <li>
             <span className="font-raleway font-bold text-club-blue">3 · Sigue.</span>{" "}
-            Te contactan por WhatsApp o en el club para pagar.
+            Te contactan por WhatsApp o en el club.
           </li>
           <li>
             <span className="font-raleway font-bold text-club-blue">4 · Cierre.</span>{" "}
-            Alta definitiva y acceso a actividades.
+            Alta definitiva.
           </li>
         </ol>
         <p className="font-roboto text-sm text-gray-500 text-center">
