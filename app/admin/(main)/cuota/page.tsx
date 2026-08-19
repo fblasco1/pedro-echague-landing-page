@@ -106,7 +106,11 @@ export default function AdminCuotaPage() {
         </div>
       </div>
 
-      <p className="text-gray-600 mb-6">Editá los valores por categoría y guardá fila por fila.</p>
+      <p className="text-gray-600 mb-6">
+        Estos valores alimentan la página pública <code>/socios/cuota</code>. El origen
+        de verdad es el sistema de gestión (Secretaría → Valores de Cuota Social). Esta
+        pantalla de Sanity queda solo como archivo histórico.
+      </p>
       {error && <p className="text-red-600 mb-4">{error}</p>}
       <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="w-full">

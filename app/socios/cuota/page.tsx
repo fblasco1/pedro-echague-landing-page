@@ -1,7 +1,7 @@
 import { Header } from "@/components/header"
 import { PageHeader } from "@/components/page-header"
 import Link from "next/link"
-import { getCategoriasSocios } from "@/lib/sanity/cuota"
+import { getValoresCuotaPublica } from "@/lib/frappe/cuota"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -44,22 +44,37 @@ export const metadata: Metadata = {
   },
 }
 
-// Revalidar cada 60 segundos para que los cambios de Sanity se reflejen
-export const revalidate = 60
+export const dynamic = "force-dynamic"
 
 export default async function ValoresCuotaPage() {
-	const categoriasSocios = await getCategoriasSocios()
+	let categoriasSocios: Array<{
+		categoria: string
+		valor: number
+		condicion: string
+	}> = []
+	let fechaVigente: string | null = null
+	let errorCarga = false
+
+	try {
+		const payload = await getValoresCuotaPublica()
+		categoriasSocios = payload.categorias || []
+		fechaVigente = payload.vigente_desde
+			? (() => {
+					const [y, m, d] = payload.vigente_desde.split("-").map(Number)
+					if (!y || !m || !d) return null
+					return new Date(y, m - 1, d).toLocaleDateString("es-AR", {
+						day: "2-digit",
+						month: "2-digit",
+						year: "numeric",
+					})
+				})()
+			: null
+	} catch {
+		errorCarga = true
+	}
+
   const { getAllActividades } = await import("@/lib/sanity/actividades")
   const actividades = await getAllActividades()
-  
-  // Obtener la fecha vigenteDesde de la primera categoría (todas deberían tener la misma fecha)
-  const fechaVigente = categoriasSocios[0]?.vigenteDesde 
-    ? new Date(categoriasSocios[0].vigenteDesde).toLocaleDateString('es-AR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      })
-    : null
 
 	return (
 		<div className="min-h-screen flex flex-col">
@@ -77,8 +92,17 @@ export default async function ValoresCuotaPage() {
 			<div className="bg-club-blue text-white py-12 md:py-16 flex-grow">
 				<div className="container mx-auto px-4">
 					<h2 className="text-xl md:text-2xl font-bold text-club-yellow mb-8 font-raleway">
-						Valor cuota social a partir del {fechaVigente || '01/04/2025'}
+						{fechaVigente
+							? `Valor cuota social a partir del ${fechaVigente}`
+							: "Valor cuota social"}
 					</h2>
+
+					{errorCarga ? (
+						<p className="font-roboto text-white/90 mb-8">
+							No pudimos cargar los valores en este momento. Consultá a Secretaría
+							por WhatsApp o volvé a intentar en unos minutos.
+						</p>
+					) : null}
 
 					{/* Tabla de valores */}
 					<div className="overflow-x-auto">
@@ -97,9 +121,9 @@ export default async function ValoresCuotaPage() {
 								</tr>
 							</thead>
 							<tbody>
-								{categoriasSocios.map((categoria: any, index: number) => (
+								{categoriasSocios.map((categoria, index) => (
 									<tr
-										key={index}
+										key={categoria.categoria}
 										className={`border-b border-white/10 ${
 											index % 2 === 0
 												? "bg-club-blue/80"
@@ -110,10 +134,7 @@ export default async function ValoresCuotaPage() {
 											{categoria.categoria}
 										</td>
 										<td className="py-4 px-4 font-roboto">
-											{typeof categoria.valor === 'string' 
-												? categoria.valor 
-												: `$${categoria.valor.toLocaleString("es-AR")}`
-											}
+											{`$${categoria.valor.toLocaleString("es-AR")}`}
 										</td>
 										<td className="py-4 px-4 text-white/80 font-roboto">
 											{categoria.condicion}
