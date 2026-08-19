@@ -133,11 +133,11 @@ export async function callFrappeMethod<T>(
   return body.message as T
 }
 
-/** Sube un archivo como Guest vía `upload_file`. Devuelve la URL `/files/...`. */
+/** Sube un archivo privado como Guest vía `upload_file`. Devuelve la URL `/private/files/...`. */
 export async function uploadFileToFrappe(file: File): Promise<string> {
   const form = new FormData()
   form.append("file", file, file.name)
-  form.append("is_private", "0")
+  form.append("is_private", "1")
   form.append("folder", "Home")
 
   const res = await frappeFetch("/api/method/upload_file", {
