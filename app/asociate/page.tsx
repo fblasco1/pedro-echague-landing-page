@@ -1,237 +1,335 @@
+import Image from "next/image"
 import Link from "next/link"
 import { Metadata } from "next"
+import {
+  Check,
+  Heart,
+  Home,
+  Flag,
+  IdCard,
+  Users,
+  Dumbbell,
+  Calendar,
+} from "lucide-react"
+import { AsociateFaq } from "./faq"
+
+const WHATSAPP = "https://wa.me/5491136391151"
 
 export const metadata: Metadata = {
-  title: "Asociate al Club Pedro Echagüe | Formulario de Inscripción",
-  description: "Formá parte del Club Pedro Echagüe. Accedé a todas las actividades deportivas, instalaciones de primer nivel y nuestra gran comunidad. Contactá a secretaría por WhatsApp para más información.",
+  title: "Sumate | Asociate al Club Pedro Echagüe",
+  description:
+    "Pre-asociate online al Club Pedro Echagüe. Completá la solicitud, Secretaría revisa tu documentación y te contacta para el alta. Sin pago en la web.",
   keywords: [
     "club pedro echagüe",
     "asociarse",
+    "pre-asociación",
     "inscripción",
-    "deportes",
-    "básquet",
-    "fútbol",
-    "gimnasio",
-    "actividades deportivas",
     "socios",
     "cuota social",
     "secretaría",
-    "whatsapp"
   ],
   openGraph: {
-    title: "Asociate al Club Pedro Echagüe",
-    description: "Formá parte de nuestra gran familia deportiva y social. Accedé a todas las actividades y instalaciones del club.",
+    title: "Sumate al Club Pedro Echagüe",
+    description:
+      "Completá la solicitud online, quedá pre-asociado y Secretaría te acompaña hasta el alta. Sin cobro en el sitio.",
     type: "website",
     locale: "es_AR",
     siteName: "Club Pedro Echagüe",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Asociate al Club Pedro Echagüe",
-    description: "Formá parte de nuestra gran familia deportiva y social.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
   alternates: {
     canonical: "https://www.icdpedroechague.com.ar/asociate",
   },
-  other: {
-    "application/ld+json": JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Club Pedro Echagüe",
-      "description": "Club deportivo y social con actividades como básquet, fútbol, gimnasio y más",
-      "url": "https://www.icdpedroechague.com.ar",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+54-9-11-3639-1151",
-        "contactType": "customer service",
-        "availableLanguage": "Spanish"
-      },
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "AR"
-      },
-      "sameAs": [
-        "https://wa.me/5491136391151"
-      ]
-    })
-  },
 }
+
+const PASOS = [
+  {
+    n: "01",
+    titulo: "Completá la solicitud",
+    texto:
+      "Cargá tus datos (y los de tu familia, si querés). Subí DNI, foto y ficha médica. Toma pocos minutos.",
+  },
+  {
+    n: "02",
+    titulo: "Quedás pre-asociado",
+    texto:
+      "Al enviar, Secretaría recibe el trámite y vos un código de seguimiento. Todavía no sos socio activo: el club tiene que validar y cerrar el alta.",
+  },
+  {
+    n: "03",
+    titulo: "Te contactamos",
+    texto:
+      "Secretaría revisa la documentación y te escribe por WhatsApp o te espera en el club para coordinar el siguiente paso.",
+  },
+  {
+    n: "04",
+    titulo: "Pagás la cuota y te damos el alta",
+    texto:
+      "El pago es presencial o por transferencia: no se cobra en esta web. Cuando está todo en orden, Secretaría te da el alta y accedés a las actividades.",
+  },
+]
 
 export default function AsociatePage() {
   return (
-    <main className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <header className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-club-blue mb-4 font-raleway">Asociate al Club Pedro Echagüe</h1>
-            <p className="text-xl text-gray-600 font-roboto">
-              Formá parte de nuestra gran familia deportiva y social
-            </p>
-          </header>
-
-        {/* Main Content */}
-        <section className="grid md:grid-cols-2 gap-8 mb-12">
-          {/* Left Column - Benefits */}
-          <article className="bg-white rounded-lg shadow-md p-8">
-            <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">¿Por qué asociarte?</h2>
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <div className="w-6 h-6 bg-club-blue rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">Acceso a todas las actividades</h3>
-                  <p className="text-gray-600 text-sm">Básquet, fútbol, gimnasio, y más disciplinas deportivas</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start">
-                <div className="w-6 h-6 bg-club-blue rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">Instalaciones de primer nivel</h3>
-                  <p className="text-gray-600 text-sm">Gimnasio, canchas, salón de eventos y más</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start">
-                <div className="w-6 h-6 bg-club-blue rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">Comunidad y amistad</h3>
-                  <p className="text-gray-600 text-sm">Conocé gente nueva y formá parte de nuestra historia</p>
-                </div>  
-              </div>
-              
-              <div className="flex items-start">
-                <div className="w-6 h-6 bg-club-blue rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">Eventos y actividades sociales</h3>
-                  <p className="text-gray-600 text-sm">Participá de fiestas, torneos y celebraciones</p>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          {/* Right Column - Contact Info */}
-          <article className="bg-white rounded-lg shadow-md p-8">
-            <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway">¿Cómo asociarte?</h2>
-            
-            <div className="space-y-6">
-              <div className="bg-club-blue/10 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold text-club-blue mb-2">
-                  Solicitud online
-                </h3>
-                <p className="text-gray-700 mb-4 font-roboto text-sm">
-                  Empezá hoy mismo: cargá tus datos y, si querés, los de tu grupo familiar
-                  en pocos minutos. Nosotros revisamos la documentación y te acompañamos
-                  hasta darte la bienvenida como socio del Pedro Echagüe.
-                </p>
-                <Link
-                  href="/asociate/inscripcion"
-                  className="inline-flex items-center justify-center w-full bg-club-yellow text-club-blue px-6 py-4 rounded-md hover:bg-club-yellow/90 transition-colors font-bold text-lg font-raleway"
-                >
-                  Empezar inscripción
-                </Link>
-              </div>
-
-              <div className="bg-white border border-gray-200 p-6 rounded-lg">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mr-4">
-                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-club-blue">¿Tenés alguna duda?</h3>
-                    <p className="text-gray-600 text-sm">Escribinos a Secretaría y lo resolvemos</p>
-                  </div>
-                </div>
-                <a
-                  href="https://wa.me/5491136391151"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center w-full bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600 transition-colors font-medium"
-                >
-                  Contactanos
-                </a>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        {/* Additional Info */}
-        <section className="bg-white rounded-lg shadow-md p-8 mb-8">
-          <h2 className="text-2xl font-bold text-club-blue mb-6 font-raleway text-center">Información Adicional</h2>
-          
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-club-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-club-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-club-blue mb-2">Valores Accesibles</h3>
-              <p className="text-gray-600 text-sm">Cuotas diferenciadas según categoría y edad</p>
-            </div>  
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-club-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-club-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-club-blue mb-2">Proceso Simple</h3>
-              <p className="text-gray-600 text-sm">Documentación básica y trámite rápido</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-club-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-club-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>  
-              <h3 className="font-semibold text-club-blue mb-2">Ubicación Céntrica</h3>
-              <p className="text-gray-600 text-sm">Fácil acceso en el corazón de la ciudad</p>
-            </div>
+    <div className="min-h-screen bg-club-blue text-white">
+      {/* 01 · Hero campaña */}
+      <section className="relative min-h-[92vh] flex items-end">
+        <Image
+          src="/portada.jpg"
+          alt=""
+          fill
+          priority
+          className="object-cover"
+          style={{ objectPosition: "center 28%" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-club-blue via-club-blue/70 to-black/30" />
+        <div className="relative z-10 container mx-auto px-4 pb-16 pt-28 sm:pb-20">
+          <p className="font-raleway text-xs font-bold uppercase tracking-[0.25em] text-club-yellow mb-4">
+            Campaña de socios
+          </p>
+          <h1 className="font-raleway text-4xl sm:text-6xl md:text-7xl font-bold leading-[0.95] tracking-tight max-w-4xl">
+            Somos Flores.
+            <br />
+            <span className="text-club-yellow">Seamos socios.</span>
+          </h1>
+          <p className="mt-6 max-w-xl font-roboto text-lg text-white/90">
+            Más de 90 años de barrio, deporte y familia. Pre-asociate hoy: el
+            club te acompaña hasta el alta. Sin pago online.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <a
+              href="#sumate"
+              className="inline-flex items-center justify-center bg-club-yellow text-club-blue px-8 py-4 rounded-md font-raleway font-bold text-lg hover:bg-club-yellow/90"
+            >
+              Asociate ahora →
+            </a>
+            <a
+              href="#como"
+              className="inline-flex items-center justify-center border border-white/40 px-8 py-4 rounded-md font-raleway font-bold text-lg hover:bg-white/10"
+            >
+              Cómo es el proceso
+            </a>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* CTA Section */}
-        <section className="text-center">
-          <Link
-            href="/socios/cuota"
-            className="inline-flex items-center justify-center bg-club-yellow text-club-blue px-8 py-4 rounded-md hover:bg-club-yellow/90 transition-colors font-bold text-lg font-raleway"
-            aria-label="Ver valores de cuota del club"
-          >
-            Ver Valores de Cuota
-          </Link>
-        </section>
-      </div>
-    </main>
+      {/* 02 · Por qué */}
+      <section className="bg-white text-club-blue py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <p className="font-raleway text-xs font-bold uppercase tracking-[0.2em] text-club-blue/50 mb-3">
+            02 · ¿Por qué ser socio?
+          </p>
+          <h2 className="font-raleway text-3xl sm:text-5xl font-bold max-w-2xl leading-tight mb-6">
+            Inmortalizá tu lugar en el club
+          </h2>
+          <p className="font-roboto text-lg text-gray-600 max-w-2xl mb-12">
+            El Pedro Echagüe se sostiene entre todos. Asociarte es pertenecer:
+            deporte, cultura y una casa en Flores para las generaciones que
+            vienen.
+          </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            <article>
+              <Heart className="h-8 w-8 text-club-blue mb-3" />
+              <h3 className="font-raleway text-xl font-bold mb-2">Pertenencia</h3>
+              <p className="font-roboto text-gray-600">
+                Ser del club es un compromiso de todos los días. Involucrarte es
+                hacer crecer esta casa.
+              </p>
+            </article>
+            <article>
+              <Flag className="h-8 w-8 text-club-blue mb-3" />
+              <h3 className="font-raleway text-xl font-bold mb-2">Historia</h3>
+              <p className="font-roboto text-gray-600">
+                Desde 1934. Honrás lo que heredamos y garantizás que siga
+                latiendo en el barrio.
+              </p>
+            </article>
+            <article>
+              <Home className="h-8 w-8 text-club-blue mb-3" />
+              <h3 className="font-raleway text-xl font-bold mb-2">Comunidad</h3>
+              <p className="font-roboto text-gray-600">
+                Familia, amistad y trabajo en equipo: al club lo empujamos
+                juntos, espalda con espalda.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* 03 · Beneficios */}
+      <section className="bg-club-blue py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <p className="font-raleway text-xs font-bold uppercase tracking-[0.2em] text-club-yellow mb-3">
+            03 · Beneficios
+          </p>
+          <h2 className="font-raleway text-3xl sm:text-5xl font-bold mb-12">
+            Ser socio tiene premio
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: IdCard,
+                t: "Carnet de socio",
+                d: "Tu lugar en el club, con categoría y número, cuando Secretaría complete el alta.",
+              },
+              {
+                icon: Dumbbell,
+                t: "Actividades",
+                d: "Básquet, fútbol, vóley, gimnasio, patín, danza y más. Elegís al pre-asociarte.",
+              },
+              {
+                icon: Users,
+                t: "Grupo familiar",
+                d: "Un trámite para titular, cónyuge e hijos. Cada uno con su categoría y deportes.",
+              },
+              {
+                icon: Calendar,
+                t: "Vida del club",
+                d: "Eventos, torneos y la Casona: el calendario social que sostiene al barrio.",
+              },
+            ].map((item) => (
+              <article
+                key={item.t}
+                className="border border-white/15 rounded-lg p-6 bg-white/5"
+              >
+                <item.icon className="h-7 w-7 text-club-yellow mb-4" />
+                <h3 className="font-raleway text-lg font-bold mb-2">{item.t}</h3>
+                <p className="font-roboto text-sm text-white/75">{item.d}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 04 · Cómo es el flujo */}
+      <section id="como" className="bg-white text-club-blue py-16 md:py-24 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <p className="font-raleway text-xs font-bold uppercase tracking-[0.2em] text-club-blue/50 mb-3">
+            04 · El proceso
+          </p>
+          <h2 className="font-raleway text-3xl sm:text-5xl font-bold max-w-3xl leading-tight mb-4">
+            Cómo asociarte, paso a paso
+          </h2>
+          <p className="font-roboto text-lg text-gray-600 max-w-2xl mb-12">
+            No hay pago en el sitio. Completás la solicitud, quedás pre-asociado
+            y Secretaría cierra el alta con vos.
+          </p>
+          <ol className="grid md:grid-cols-2 gap-8">
+            {PASOS.map((paso) => (
+              <li key={paso.n} className="flex gap-4">
+                <span className="font-raleway text-3xl font-bold text-club-yellow shrink-0 w-14">
+                  {paso.n}
+                </span>
+                <div>
+                  <h3 className="font-raleway text-xl font-bold mb-2">{paso.titulo}</h3>
+                  <p className="font-roboto text-gray-600">{paso.texto}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* 05 · Packs */}
+      <section id="sumate" className="bg-club-blue py-16 md:py-24 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <p className="font-raleway text-xs font-bold uppercase tracking-[0.2em] text-club-yellow mb-3">
+            05 · Asociate
+          </p>
+          <h2 className="font-raleway text-3xl sm:text-5xl font-bold mb-3">Elegí cómo sumarte</h2>
+          <p className="font-roboto text-white/80 max-w-2xl mb-10">
+            Los dos caminos usan el mismo formulario. En familiar, después de
+            tus datos cargás al resto del grupo.
+          </p>
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl">
+            <article className="rounded-lg bg-white text-club-blue p-8 flex flex-col">
+              <p className="font-raleway text-xs font-bold uppercase tracking-widest text-club-blue/50 mb-2">
+                Para vos
+              </p>
+              <h3 className="font-raleway text-2xl font-bold mb-4">Individual</h3>
+              <ul className="font-roboto text-gray-600 space-y-3 mb-8 flex-1">
+                <li className="flex gap-2">
+                  <Check className="h-5 w-5 shrink-0 text-club-blue" />
+                  Categorías Activo, Adherente, Menor o Jubilado, según edad.
+                </li>
+                <li className="flex gap-2">
+                  <Check className="h-5 w-5 shrink-0 text-club-blue" />
+                  Elegís actividades o te anotás sin deporte y lo definís con
+                  Secretaría.
+                </li>
+                <li className="flex gap-2">
+                  <Check className="h-5 w-5 shrink-0 text-club-blue" />
+                  Cuota según categoría: los valores vigentes están en el sitio.
+                </li>
+              </ul>
+              <Link
+                href="/asociate/inscripcion"
+                className="inline-flex items-center justify-center w-full bg-club-yellow text-club-blue px-6 py-4 rounded-md font-raleway font-bold hover:bg-club-yellow/90"
+              >
+                Quiero asociarme
+              </Link>
+            </article>
+            <article className="rounded-lg border-2 border-club-yellow p-8 flex flex-col bg-white/5">
+              <p className="font-raleway text-xs font-bold uppercase tracking-widest text-club-yellow mb-2">
+                Para toda la familia
+              </p>
+              <h3 className="font-raleway text-2xl font-bold mb-4">Familiar</h3>
+              <ul className="font-roboto text-white/80 space-y-3 mb-8 flex-1">
+                <li className="flex gap-2">
+                  <Check className="h-5 w-5 shrink-0 text-club-yellow" />
+                  Titular + cónyuge e hijos en un solo trámite.
+                </li>
+                <li className="flex gap-2">
+                  <Check className="h-5 w-5 shrink-0 text-club-yellow" />
+                  Cada persona con su categoría y sus actividades.
+                </li>
+                <li className="flex gap-2">
+                  <Check className="h-5 w-5 shrink-0 text-club-yellow" />
+                  Secretaría valida a cada integrante y arma el grupo familiar.
+                </li>
+              </ul>
+              <Link
+                href="/asociate/inscripcion"
+                className="inline-flex items-center justify-center w-full bg-club-yellow text-club-blue px-6 py-4 rounded-md font-raleway font-bold hover:bg-club-yellow/90"
+              >
+                Quiero asociar a mi familia
+              </Link>
+            </article>
+          </div>
+          <p className="mt-8 max-w-3xl font-roboto text-sm text-white/80 flex gap-2">
+            <Check className="h-5 w-5 shrink-0 text-club-yellow" />
+            Al enviar la solicitud quedás pre-asociado. Secretaría te contacta
+            por WhatsApp para terminar el proceso y darte el alta definitiva. El
+            pago de la cuota no se hace en esta página.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link
+              href="/socios/cuota"
+              className="font-raleway font-bold text-club-yellow hover:underline"
+            >
+              Ver valores de cuota →
+            </Link>
+            <a
+              href={WHATSAPP}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-raleway font-bold text-white hover:text-club-yellow"
+            >
+              Escribir a Secretaría →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 06 · FAQ */}
+      <section className="bg-club-blue border-t border-white/10 py-16 md:py-24">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <p className="font-raleway text-xs font-bold uppercase tracking-[0.2em] text-club-yellow mb-3">
+            06 · Preguntas frecuentes
+          </p>
+          <h2 className="font-raleway text-3xl sm:text-4xl font-bold mb-8">Dudas rápidas</h2>
+          <AsociateFaq />
+        </div>
+      </section>
+    </div>
   )
 }

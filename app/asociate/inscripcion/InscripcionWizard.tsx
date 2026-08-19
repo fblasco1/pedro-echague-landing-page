@@ -765,25 +765,59 @@ export function InscripcionWizard({ initialCatalogo = null }: Props) {
 
   if (done) {
     return (
-      <div className="rounded-lg bg-white shadow-md p-8 text-center space-y-4">
-        <h2 className="font-raleway text-2xl font-bold text-club-blue">¡Solicitud enviada!</h2>
-        <p className="font-roboto text-gray-600">
-          Recibimos el trámite de {done.personas} persona{done.personas === 1 ? "" : "s"}.
-          Secretaría va a revisar los datos y se va a contactar por WhatsApp o de forma
-          presencial para completar el pago y el alta.
-        </p>
-        <p className="font-roboto text-sm text-gray-500">
+      <div className="rounded-lg bg-white shadow-md p-8 space-y-6">
+        <div className="text-center space-y-2">
+          <p className="font-raleway text-xs font-bold uppercase tracking-widest text-club-blue">
+            Paso 2 de 4
+          </p>
+          <h2 className="font-raleway text-2xl font-bold text-club-blue">
+            Ya estás pre-asociado
+          </h2>
+          <p className="font-roboto text-gray-600">
+            Recibimos el trámite de {done.personas} persona
+            {done.personas === 1 ? "" : "s"}. Todavía no sos socio activo: falta la
+            revisión de Secretaría, el pago de la cuota (no se cobra en esta web) y el
+            alta definitiva.
+          </p>
+        </div>
+        <ol className="font-roboto text-sm text-gray-700 space-y-3 text-left max-w-md mx-auto">
+          <li>
+            <span className="font-raleway font-bold text-club-blue">1 · Listo.</span>{" "}
+            Solicitud enviada.
+          </li>
+          <li>
+            <span className="font-raleway font-bold text-club-blue">2 · Ahora.</span>{" "}
+            Secretaría revisa documentación.
+          </li>
+          <li>
+            <span className="font-raleway font-bold text-club-blue">3 · Sigue.</span>{" "}
+            Te contactan por WhatsApp o en el club para pagar.
+          </li>
+          <li>
+            <span className="font-raleway font-bold text-club-blue">4 · Cierre.</span>{" "}
+            Alta definitiva y acceso a actividades.
+          </li>
+        </ol>
+        <p className="font-roboto text-sm text-gray-500 text-center">
           Código de seguimiento:{" "}
           <span className="font-mono text-club-blue break-all">{done.token}</span>
         </p>
-        <a
-          href="https://wa.me/5491136391151"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center rounded-md bg-green-500 px-6 py-3 font-medium text-white hover:bg-green-600"
-        >
-          Escribir a Secretaría
-        </a>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <a
+            href="https://wa.me/5491136391151"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-md bg-green-500 px-6 py-3 font-medium text-white hover:bg-green-600"
+          >
+            Escribir a Secretaría
+          </a>
+          <a
+            href="/asociate#como"
+            className="inline-flex items-center justify-center rounded-md border border-club-blue px-6 py-3 font-raleway font-bold text-club-blue hover:bg-club-blue/5"
+          >
+            Ver el proceso
+          </a>
+        </div>
       </div>
     )
   }

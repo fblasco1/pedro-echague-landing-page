@@ -15,8 +15,7 @@ export function Header({ actividades = [] }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const pathname = usePathname()
-  const isLightNav =
-    pathname === "/asociate" || pathname.startsWith("/asociate/")
+  const isLightNav = pathname.startsWith("/asociate/inscripcion")
 
   useEffect(() => {
     const handleScroll = () => {

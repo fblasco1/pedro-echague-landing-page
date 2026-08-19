@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import Link from "next/link"
 import { InscripcionWizard } from "./InscripcionWizard"
 
 export const metadata: Metadata = {
@@ -17,14 +18,22 @@ export default function InscripcionPage() {
       <div className="max-w-3xl mx-auto">
         <header className="text-center mb-8">
           <p className="font-raleway text-xs font-bold uppercase tracking-widest text-club-blue mb-2">
-            Membresía
+            Pre-asociación
           </p>
           <h1 className="font-raleway text-3xl sm:text-4xl font-bold text-club-blue mb-3">
-            Sumate al Club Pedro Echagüe
+            Completá tu solicitud
           </h1>
           <p className="font-roboto text-gray-600 max-w-xl mx-auto">
-            Completá tus datos y unite a una comunidad llena de actividades, eventos y
-            momentos para compartir.
+            Este es el paso 1: datos y documentación. Al enviar, quedás pre-asociado.
+            Secretaría te contacta para el pago (fuera de la web) y el alta definitiva.
+          </p>
+          <p className="mt-3">
+            <Link
+              href="/asociate#como"
+              className="font-raleway text-sm font-bold text-club-blue hover:underline"
+            >
+              ← Ver el proceso completo
+            </Link>
           </p>
         </header>
         <InscripcionWizard />
