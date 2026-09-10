@@ -17,7 +17,7 @@ const TABS = [
     label: "Actividades",
     match: (p: string) => p.startsWith("/socios/actividades"),
   },
-  { href: "#", label: "Deudas", disabled: true },
+  { href: "#", label: "Deudas", disabled: true, match: (_p: string) => false },
 ] as const
 
 export function PortalShell({ children }: { children: React.ReactNode }) {
