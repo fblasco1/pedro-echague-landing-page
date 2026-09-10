@@ -1,9 +1,10 @@
 import type React from "react"
 import type { Metadata } from "next"
+import { SociosAppChrome } from "@/components/portal/SociosAppChrome"
 
 export const metadata: Metadata = {
-  title: "Socios | Club Pedro Echagüe",
-  description: "Información para socios del Club Pedro Echagüe",
+  title: "Portal del socio",
+  description: "Portal autenticado de socios del Club Pedro Echagüe",
 }
 
 export default function SociosLayout({
@@ -11,5 +12,5 @@ export default function SociosLayout({
 }: {
   children: React.ReactNode
 }) {
-  return children
+  return <SociosAppChrome>{children}</SociosAppChrome>
 }
