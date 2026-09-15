@@ -49,6 +49,7 @@ export function MenuDesplegable({ isOpen, onClose, actividades = [] }: MenuDespl
         { name: "Noticias", href: "/noticias", disabled: true, comingSoon: true},
         { name: "Infraestructura", href: "/infraestructura" },
         { name: "La Casona", href: "/la-casona" },
+        { name: "Alquileres", href: "/alquiler" },
       ],
     },
     {

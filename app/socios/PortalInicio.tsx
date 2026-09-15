@@ -63,12 +63,11 @@ const ACCESOS = [
     ),
   },
   {
-    href: "#",
+    href: "/socios/reservas",
     title: "Reservas",
-    desc: "Reservá espacios del club cuando esté disponible.",
-    soon: true,
+    desc: "Consultá disponibilidad y pedí turnos en espacios del club.",
     icon: (
-      <svg viewBox="0 0 48 48" className="h-12 w-12 text-slate-400" fill="none" stroke="currentColor" strokeWidth="1.6">
+      <svg viewBox="0 0 48 48" className="h-12 w-12 text-slate-600" fill="none" stroke="currentColor" strokeWidth="1.6">
         <rect x="10" y="10" width="28" height="28" rx="3" />
         <path d="M10 18h28M18 10v8M30 10v8M18 26h12M18 32h8" />
       </svg>
@@ -151,13 +150,7 @@ export function PortalInicio() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <PortalCard title="Estado">
-          <p className="text-2xl font-semibold text-slate-800">{estado}</p>
-          <Link href="/socios/perfil" className="mt-3 inline-block text-sm text-club-blue hover:underline">
-            Ver mis datos →
-          </Link>
-        </PortalCard>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <PortalCard title="Saldo">
           <p className="text-2xl font-semibold text-slate-400">Próximamente</p>
           <p className="mt-3 text-sm text-slate-400">Deudas y pagos online</p>
@@ -221,8 +214,8 @@ export function PortalInicio() {
           </div>
         </PortalCard>
 
-        <PortalCard title="Ayuda">
-          <div className="flex flex-col gap-3 h-full">
+        <PortalCard title="Ayuda" className="flex flex-col h-full">
+          <div className="flex flex-col gap-3 flex-1">
             <a
               href="https://wa.me/5491136391151"
               target="_blank"
@@ -235,13 +228,7 @@ export function PortalInicio() {
               </svg>
               WhatsApp del club
             </a>
-            <Link
-              href="/asociate"
-              className="inline-flex items-center justify-center rounded-lg border border-slate-300 text-slate-700 font-medium py-3 px-4 hover:bg-slate-50 transition-colors"
-            >
-              Cómo asociarse
-            </Link>
-            <p className="mt-auto text-xs text-slate-400 pt-2">
+            <p className="mt-auto text-xs text-slate-500 leading-relaxed pt-2 border-t border-slate-100">
               Atención: Lun a Vie 9:00 a 18:00 horas
             </p>
           </div>

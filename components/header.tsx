@@ -16,7 +16,8 @@ export function Header({ actividades = [] }: HeaderProps) {
   const [showMenu, setShowMenu] = useState(false)
   const pathname = usePathname()
   const enAsociate = pathname.startsWith("/asociate")
-  const isLightNav = pathname.startsWith("/asociate/inscripcion")
+  const isLightNav =
+    pathname.startsWith("/asociate/inscripcion") || pathname.startsWith("/alquiler")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,6 +61,12 @@ export function Header({ actividades = [] }: HeaderProps) {
                 className={`${textColorClass} font-bold text-sm ${hoverColorClass} transition-colors font-raleway ${shadowClass}`}
               >
                 LA CASONA
+              </Link>
+              <Link
+                href="/alquiler"
+                className={`${textColorClass} font-bold text-sm ${hoverColorClass} transition-colors font-raleway ${shadowClass}`}
+              >
+                ALQUILERES
               </Link>
               <button
                 onClick={() => setShowMenu(true)}
