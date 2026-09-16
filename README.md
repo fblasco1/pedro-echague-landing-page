@@ -68,6 +68,8 @@ Todas las páginas incluyen URLs canónicas configuradas para `https://www.icdpe
 - **Actividades** (`/actividades`) - Catálogo completo de actividades
 - **Actividad Individual** (`/actividades/[slug]`) - Detalle de cada actividad
 - **Asociarse** (`/asociate`) - Proceso de asociación vía WhatsApp
+- **Alquiler externo** (`/alquiler`) - Reserva pública de espacios (guest; ver `docs/alquiler-externo.md`)
+- **Portal socios** (`/socios`) - Login, perfil, actividades y reservas de socio
 - **Valores de Cuota** (`/socios/cuota`) - Información de precios y categorías
 - **Infraestructura** (`/infraestructura`) - Galería de instalaciones
 - **Identidad** (`/identidad`) - Historia, misión, visión y valores

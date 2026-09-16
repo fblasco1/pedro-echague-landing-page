@@ -79,7 +79,7 @@ function frappeHostHeader(baseUrl: string): string | undefined {
   }
 }
 
-async function frappeFetch(path: string, init: RequestInit = {}): Promise<Response> {
+export async function frappeFetch(path: string, init: RequestInit = {}): Promise<Response> {
   const base = getFrappeBaseUrl()
   const headers = new Headers(init.headers)
   const portalKey = getPortalKey()

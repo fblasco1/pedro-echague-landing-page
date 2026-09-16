@@ -11,68 +11,110 @@ interface HeaderProps {
   actividades?: any[]
 }
 
+/** Fondos claros: el chrome debe ser claro para que el escudo (letras azules) se lea. */
+function isLightSurfacePath(pathname: string): boolean {
+  if (pathname.startsWith("/alquiler")) return true
+  if (pathname.startsWith("/asociate/inscripcion")) return true
+  if (pathname.startsWith("/socios/login")) return true
+  return false
+}
+
+/** Héroes oscuros/foto: sobre el top se puede usar texto blanco con velo suave. */
+function hasDarkHeroPath(pathname: string): boolean {
+  if (pathname === "/") return true
+  if (pathname.startsWith("/asociate") && !pathname.startsWith("/asociate/inscripcion")) return true
+  if (pathname.startsWith("/infraestructura")) return true
+  if (pathname.startsWith("/identidad")) return true
+  if (pathname.startsWith("/autoridades")) return true
+  if (pathname.startsWith("/actividades")) return true
+  if (pathname.startsWith("/la-casona")) return true
+  if (pathname.startsWith("/socios/cuota")) return true
+  if (pathname.startsWith("/socios/beneficios")) return true
+  return false
+}
+
 export function Header({ actividades = [] }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const pathname = usePathname()
   const enAsociate = pathname.startsWith("/asociate")
-  const isLightNav = pathname.startsWith("/asociate/inscripcion")
+  const enReservas = pathname.startsWith("/alquiler")
+  const lightSurface = isLightSurfacePath(pathname)
+  const darkHero = hasDarkHeroPath(pathname)
+
+  // Chrome claro (sin azul): páginas claras, scroll, o sin hero oscuro.
+  const lightChrome = lightSurface || isScrolled || !darkHero
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      setIsScrolled(window.scrollY > 24)
     }
-
-    window.addEventListener("scroll", handleScroll)
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [pathname])
 
-  const textColorClass = isLightNav ? "text-club-blue" : "text-white"
-  const hoverColorClass = isLightNav ? "hover:text-club-blue/80" : "hover:text-club-yellow"
-  const shadowClass = isScrolled && !isLightNav ? "drop-shadow-[2px_2px_4px_rgba(0,0,0,0.8)]" : ""
+  const navLinkClass = lightChrome
+    ? "text-club-blue font-bold text-sm whitespace-nowrap hover:text-club-blue/70 transition-colors font-raleway"
+    : "text-white font-bold text-sm whitespace-nowrap hover:text-club-yellow transition-colors font-raleway drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]"
+
+  const headerSurface = lightChrome
+    ? "bg-white/90 backdrop-blur-md border-b border-black/5 shadow-sm"
+    : "bg-gradient-to-b from-black/50 via-black/25 to-transparent"
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-transparent h-20 pt-4">
-        <div className="container mx-auto px-4 h-full flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background,box-shadow,border-color] duration-300 ${headerSurface}`}
+      >
+        <div className="container mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-4">
+          <Link href="/" className="flex-shrink-0" aria-label="Inicio Club Pedro Echagüe">
             <Image
               src="/logo.svg"
               alt="Club Pedro Echagüe"
-              width={50}
-              height={50}
-              className={`transition-all duration-300 ${shadowClass}`}
+              width={48}
+              height={48}
+              className={
+                lightChrome
+                  ? "transition-all duration-300"
+                  : "transition-all duration-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]"
+              }
+              priority
             />
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex flex-col items-end gap-2 transition-all duration-300">
-            <div className="flex flex-col items-end gap-1 pt-2">
-              <Link
-                href={enAsociate ? "/" : "/asociate"}
-                className={`${textColorClass} font-bold text-sm ${hoverColorClass} transition-colors font-raleway ${shadowClass}`}
-              >
-                {enAsociate ? "VOLVER AL INICIO" : "ASOCIATE AHORA"}
-              </Link>
-              <Link
-                href="/la-casona"
-                className={`${textColorClass} font-bold text-sm ${hoverColorClass} transition-colors font-raleway ${shadowClass}`}
-              >
-                LA CASONA
-              </Link>
-              <button
-                onClick={() => setShowMenu(true)}
-                className={`${textColorClass} font-bold text-sm ${hoverColorClass} transition-colors font-raleway ${shadowClass}`}
-              >
-                + MENÚ
-              </button>
-            </div>
+          <nav className="hidden lg:flex items-center justify-end gap-5 xl:gap-7">
+            <Link href={enAsociate ? "/" : "/asociate"} className={navLinkClass}>
+              {enAsociate ? "VOLVER AL INICIO" : "ASOCIATE AHORA"}
+            </Link>
+            <Link
+              href="/alquiler"
+              className={`${navLinkClass} ${
+                enReservas
+                  ? lightChrome
+                    ? "underline underline-offset-4 decoration-2"
+                    : "text-club-yellow"
+                  : ""
+              }`}
+              aria-current={enReservas ? "page" : undefined}
+            >
+              RESERVA DE ESPACIOS
+            </Link>
+            <Link href="/la-casona" className={navLinkClass}>
+              LA CASONA
+            </Link>
+            <button type="button" onClick={() => setShowMenu(true)} className={navLinkClass}>
+              + MENÚ
+            </button>
           </nav>
 
-          {/* Mobile Navigation: solo botón */}
           <button
-            className={`lg:hidden ${textColorClass}`}
+            type="button"
+            className={`lg:hidden flex-shrink-0 ${
+              lightChrome
+                ? "text-club-blue"
+                : "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]"
+            }`}
             onClick={() => setShowMenu(true)}
             aria-label="Abrir menú"
           >
@@ -81,7 +123,6 @@ export function Header({ actividades = [] }: HeaderProps) {
         </div>
       </header>
 
-      {/* Menu Desplegable */}
       <MenuDesplegable isOpen={showMenu} onClose={() => setShowMenu(false)} actividades={actividades} />
     </>
   )

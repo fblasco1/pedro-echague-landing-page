@@ -173,6 +173,15 @@ export default async function ClubLandingPage() {
                   Ver Detalles de Instalaciones
                 </Button>
               </Link>
+
+              <Link href="/alquiler" className="w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  className="border-club-yellow bg-club-yellow text-club-blue hover:bg-club-yellow/90 font-roboto text-sm sm:text-base w-full"
+                >
+                  Reservar un espacio
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
