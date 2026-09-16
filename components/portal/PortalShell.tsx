@@ -17,6 +17,11 @@ const TABS = [
     label: "Actividades",
     match: (p: string) => p.startsWith("/socios/actividades"),
   },
+  {
+    href: "/socios/reservas",
+    label: "Reservas",
+    match: (p: string) => p.startsWith("/socios/reservas"),
+  },
   { href: "#", label: "Deudas", disabled: true, match: (_p: string) => false },
 ] as const
 

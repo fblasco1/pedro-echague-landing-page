@@ -141,6 +141,8 @@ export function PerfilSocioView() {
   const [perfil, setPerfil] = useState<PerfilSocio | null>(null)
   const [form, setForm] = useState<EditableForm | null>(null)
   const [fotoBroken, setFotoBroken] = useState(false)
+  const [fotoBusy, setFotoBusy] = useState(false)
+  const [fotoKey, setFotoKey] = useState(0)
 
   useEffect(() => {
     let cancelled = false
@@ -181,6 +183,35 @@ export function PerfilSocioView() {
     setForm((prev) => (prev ? { ...prev, [id]: value } : prev))
     setOkMsg("")
     setSaveError("")
+  }
+
+  async function onFotoChange(file: File | null) {
+    if (!file) return
+    setFotoBusy(true)
+    setSaveError("")
+    setOkMsg("")
+    try {
+      const body = new FormData()
+      body.append("file", file)
+      const res = await fetch("/api/socios/foto", { method: "POST", body })
+      const data = (await res.json()) as PerfilSocio & { error?: string }
+      if (res.status === 401) {
+        router.replace(loginRedirect())
+        return
+      }
+      if (!res.ok) {
+        setSaveError(data.error || "No se pudo actualizar la foto.")
+        return
+      }
+      setPerfil(data)
+      setFotoBroken(false)
+      setFotoKey((k) => k + 1)
+      setOkMsg("Foto de perfil actualizada.")
+    } catch {
+      setSaveError("No se pudo actualizar la foto.")
+    } finally {
+      setFotoBusy(false)
+    }
   }
 
   async function guardar(e: React.FormEvent) {
@@ -249,7 +280,8 @@ export function PerfilSocioView() {
               {perfil.tiene_foto && !fotoBroken ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src="/api/socios/foto"
+                  key={fotoKey}
+                  src={`/api/socios/foto?t=${fotoKey}`}
                   alt={`Foto de perfil de ${nombreCompleto}`}
                   className="h-full w-full object-cover"
                   onError={() => setFotoBroken(true)}
@@ -260,7 +292,17 @@ export function PerfilSocioView() {
                 </div>
               )}
             </div>
-            <p className="text-[11px] text-slate-400 mt-2 text-center">Foto 4×4</p>
+            <label className="mt-3 flex cursor-pointer items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="hidden"
+                disabled={fotoBusy}
+                onChange={(e) => void onFotoChange(e.target.files?.[0] ?? null)}
+              />
+              {fotoBusy ? "Subiendo…" : perfil.tiene_foto ? "Cambiar foto" : "Cargar foto"}
+            </label>
+            <p className="text-[11px] text-slate-400 mt-1.5 text-center">JPG / PNG · 4×4</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
             <ReadOnly label="Nº de socio" value={nro} />
